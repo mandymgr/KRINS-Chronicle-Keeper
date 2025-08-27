@@ -1,0 +1,28 @@
+name: adr-gate
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+jobs:
+  check-adr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compute changed lines
+        id: diff
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          LINES=$(git diff --numstat -w "$BASE_SHA" "$HEAD_SHA" | awk '{add+=$1; del+=$2} END {print (add+del)}')
+          echo "lines=$LINES" >> $GITHUB_OUTPUT
+          echo "Changed lines: $LINES"
+      - name: Ensure ADR link present for large PRs
+        if: ${{ steps.diff.outputs.lines >= 200 }}
+        run: |
+          echo "Checking ADR reference in PR body..."
+          BODY="${{ github.event.pull_request.body }}"
+          if ! echo "$BODY" | grep -E 'ADR-[0-9]+' >/dev/null; then
+            echo "::error ::PR >200 linjer må referere en ADR (f.eks. ADR-0007). Legg til 'ADR-XXXX' i PR-beskrivelsen."
+            exit 1
+          fi
