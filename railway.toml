@@ -1,0 +1,30 @@
+[build]
+builder = "nixpacks"
+buildCommand = "npm run build:railway"
+
+[deploy]
+startCommand = "npm run start:production"
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
+
+[environments.production]
+variables = { NODE_ENV = "production" }
+
+[services.backend]
+source = "."
+build.buildCommand = "cd backend && npm install && npm run build"
+build.outputDirectory = "backend/dist"
+deploy.startCommand = "cd backend && npm run start:production"
+
+[services.frontend]
+source = "frontend"
+build.buildCommand = "npm install && npm run build"
+build.outputDirectory = "frontend/dist"
+deploy.staticFiles = true
+
+[services.database]
+type = "postgresql"
+plan = "hobby"
+extensions = ["vector", "uuid-ossp"]

@@ -1,0 +1,176 @@
+# Dev Memory OS - Complete Full-Stack Development Environment
+# FastAPI + React + PostgreSQL with pgvector + Redis
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database with pgvector extension
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: devmemory-postgres
+    environment:
+      POSTGRES_DB: dev_memory_os
+      POSTGRES_USER: devmemory
+      POSTGRES_PASSWORD: devmemory_secure_password_2024
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend-fastapi/scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U devmemory -d dev_memory_os"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - devmemory-network
+    restart: unless-stopped
+
+  # Redis for caching and job queues
+  redis:
+    image: redis:7-alpine
+    container_name: devmemory-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --requirepass devmemory_redis_pass
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - devmemory-network
+    restart: unless-stopped
+
+  # FastAPI Backend Server
+  fastapi:
+    build:
+      context: ./backend-fastapi
+      dockerfile: Dockerfile
+      target: development
+    container_name: devmemory-fastapi
+    environment:
+      # Database settings
+      DATABASE_URL: postgresql+asyncpg://devmemory:devmemory_secure_password_2024@postgres:5432/dev_memory_os
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: devmemory
+      DB_PASSWORD: devmemory_secure_password_2024
+      DB_NAME: dev_memory_os
+      
+      # Redis settings
+      REDIS_URL: redis://:devmemory_redis_pass@redis:6379/0
+      
+      # OpenAI settings (provide your own key)
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: text-embedding-3-small
+      
+      # Application settings
+      DEBUG: true
+      LOG_LEVEL: INFO
+      PROJECT_NAME: "Dev Memory OS FastAPI"
+      VERSION: "2.0.0"
+      
+      # CORS settings
+      BACKEND_CORS_ORIGINS: "http://localhost:3000,http://localhost:3001,http://frontend:3000"
+      
+      # Performance settings
+      DB_POOL_SIZE: 10
+      DB_MAX_OVERFLOW: 5
+      EMBEDDING_BATCH_SIZE: 10
+      
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend-fastapi:/app
+      - ./docs:/app/docs  # Mount docs directory for ADR access
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - devmemory-network
+    restart: unless-stopped
+    develop:
+      watch:
+        - action: sync
+          path: ./backend-fastapi
+          target: /app
+          ignore:
+            - __pycache__/
+            - "*.pyc"
+
+  # React Frontend Application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
+    container_name: devmemory-frontend
+    environment:
+      VITE_API_URL: http://localhost:8000/api/v1
+      VITE_WS_URL: ws://localhost:8000/ws
+      NODE_ENV: development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules  # Prevent node_modules override
+    depends_on:
+      fastapi:
+        condition: service_healthy
+    networks:
+      - devmemory-network
+    restart: unless-stopped
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend
+          target: /app
+          ignore:
+            - node_modules/
+            - dist/
+            - .next/
+
+  # pgAdmin for database management (development only)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: devmemory-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@devmemory.com
+      PGADMIN_DEFAULT_PASSWORD: devmemory_admin_2024
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - devmemory-network
+    restart: unless-stopped
+    profiles:
+      - development
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+networks:
+  devmemory-network:
+    driver: bridge
+    name: devmemory-network
