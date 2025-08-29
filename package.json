@@ -1,0 +1,71 @@
+{
+  "name": "dev-memory-os-starter",
+  "version": "1.0.0",
+  "description": "Dette er et minimalt, praktisk utgangspunkt for å fange beslutninger (ADR), patterns og runbooks — koblet til CI gjennom en enkel GitHub Action som krever ADR-referanse på store PR-er.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "build": "./scripts/build-and-verify.sh",
+    "build:quick": "./scripts/build-and-verify.sh --quick",
+    "build:railway": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm install && npm run build",
+    "build:backend": "cd backend && npm install",
+    "verify": "./scripts/build-and-verify.sh",
+    "start": "node backend/server.js",
+    "start:production": "NODE_ENV=production node backend/server.js",
+    "start:dev": "NODE_ENV=development node backend/server.js",
+    "migrate": "node database/migrate.js",
+    "migrate:reset": "node database/migrate.js --reset",
+    "db:seed": "node database/seed.js",
+    "db:init": "psql $DATABASE_URL -f database/init.sql",
+    "webhook": "cd ai-pattern-bridge-system/core && node github-webhook-handler.js",
+    "webhook:dev": "cd ai-pattern-bridge-system/core && PORT=3002 AUTO_CREATE_ADR=true node github-webhook-handler.js",
+    "semantic-server": "node backend/server.js",
+    "semantic-server:dev": "NODE_ENV=development node backend/server.js",
+    "process-adrs": "node backend/embedding/adr-batch-processor.js",
+    "process-adrs:dry": "node backend/embedding/adr-batch-processor.js --dry-run",
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:backend": "cd backend && npm test",
+    "test:frontend": "cd frontend && npm test",
+    "test:integration": "node backend/test/integration.js",
+    "lint": "npm run lint:backend && npm run lint:frontend",
+    "lint:backend": "cd backend && npm run lint",
+    "lint:frontend": "cd frontend && npm run lint",
+    "precommit": "npm run build",
+    "prepare": "chmod +x scripts/build-and-verify.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mandymgr/Krins-Dev-Memory-OS.git"
+  },
+  "keywords": [
+    "ai-coordination", 
+    "pattern-driven-development",
+    "revolutionary-development",
+    "adr",
+    "institutional-memory",
+    "multi-terminal-ai"
+  ],
+  "author": "Krin & Mandy",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mandymgr/Krins-Dev-Memory-OS/issues"
+  },
+  "homepage": "https://github.com/mandymgr/Krins-Dev-Memory-OS#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.1",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3"
+  }
+}
