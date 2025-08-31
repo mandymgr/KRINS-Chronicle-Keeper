@@ -66,6 +66,21 @@ Use `tools/adr_new.sh` to create new Architecture Decision Records following the
 - Use TodoWrite tool for complex multi-step tasks
 - Focus on the specific task at hand
 
+## Filorganisering - Automatisk System ✅
+
+### 🛡️ Git Hook Aktiv
+- **Hindrer løse filer i rot** - Automatisk sjekk ved commit
+- **Tillatte filer i rot**: README.md, CLAUDE.md, .gitignore, Dockerfile, Makefile, CODEOWNERS, .editorconfig
+- **Automatisk plassering**: Config → config/, Scripts → tools/, Docs → shared/docs/
+
+### 📁 Mappestruktur (Store bokstaver = hovedstrukturer)
+- **AI-SYSTEMS/** - AI koordinasjon og specialister
+- **CORE-PLATFORM/** - Hovedapplikasjon (backend + frontend)
+- **DASHBOARD/** - Dashboards og visualisering
+- **config/** - Alle konfigfiler samlet
+- **shared/docs/** - Dokumentasjon
+- **tools/** - Utviklingsscripts
+
 ### ALLTID BEST LØSNING PRINSIPPET
 **Vi jobber alltid mot den beste, mest komplette løsningen - aldri halvveis!**
 
