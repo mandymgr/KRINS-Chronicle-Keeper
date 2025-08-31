@@ -49,7 +49,7 @@
       }
     }
   },
-  "remoteEnv": {
+  "containerEnv": {
     "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}"
   },
   "forwardPorts": [3000, 3001, 8000, 8080, 5173, 4000, 9000],

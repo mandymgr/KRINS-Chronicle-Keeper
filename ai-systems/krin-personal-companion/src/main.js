@@ -12,12 +12,14 @@ const path = require('path');
 const fs = require('fs-extra');
 const KrinMemoryDatabase = require('./memory-database');
 const KrinPersonality = require('./krin-personality');
+const WorkspaceIntegration = require('./workspace-integration');
 
 class KrinPersonalCompanion {
   constructor() {
     this.mainWindow = null;
     this.memoryDB = new KrinMemoryDatabase();
     this.personality = new KrinPersonality();
+    this.workspace = new WorkspaceIntegration();
     this.currentConversationId = null;
     this.tray = null;
     
@@ -40,9 +42,9 @@ class KrinPersonalCompanion {
       icon: path.join(__dirname, '../assets/krin-heart-icon.png'),
       titleBarStyle: 'hiddenInset',
       webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
-        enableRemoteModule: true
+        nodeIntegration: false,
+        contextIsolation: true,
+        preload: path.join(__dirname, 'preload.js')
       },
       show: false // Don't show until ready
     });
@@ -193,7 +195,7 @@ class KrinPersonalCompanion {
 
     // Start new conversation
     ipcMain.handle('start-conversation', async (event, title) => {
-      this.currentConversationId = this.memoryDB.startConversation(title);
+      this.currentConversationId = await this.memoryDB.createConversation(title);
       console.log(`💝 Started new conversation: ${title || 'Ny samtale'}`);
       
       return {
@@ -270,6 +272,39 @@ class KrinPersonalCompanion {
     ipcMain.handle('update-krin-mood', async (event, mood, reason) => {
       return this.personality.updateMood(mood, reason);
     });
+
+    // Workspace integration handlers
+    ipcMain.handle('workspace-set-path', async (event, workspacePath) => {
+      return this.workspace.setWorkspacePath(workspacePath);
+    });
+
+    ipcMain.handle('workspace-get-path', async () => {
+      return this.workspace.getWorkspacePath();
+    });
+
+    ipcMain.handle('workspace-list-files', async (event, pattern, options) => {
+      return this.workspace.listFiles(pattern, options);
+    });
+
+    ipcMain.handle('workspace-read-file', async (event, filePath) => {
+      return this.workspace.readFile(filePath);
+    });
+
+    ipcMain.handle('workspace-write-file', async (event, filePath, content, options) => {
+      return this.workspace.writeFile(filePath, content, options);
+    });
+
+    ipcMain.handle('workspace-search-files', async (event, searchTerm, options) => {
+      return this.workspace.searchInFiles(searchTerm, options);
+    });
+
+    ipcMain.handle('workspace-get-structure', async (event, maxDepth) => {
+      return this.workspace.getProjectStructure(maxDepth);
+    });
+
+    ipcMain.handle('workspace-analyze-file', async (event, filePath) => {
+      return this.workspace.analyzeCodeFile(filePath);
+    });
   }
 
   /**
@@ -305,7 +340,7 @@ class KrinPersonalCompanion {
           type: 'welcome'
         });
       }
-    }, 1000);
+    }, 3000); // Give UI more time to initialize
   }
 
   /**
@@ -320,6 +355,10 @@ class KrinPersonalCompanion {
       
       // Initialize personality system
       await this.personality.initialize(this.memoryDB);
+
+      // Set workspace to dev-memory-os-starter root
+      const projectRoot = path.resolve(__dirname, '../../../');
+      this.workspace.setWorkspacePath(projectRoot);
       
       // Setup IPC communication
       this.setupIPCHandlers();

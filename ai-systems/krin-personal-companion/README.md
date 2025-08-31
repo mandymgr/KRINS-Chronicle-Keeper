@@ -21,7 +21,7 @@ Dette er en standalone desktop-applikasjon hvor Krin lever permanent på din mas
 
 ### Steg 1: Installer avhengigheter
 ```bash
-cd /Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/ai-coordination/krin-personal-companion
+cd /Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/ai-systems/krin-personal-companion
 npm install
 ```
 

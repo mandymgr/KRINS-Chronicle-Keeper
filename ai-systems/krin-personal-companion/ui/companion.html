@@ -31,6 +31,9 @@
                 <button class="control-btn" id="projectsBtn" title="Våre prosjekter">
                     <i class="fas fa-rocket"></i>
                 </button>
+                <button class="control-btn" id="workspaceBtn" title="VS Code Workspace">
+                    <i class="fas fa-folder-open"></i>
+                </button>
                 <button class="control-btn" id="exportBtn" title="Eksporter samtale">
                     <i class="fas fa-download"></i>
                 </button>
@@ -142,5 +145,46 @@
     </div>
 
     <script src="companion.js"></script>
+    <script>
+        // Fallback to hide loading overlay if main script fails
+        setTimeout(() => {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay && !overlay.classList.contains('hidden')) {
+                console.log('🚨 Fallback: Force hiding loading overlay');
+                overlay.classList.add('hidden');
+            }
+        }, 3000);
+
+        // Emergency fallback for basic functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚨 Emergency fallback DOM ready');
+            
+            // Test basic button functionality
+            setTimeout(() => {
+                const workspaceBtn = document.getElementById('workspaceBtn');
+                if (workspaceBtn && !workspaceBtn.onclick) {
+                    console.log('🚨 Setting emergency workspace button handler');
+                    workspaceBtn.onclick = () => {
+                        console.log('🚨 Emergency workspace button clicked!');
+                        alert('Workspace button works! Main script may have issues.');
+                    };
+                }
+                
+                const sendBtn = document.getElementById('sendButton');
+                const msgInput = document.getElementById('messageInput');
+                if (sendBtn && msgInput && !sendBtn.onclick) {
+                    console.log('🚨 Setting emergency send button handler');
+                    sendBtn.onclick = () => {
+                        const msg = msgInput.value.trim();
+                        if (msg) {
+                            console.log('🚨 Emergency send:', msg);
+                            alert('Send button works! Message: ' + msg);
+                            msgInput.value = '';
+                        }
+                    };
+                }
+            }, 1000);
+        });
+    </script>
 </body>
 </html>

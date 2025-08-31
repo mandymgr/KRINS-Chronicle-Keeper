@@ -169,13 +169,13 @@ export class AISecurityAuditSpecialist {
     
     try {
       // Scan frontend files
-      const frontendPath = '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/frontend/src';
+      const frontendPath = '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/core-platform/frontend/src';
       const frontendResults = await this.scanDirectory(frontendPath);
       vulnerabilities.push(...frontendResults.vulnerabilities);
       securePatterns.push(...frontendResults.securePatterns);
 
       // Scan backend files  
-      const backendPath = '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/backend';
+      const backendPath = '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/core-platform/backend';
       const backendResults = await this.scanDirectory(backendPath);
       vulnerabilities.push(...backendResults.vulnerabilities);
       securePatterns.push(...backendResults.securePatterns);
@@ -369,8 +369,8 @@ export class AISecurityAuditSpecialist {
     
     try {
       // Check both frontend and backend package.json files
-      const frontendPackageJson = await this.readPackageJson('/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/frontend/package.json');
-      const backendPackageJson = await this.readPackageJson('/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/backend/package.json');
+      const frontendPackageJson = await this.readPackageJson('/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/core-platform/frontend/package.json');
+      const backendPackageJson = await this.readPackageJson('/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/core-platform/backend/package.json');
       
       const vulnerableDeps = await this.checkVulnerableDependencies([
         ...Object.keys(frontendPackageJson.dependencies || {}),

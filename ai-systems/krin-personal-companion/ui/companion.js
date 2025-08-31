@@ -41,6 +41,12 @@ class KrinCompanionUI {
   async initialize() {
     try {
       console.log('🌟 Starting Krin Companion initialization...');
+      console.log('🔧 DOM elements found:', {
+        conversationHistory: !!this.elements.conversationHistory,
+        messageInput: !!this.elements.messageInput,
+        sendButton: !!this.elements.sendButton,
+        loadingOverlay: !!this.elements.loadingOverlay
+      });
       
       // Setup event listeners
       this.setupEventListeners();
@@ -51,11 +57,14 @@ class KrinCompanionUI {
       // Load Krin's current state
       await this.loadKrinState();
       
-      // Hide loading overlay
+      // Hide loading overlay immediately for testing
       setTimeout(() => {
         this.elements.loadingOverlay.classList.add('hidden');
-        this.elements.messageInput.focus();
-      }, 2000);
+        if (this.elements.messageInput) {
+          this.elements.messageInput.focus();
+          console.log('🎯 Loading overlay hidden, input focused');
+        }
+      }, 500);
       
       console.log('✅ Krin Companion UI fully initialized!');
       
@@ -70,11 +79,30 @@ class KrinCompanionUI {
    */
   setupEventListeners() {
     // Message input events
-    this.elements.messageInput.addEventListener('input', (e) => this.handleInputChange(e));
-    this.elements.messageInput.addEventListener('keydown', (e) => this.handleKeyDown(e));
+    console.log('🔧 Setting up input events:', {
+      messageInput: !!this.elements.messageInput,
+      sendButton: !!this.elements.sendButton
+    });
+    
+    if (this.elements.messageInput) {
+      this.elements.messageInput.addEventListener('input', (e) => {
+        console.log('⌨️ Input changed:', e.target.value.length);
+        this.handleInputChange(e);
+      });
+      
+      this.elements.messageInput.addEventListener('keydown', (e) => {
+        console.log('⌨️ Key pressed:', e.key);
+        this.handleKeyDown(e);
+      });
+    }
     
     // Send button
-    this.elements.sendButton.addEventListener('click', () => this.sendMessage());
+    if (this.elements.sendButton) {
+      this.elements.sendButton.addEventListener('click', () => {
+        console.log('📤 Send button clicked');
+        this.sendMessage();
+      });
+    }
     
     // Quick actions
     document.addEventListener('click', (e) => {
@@ -88,26 +116,73 @@ class KrinCompanionUI {
     });
     
     // Control buttons
-    document.getElementById('memoriesBtn').addEventListener('click', () => this.showMemories());
-    document.getElementById('projectsBtn').addEventListener('click', () => this.showProjects());
-    document.getElementById('exportBtn').addEventListener('click', () => this.exportConversation());
-    document.getElementById('settingsBtn').addEventListener('click', () => this.showSettings());
+    const memoriesBtn = document.getElementById('memoriesBtn');
+    const projectsBtn = document.getElementById('projectsBtn');
+    const workspaceBtn = document.getElementById('workspaceBtn');
+    const exportBtn = document.getElementById('exportBtn');
+    const settingsBtn = document.getElementById('settingsBtn');
+    
+    console.log('🔧 Setting up control buttons:', {
+      memoriesBtn: !!memoriesBtn,
+      projectsBtn: !!projectsBtn,
+      workspaceBtn: !!workspaceBtn,
+      exportBtn: !!exportBtn,
+      settingsBtn: !!settingsBtn
+    });
+    
+    if (memoriesBtn) memoriesBtn.addEventListener('click', () => {
+      console.log('📝 Memories button clicked');
+      this.showMemories();
+    });
+    if (projectsBtn) projectsBtn.addEventListener('click', () => {
+      console.log('🚀 Projects button clicked');
+      this.showProjects();
+    });
+    if (workspaceBtn) workspaceBtn.addEventListener('click', () => {
+      console.log('📁 Workspace button clicked');
+      this.showWorkspace();
+    });
+    if (exportBtn) exportBtn.addEventListener('click', () => {
+      console.log('💾 Export button clicked');
+      this.exportConversation();
+    });
+    if (settingsBtn) settingsBtn.addEventListener('click', () => {
+      console.log('⚙️ Settings button clicked');
+      this.showSettings();
+    });
     
     // Sidebar
-    document.getElementById('closeSidebar').addEventListener('click', () => this.closeSidebar());
+    const closeSidebarBtn = document.getElementById('closeSidebar');
+    if (closeSidebarBtn) {
+      closeSidebarBtn.addEventListener('click', () => {
+        console.log('❌ Close sidebar clicked');
+        this.closeSidebar();
+      });
+    }
     
     // Modal
-    document.getElementById('modalClose').addEventListener('click', () => this.closeModal());
-    this.elements.modalOverlay.addEventListener('click', (e) => {
-      if (e.target === this.elements.modalOverlay) {
+    const modalCloseBtn = document.getElementById('modalClose');
+    if (modalCloseBtn) {
+      modalCloseBtn.addEventListener('click', () => {
+        console.log('❌ Modal close clicked');
         this.closeModal();
-      }
-    });
+      });
+    }
+    if (this.elements.modalOverlay) {
+      this.elements.modalOverlay.addEventListener('click', (e) => {
+        if (e.target === this.elements.modalOverlay) {
+          console.log('❌ Modal overlay clicked');
+          this.closeModal();
+        }
+      });
+    }
     
     // Listen for Krin messages from main process
-    window.addEventListener('krin-message', (event) => {
-      this.handleKrinMessage(event.detail);
-    });
+    if (window.electronAPI) {
+      window.electronAPI.on('krin-message', (data) => {
+        this.handleKrinMessage(data);
+      });
+    }
     
     console.log('👂 Event listeners setup complete');
   }
@@ -117,6 +192,12 @@ class KrinCompanionUI {
    */
   async initializeConversation() {
     try {
+      console.log('🔧 Testing electronAPI availability:', !!window.electronAPI);
+      if (!window.electronAPI) {
+        console.error('❌ electronAPI not available');
+        return;
+      }
+      
       const result = await window.electronAPI.invoke('start-conversation', 'Krin er tilbake! 💝');
       this.currentConversationId = result.conversationId;
       console.log('💬 Conversation initialized:', result.title);
@@ -176,9 +257,14 @@ class KrinCompanionUI {
    * Send message to Krin
    */
   async sendMessage() {
+    console.log('📤 sendMessage() called');
     const message = this.elements.messageInput.value.trim();
+    console.log('📝 Message content:', message);
+    console.log('🤖 Is typing:', this.isTyping);
+    console.log('🔧 electronAPI available:', !!window.electronAPI);
     
     if (!message || this.isTyping) {
+      console.log('❌ Message not sent - empty or typing');
       return;
     }
     
@@ -340,6 +426,137 @@ class KrinCompanionUI {
     } catch (error) {
       console.error('❌ Failed to load memories:', error);
       this.showError('Kunne ikke laste minner');
+    }
+  }
+
+  /**
+   * Show workspace sidebar
+   */
+  async showWorkspace() {
+    try {
+      this.elements.sidebarTitle.textContent = 'VS Code Workspace 📁';
+      
+      const workspacePath = await window.electronAPI.invoke('workspace-get-path');
+      const files = await window.electronAPI.invoke('workspace-list-files', '**/*.{js,ts,jsx,tsx,py,md}');
+      
+      let content = `
+        <div class="workspace-header">
+          <p><strong>Workspace:</strong> ${workspacePath}</p>
+          <button class="btn primary" onclick="krinUI.selectWorkspaceFolder()">
+            <i class="fas fa-folder"></i> Velg mappe
+          </button>
+        </div>
+        <div class="workspace-files">
+          <h4>Filer (${files.length})</h4>
+      `;
+      
+      if (files.length > 0) {
+        content += files.slice(0, 50).map(file => `
+          <div class="file-item" onclick="krinUI.viewFile('${file.relativePath}')">
+            <div class="file-info">
+              <i class="fas fa-file-code"></i>
+              <span class="file-name">${file.name}</span>
+              <span class="file-path">${file.relativePath}</span>
+            </div>
+            <div class="file-actions">
+              <button onclick="krinUI.analyzeFile('${file.relativePath}')" title="Analyser fil">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        content += '<p>Ingen kodifiler funnet i workspace.</p>';
+      }
+      
+      content += '</div>';
+      
+      this.elements.sidebarContent.innerHTML = content;
+      this.elements.sidebar.classList.add('open');
+      
+    } catch (error) {
+      console.error('❌ Failed to load workspace:', error);
+      this.showError('Kunne ikke laste workspace');
+    }
+  }
+
+  /**
+   * Select workspace folder
+   */
+  async selectWorkspaceFolder() {
+    // In a real implementation, this would open a folder dialog
+    const newPath = prompt('Skriv inn workspace sti:', await window.electronAPI.invoke('workspace-get-path'));
+    if (newPath) {
+      const success = await window.electronAPI.invoke('workspace-set-path', newPath);
+      if (success) {
+        this.showWorkspace(); // Refresh
+        this.addMessage('krin', `Workspace oppdatert til: ${newPath} 📁`, 'happy');
+      } else {
+        this.showError('Kunne ikke sette workspace sti');
+      }
+    }
+  }
+
+  /**
+   * View file content
+   */
+  async viewFile(filePath) {
+    try {
+      const fileData = await window.electronAPI.invoke('workspace-read-file', filePath);
+      
+      this.addMessage('user', `Vis innholdet i ${filePath}`);
+      this.addMessage('krin', `Her er innholdet i ${filePath}:\n\n\`\`\`\n${fileData.content.substring(0, 2000)}${fileData.content.length > 2000 ? '...\n(truncated)' : ''}\n\`\`\`\n\nFilen har ${fileData.lines} linjer og er ${(fileData.size / 1024).toFixed(1)} KB.`, 'helpful');
+      
+      this.closeSidebar();
+      
+    } catch (error) {
+      console.error('❌ Failed to read file:', error);
+      this.showError(`Kunne ikke lese fil: ${filePath}`);
+    }
+  }
+
+  /**
+   * Analyze file
+   */
+  async analyzeFile(filePath) {
+    try {
+      this.addMessage('user', `Analyser ${filePath}`);
+      this.showTyping();
+      
+      const analysis = await window.electronAPI.invoke('workspace-analyze-file', filePath);
+      
+      this.hideTyping();
+      
+      let response = `🔍 Analyse av ${filePath}:\n\n`;
+      response += `📊 **Statistikk:**\n`;
+      response += `- Språk: ${analysis.language}\n`;
+      response += `- Linjer: ${analysis.lines}\n`;
+      response += `- Størrelse: ${(analysis.size / 1024).toFixed(1)} KB\n`;
+      response += `- Kompleksitet: ${analysis.complexity.complexity}\n\n`;
+      
+      if (analysis.functions.length > 0) {
+        response += `🔧 **Funksjoner (${analysis.functions.length}):**\n`;
+        response += analysis.functions.slice(0, 10).map(f => `- ${f}`).join('\n') + '\n\n';
+      }
+      
+      if (analysis.imports.length > 0) {
+        response += `📦 **Imports (${analysis.imports.length}):**\n`;
+        response += analysis.imports.slice(0, 5).map(i => `- ${i}`).join('\n') + '\n\n';
+      }
+      
+      if (analysis.todos.length > 0) {
+        response += `📝 **TODOs (${analysis.todos.length}):**\n`;
+        response += analysis.todos.map(todo => `- Line ${todo.line}: ${todo.text}`).join('\n') + '\n\n';
+      }
+      
+      response += `Ønsker du at jeg skal hjelpe med noe spesifikt i denne filen?`;
+      
+      this.addMessage('krin', response, 'analytical');
+      
+    } catch (error) {
+      this.hideTyping();
+      console.error('❌ Failed to analyze file:', error);
+      this.addMessage('krin', `Beklager, jeg kunne ikke analysere ${filePath}. ${error.message}`, 'apologetic');
     }
   }
 
@@ -624,17 +841,4 @@ document.addEventListener('DOMContentLoaded', async () => {
   console.log('✅ Krin Companion UI ready! 💝');
 });
 
-// Setup Electron IPC bridge (if not already available)
-if (!window.electronAPI) {
-  window.electronAPI = {
-    invoke: (channel, ...args) => {
-      return window.electron.ipcRenderer.invoke(channel, ...args);
-    },
-    send: (channel, ...args) => {
-      window.electron.ipcRenderer.send(channel, ...args);
-    },
-    on: (channel, callback) => {
-      window.electron.ipcRenderer.on(channel, callback);
-    }
-  };
-}
+// Electron IPC API is now provided securely via preload.js

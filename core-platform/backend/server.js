@@ -113,7 +113,7 @@ app.get('/api/ai-team/activities', (req, res) => {
   res.json({ success: true, activities });
 });
 
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
   res.json({
     message: 'Dev Memory OS Backend API',
     version: '1.0.0',
