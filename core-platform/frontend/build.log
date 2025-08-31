@@ -1,0 +1,100 @@
+
+> dev-memory-os-frontend@1.0.0 build
+> tsc && vite build
+
+src/components/adr/ADRRelations.tsx(18,14): error TS2614: Module '"@/lib/utils"' has no exported member 'formatRelativeTime'. Did you mean to use 'import formatRelativeTime from "@/lib/utils"' instead?
+src/components/adr/ADRRelations.tsx(186,44): error TS7006: Parameter 'adr' implicitly has an 'any' type.
+src/components/adr/ADRRelations.tsx(211,30): error TS2339: Property 'name' does not exist on type 'PatternRecommendation'.
+src/components/adr/ADRRelations.tsx(212,36): error TS2339: Property 'description' does not exist on type 'PatternRecommendation'.
+src/components/adr/ADRRelations.tsx(213,41): error TS2339: Property 'similarity' does not exist on type 'PatternRecommendation'.
+src/components/adr/ADRRelations.tsx(216,35): error TS2339: Property 'category' does not exist on type 'PatternRecommendation'.
+src/components/adr/ADRRelations.tsx(217,46): error TS2339: Property 'effectiveness_score' does not exist on type 'PatternRecommendation'.
+src/components/adr/ADRRelations.tsx(218,38): error TS2339: Property 'usage_count' does not exist on type 'PatternRecommendation'.
+src/components/adr/ADRRelations.tsx(219,38): error TS2339: Property 'author_name' does not exist on type 'PatternRecommendation'.
+src/components/adr/ADRRelations.tsx(220,37): error TS2339: Property 'created_at' does not exist on type 'PatternRecommendation'.
+src/components/auth/ProtectedRoute.tsx(2,30): error TS2306: File '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/frontend/src/components/auth/AdminLogin.tsx' is not a module.
+src/components/auth/ProtectedRoute.tsx(3,24): error TS2306: File '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/frontend/src/components/auth/AdminLogin.tsx' is not a module.
+src/components/auth/ProtectedRoute.tsx(27,25): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ admin: number; user: number; viewer: number; }'.
+src/components/blog/auth/AuthPage.tsx(5,29): error TS2306: File '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/frontend/src/contexts/BlogAuthContext.tsx' is not a module.
+src/components/blog/auth/LoginForm.tsx(3,28): error TS2614: Module '"../../../types"' has no exported member 'FormErrors'. Did you mean to use 'import FormErrors from "../../../types"' instead?
+src/components/blog/auth/LoginForm.tsx(49,22): error TS7006: Parameter 'prev' implicitly has an 'any' type.
+src/components/blog/auth/RegisterForm.tsx(3,31): error TS2614: Module '"../../../types"' has no exported member 'FormErrors'. Did you mean to use 'import FormErrors from "../../../types"' instead?
+src/components/blog/auth/RegisterForm.tsx(120,22): error TS7006: Parameter 'prev' implicitly has an 'any' type.
+src/components/blog/BlogApp.tsx(15,31): error TS2306: File '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/frontend/src/components/blog/posts/BlogPostsList.tsx' is not a module.
+src/components/blog/BlogApp.tsx(16,30): error TS2306: File '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/frontend/src/components/blog/posts/BlogPostForm.tsx' is not a module.
+src/components/blog/BlogApp.tsx(18,47): error TS2306: File '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/frontend/src/contexts/BlogAuthContext.tsx' is not a module.
+src/components/blog/BlogApp.tsx(21,30): error TS2306: File '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/frontend/src/hooks/useWebSocket.ts' is not a module.
+src/components/blog/BlogApp.tsx(72,27): error TS18048: 'response.data' is possibly 'undefined'.
+src/components/blog/BlogApp.tsx(72,41): error TS2339: Property 'post' does not exist on type 'BlogPost'.
+src/components/blog/BlogApp.tsx(86,61): error TS2339: Property '_id' does not exist on type 'BlogPost'.
+src/components/blog/BlogApp.tsx(89,16): error TS2339: Property '_id' does not exist on type 'BlogPost'.
+src/components/blog/BlogApp.tsx(89,36): error TS2339: Property '_id' does not exist on type 'BlogPost'.
+src/components/blog/BlogApp.tsx(89,42): error TS18048: 'response.data' is possibly 'undefined'.
+src/components/blog/BlogApp.tsx(89,56): error TS2339: Property 'post' does not exist on type 'BlogPost'.
+src/components/blog/BlogApp.tsx(104,49): error TS2339: Property '_id' does not exist on type 'BlogPost'.
+src/components/blog/BlogApp.tsx(115,16): error TS2339: Property '_id' does not exist on type 'BlogPost'.
+src/components/blog/BlogApp.tsx(116,38): error TS18048: 'response.data' is possibly 'undefined'.
+src/components/blog/BlogApp.tsx(116,73): error TS18048: 'response.data' is possibly 'undefined'.
+src/components/blog/comments/Comment.tsx(4,29): error TS2306: File '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/frontend/src/contexts/BlogAuthContext.tsx' is not a module.
+src/components/blog/comments/Comment.tsx(54,55): error TS2339: Property '_id' does not exist on type 'BlogUser'.
+src/components/blog/comments/Comment.tsx(59,30): error TS2339: Property '_id' does not exist on type 'BlogComment'.
+src/components/blog/comments/Comment.tsx(71,26): error TS2339: Property '_id' does not exist on type 'BlogComment'.
+src/components/blog/comments/Comment.tsx(76,23): error TS2339: Property '_id' does not exist on type 'BlogComment'.
+src/components/blog/comments/Comment.tsx(80,22): error TS2339: Property '_id' does not exist on type 'BlogComment'.
+src/components/blog/comments/Comment.tsx(101,27): error TS2339: Property 'isOnline' does not exist on type 'BlogUser'.
+src/components/blog/comments/Comment.tsx(114,24): error TS2339: Property 'isEdited' does not exist on type 'BlogComment'.
+src/components/blog/comments/Comment.tsx(120,31): error TS2339: Property 'isOnline' does not exist on type 'BlogUser'.
+src/components/blog/comments/Comment.tsx(220,31): error TS2339: Property 'isLiked' does not exist on type 'BlogComment'.
+src/components/blog/comments/Comment.tsx(226,56): error TS2339: Property 'isLiked' does not exist on type 'BlogComment'.
+src/components/blog/comments/Comment.tsx(227,34): error TS2339: Property 'likesCount' does not exist on type 'BlogComment'.
+src/components/blog/comments/Comment.tsx(227,59): error TS2339: Property 'likesCount' does not exist on type 'BlogComment'.
+src/components/blog/comments/Comment.tsx(243,63): error TS2339: Property 'likesCount' does not exist on type 'BlogComment'.
+src/components/blog/comments/Comment.tsx(246,34): error TS2339: Property 'likesCount' does not exist on type 'BlogComment'.
+src/components/blog/comments/Comment.tsx(259,26): error TS2339: Property '_id' does not exist on type 'BlogComment'.
+src/components/blog/comments/CommentForm.tsx(3,29): error TS2306: File '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/frontend/src/contexts/BlogAuthContext.tsx' is not a module.
+src/components/blog/posts/BlogPostCard.tsx(4,29): error TS2306: File '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/frontend/src/contexts/BlogAuthContext.tsx' is not a module.
+src/components/blog/posts/BlogPostCard.tsx(62,52): error TS2339: Property '_id' does not exist on type 'BlogUser'.
+src/components/blog/posts/BlogPostCard.tsx(76,23): error TS2339: Property '_id' does not exist on type 'BlogPost'.
+src/components/blog/posts/BlogPostCard.tsx(82,19): error TS2339: Property '_id' does not exist on type 'BlogPost'.
+src/components/blog/posts/BlogPostCard.tsx(103,19): error TS2339: Property 'status' does not exist on type 'BlogPost'.
+src/components/blog/posts/BlogPostCard.tsx(148,26): error TS2339: Property 'isOnline' does not exist on type 'BlogUser'.
+src/components/blog/posts/BlogPostCard.tsx(168,10): error TS18048: 'post.tags' is possibly 'undefined'.
+src/components/blog/posts/BlogPostCard.tsx(170,14): error TS18048: 'post.tags' is possibly 'undefined'.
+src/components/blog/posts/BlogPostCard.tsx(182,15): error TS2339: Property 'category' does not exist on type 'BlogPost'.
+src/components/blog/posts/BlogPostCard.tsx(185,21): error TS2339: Property 'category' does not exist on type 'BlogPost'.
+src/components/blog/posts/BlogPostCard.tsx(198,49): error TS2339: Property 'isLiked' does not exist on type 'BlogPost'.
+src/components/blog/posts/BlogPostCard.tsx(199,27): error TS2339: Property 'likesCount' does not exist on type 'BlogPost'.
+src/components/blog/posts/BlogPostCard.tsx(215,24): error TS2339: Property 'isLiked' does not exist on type 'BlogPost'.
+src/components/blog/posts/BlogPostCard.tsx(221,49): error TS2339: Property 'isLiked' does not exist on type 'BlogPost'.
+src/components/blog/posts/BlogPostCard.tsx(222,27): error TS2339: Property 'isLiked' does not exist on type 'BlogPost'.
+src/components/search/SemanticSearch.tsx(3,35): error TS2306: File '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/frontend/src/hooks/useSemanticSearch.ts' is not a module.
+src/components/search/SemanticSearch.tsx(4,14): error TS2614: Module '"@/lib/utils"' has no exported member 'formatKeyboardShortcut'. Did you mean to use 'import formatKeyboardShortcut from "@/lib/utils"' instead?
+src/components/search/SemanticSearch.tsx(4,38): error TS2614: Module '"@/lib/utils"' has no exported member 'isMetaKey'. Did you mean to use 'import isMetaKey from "@/lib/utils"' instead?
+src/components/search/SemanticSearch.tsx(5,27): error TS2306: File '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/frontend/src/components/search/SearchResults.tsx' is not a module.
+src/components/search/SemanticSearch.tsx(6,27): error TS2306: File '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/frontend/src/components/search/SearchFilters.tsx' is not a module.
+src/components/search/SemanticSearch.tsx(316,49): error TS7006: Parameter 'query' implicitly has an 'any' type.
+src/hooks/usePatternRecommendations.ts(4,10): error TS2614: Module '"@/lib/utils"' has no exported member 'debounce'. Did you mean to use 'import debounce from "@/lib/utils"' instead?
+src/hooks/usePatternRecommendations.ts(95,31): error TS2339: Property 'recommendations' does not exist on type 'PatternRecommendationResponse'.
+src/hooks/usePatternRecommendations.ts(190,25): error TS2339: Property 'recommendations' does not exist on type 'PatternRecommendationResponse'.
+src/hooks/usePatternRecommendations.ts(208,33): error TS2339: Property 'recommendations' does not exist on type 'PatternRecommendationResponse'.
+src/hooks/usePatternRecommendations.ts(208,55): error TS7006: Parameter 'a' implicitly has an 'any' type.
+src/hooks/usePatternRecommendations.ts(208,58): error TS7006: Parameter 'b' implicitly has an 'any' type.
+src/hooks/usePatternRecommendations.ts(237,16): error TS2339: Property 'recommendations' does not exist on type 'PatternRecommendationResponse'.
+src/hooks/usePatternRecommendations.ts(237,40): error TS7006: Parameter 'pattern' implicitly has an 'any' type.
+src/hooks/usePatternRecommendations.ts(258,16): error TS2339: Property 'recommendations' does not exist on type 'PatternRecommendationResponse'.
+src/hooks/usePatternRecommendations.ts(258,40): error TS7006: Parameter 'pattern' implicitly has an 'any' type.
+src/hooks/usePatternRecommendations.ts(259,38): error TS7006: Parameter 'tag' implicitly has an 'any' type.
+src/hooks/usePatternRecommendations.ts(272,52): error TS2339: Property 'recommendations' does not exist on type 'PatternRecommendationResponse'.
+src/hooks/usePatternRecommendations.ts(298,97): error TS2339: Property 'recommendations' does not exist on type 'PatternRecommendationResponse'.
+src/hooks/usePatternRecommendations.ts(323,83): error TS2339: Property 'recommendations' does not exist on type 'PatternRecommendationResponse'.
+src/hooks/usePatternRecommendations.ts(324,80): error TS2339: Property 'total_found' does not exist on type 'PatternRecommendationResponse'.
+src/main.tsx(3,17): error TS2306: File '/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/frontend/src/App.tsx' is not a module.
+src/utils/apiClient.ts(2,3): error TS2614: Module '"@/types"' has no exported member 'SemanticSearchRequest'. Did you mean to use 'import SemanticSearchRequest from "@/types"' instead?
+src/utils/apiClient.ts(3,3): error TS2614: Module '"@/types"' has no exported member 'SemanticSearchResponse'. Did you mean to use 'import SemanticSearchResponse from "@/types"' instead?
+src/utils/apiClient.ts(5,3): error TS2614: Module '"@/types"' has no exported member 'SimilarADRsResponse'. Did you mean to use 'import SimilarADRsResponse from "@/types"' instead?
+src/utils/apiClient.ts(6,3): error TS2614: Module '"@/types"' has no exported member 'SearchAnalyticsResponse'. Did you mean to use 'import SearchAnalyticsResponse from "@/types"' instead?
+src/utils/apiClient.ts(7,3): error TS2614: Module '"@/types"' has no exported member 'APIConfig'. Did you mean to use 'import APIConfig from "@/types"' instead?
+src/utils/apiClient.ts(8,3): error TS2614: Module '"@/types"' has no exported member 'APIError'. Did you mean to use 'import APIError from "@/types"' instead?
+src/utils/apiClient.ts(227,46): error TS7006: Parameter 'adr' implicitly has an 'any' type.
+src/utils/apiClient.ts(233,50): error TS7006: Parameter 'pattern' implicitly has an 'any' type.
+src/utils/apiClient.ts(257,28): error TS7006: Parameter 'result' implicitly has an 'any' type.

@@ -1,0 +1,90 @@
+{
+  "name": "Universal Development Environment",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts",
+      "nodeGypDependencies": true
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.11",
+      "installTools": true
+    },
+    "ghcr.io/devcontainers/features/go:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/rust:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-code",
+        "ms-vscode.vscode-typescript-next",
+        "ms-python.python",
+        "golang.go",
+        "rust-lang.rust-analyzer",
+        "ms-vscode.vscode-json",
+        "redhat.vscode-yaml",
+        "ms-vscode.vscode-docker",
+        "github.vscode-github-actions",
+        "github.vscode-pull-request-github",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "streetsidesoftware.code-spell-checker"
+      ],
+      "settings": {
+        "anthropic.apiKey": "${env:ANTHROPIC_API_KEY}",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.eslint.fixAll": true,
+          "source.organizeImports": true
+        },
+        "files.autoSave": "onFocusChange",
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "remoteEnv": {
+    "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}"
+  },
+  "forwardPorts": [3000, 3001, 8000, 8080, 5173, 4000, 9000],
+  "portsAttributes": {
+    "3000": {
+      "label": "React/Next.js",
+      "onAutoForward": "notify"
+    },
+    "3001": {
+      "label": "React Dev",
+      "onAutoForward": "notify"
+    },
+    "8000": {
+      "label": "Python/Django",
+      "onAutoForward": "notify"
+    },
+    "8080": {
+      "label": "Backend API",
+      "onAutoForward": "notify"
+    },
+    "5173": {
+      "label": "Vite",
+      "onAutoForward": "notify"
+    },
+    "4000": {
+      "label": "Express",
+      "onAutoForward": "notify"
+    },
+    "9000": {
+      "label": "Go Server",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "echo 'Universal dev environment ready! 🚀' && echo 'Available: Node.js, Python, Go, Rust, Docker' && echo 'Claude Code extension pre-installed ✅'",
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind"
+  ]
+}

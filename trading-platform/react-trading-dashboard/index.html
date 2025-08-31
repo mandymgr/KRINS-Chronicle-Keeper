@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Performance optimizations -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="theme-color" content="#1f2937" />
+    
+    <!-- Preconnect to external services for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Security headers -->
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' 'unsafe-eval' 'unsafe-inline';
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      connect-src 'self' ws: wss: http://localhost:* https:;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+    " />
+    
+    <!-- Trading system specific meta -->
+    <meta name="description" content="Revolutionary Real-time Trading Dashboard - 1M tx/sec microsecond latency trading platform" />
+    <meta name="author" content="Krin & Mandy Revolutionary Trading Team" />
+    <meta name="keywords" content="trading, cryptocurrency, real-time, websocket, orderbook, high-frequency" />
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Revolutionary Trading Dashboard" />
+    <meta property="og:description" content="Professional trading platform with microsecond latency and 1M tx/sec capacity" />
+    <meta property="og:site_name" content="Revolutionary Trading System" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Revolutionary Trading Dashboard" />
+    <meta name="twitter:description" content="Professional trading platform with microsecond latency" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="application-name" content="Revolutionary Trading" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Trading Dashboard" />
+    
+    <!-- Favicon variations -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#1f2937" />
+    
+    <!-- Performance hints -->
+    <link rel="dns-prefetch" href="//localhost" />
+    <link rel="dns-prefetch" href="//api.trading-system.local" />
+    
+    <!-- Critical styles for trading dashboard -->
+    <style>
+      /* Critical CSS for immediate rendering */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-color: #111827;
+        color: #f9fafb;
+        overflow: hidden;
+      }
+      
+      /* Loading screen styles */
+      #loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out;
+      }
+      
+      .loading-logo {
+        font-size: 2.5rem;
+        font-weight: bold;
+        background: linear-gradient(45deg, #10b981, #3b82f6, #8b5cf6);
+        background-size: 200% 200%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradientShift 3s ease-in-out infinite;
+        margin-bottom: 2rem;
+      }
+      
+      .loading-text {
+        color: #9ca3af;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        max-width: 400px;
+      }
+      
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid #374151;
+        border-top: 3px solid #10b981;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      .loading-stats {
+        position: absolute;
+        bottom: 3rem;
+        text-align: center;
+        color: #6b7280;
+        font-size: 0.9rem;
+      }
+      
+      .loading-stats div {
+        margin: 0.5rem 0;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      @keyframes gradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+      }
+      
+      /* Hide loading screen once app loads */
+      body.loaded #loading-screen {
+        opacity: 0;
+        pointer-events: none;
+      }
+      
+      /* Root container */
+      #root {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+      }
+      
+      /* High-performance scrollbars */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      
+      ::-webkit-scrollbar-track {
+        background: #1f2937;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: #4b5563;
+        border-radius: 4px;
+      }
+      
+      ::-webkit-scrollbar-thumb:hover {
+        background: #6b7280;
+      }
+      
+      /* Performance optimizations */
+      * {
+        will-change: auto;
+      }
+      
+      /* Ensure text remains visible during webfont load */
+      .font-display-swap {
+        font-display: swap;
+      }
+    </style>
+    
+    <title>Revolutionary Trading Dashboard</title>
+  </head>
+  <body>
+    <!-- Loading screen -->
+    <div id="loading-screen">
+      <div class="loading-logo">🚀 Revolutionary Trading</div>
+      <div class="loading-text">
+        Initializing microsecond trading engine...<br>
+        Connecting to real-time market data streams
+      </div>
+      <div class="loading-spinner"></div>
+      <div class="loading-stats">
+        <div>Target: 1,000,000 transactions/second</div>
+        <div>Latency: Sub-millisecond execution</div>
+        <div>Built with Rust WASM + Go + React</div>
+      </div>
+    </div>
+    
+    <!-- React app root -->
+    <div id="root"></div>
+    
+    <!-- Critical JavaScript for immediate functionality -->
+    <script>
+      // Hide loading screen once React app is ready
+      window.addEventListener('load', function() {
+        // Add a small delay to ensure everything is rendered
+        setTimeout(function() {
+          document.body.classList.add('loaded');
+          // Remove loading screen from DOM after animation
+          setTimeout(function() {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) {
+              loadingScreen.remove();
+            }
+          }, 500);
+        }, 1000);
+      });
+      
+      // Performance monitoring
+      if ('performance' in window && 'mark' in window.performance) {
+        performance.mark('app-start');
+      }
+      
+      // Service Worker registration for PWA capabilities
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js')
+            .then(function(registration) {
+              console.log('SW registered: ', registration);
+            })
+            .catch(function(registrationError) {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+      
+      // Error handling for development
+      window.addEventListener('error', function(e) {
+        console.error('Global error:', e.error);
+      });
+      
+      // Unhandled promise rejection handling
+      window.addEventListener('unhandledrejection', function(e) {
+        console.error('Unhandled promise rejection:', e.reason);
+      });
+    </script>
+    
+    <!-- Module script for Vite -->
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

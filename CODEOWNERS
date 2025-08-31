@@ -1,0 +1,8 @@
+# Patterns og domeneområder
+/docs/patterns/*   @team-platform
+/docs/adr/*        @tech-leads
+/docs/runbooks/*   @sre-team
+
+# Eksempel komponenter
+/apps/web/*        @frontend-team
+/services/search/* @search-team

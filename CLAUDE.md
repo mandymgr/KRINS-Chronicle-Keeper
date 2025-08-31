@@ -23,7 +23,7 @@ This is a Dev Memory OS starter project with documentation-driven development pr
 - **ALLTID loggfør endringer i logg når man bygger eller pusher til git**
 
 ### Roadmap Oppdatering - OBLIGATORISK
-**ALLTID oppdater `/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/docs/DEV_MEMORY_OS_ROADMAP.md` når du:**
+**ALLTID oppdater `/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/shared/docs/DEV_MEMORY_OS_ROADMAP.md` når du:**
 - Implementerer nye features eller patterns
 - Får nye ideer eller innsikter
 - Fullfører todos eller oppgaver

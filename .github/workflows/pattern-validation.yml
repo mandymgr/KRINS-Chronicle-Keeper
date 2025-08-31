@@ -1,0 +1,234 @@
+name: Pattern Validation & ADR Gate
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+  push:
+    branches: [main, develop]
+
+jobs:
+  # ADR Gate - Ensure large PRs reference ADRs
+  adr-gate:
+    name: ADR Reference Gate
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Check PR size and ADR reference
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          ADDITIONS: ${{ github.event.pull_request.additions }}
+          DELETIONS: ${{ github.event.pull_request.deletions }}
+        run: |
+          TOTAL=$((ADDITIONS + DELETIONS))
+          echo "📊 PR Size: $TOTAL lines changed ($ADDITIONS additions, $DELETIONS deletions)"
+          
+          if [ $TOTAL -gt 200 ]; then
+            echo "🚨 Large PR detected (>200 lines). Checking for ADR reference..."
+            if ! echo "$PR_BODY" | grep -qi "ADR-[0-9]"; then
+              echo "❌ ERROR: Large PRs (>200 lines) must reference an ADR"
+              echo ""
+              echo "💡 How to fix:"
+              echo "1. Create an ADR: ./tools/adr_new.sh 'Your Decision Title'"
+              echo "2. Add ADR-XXXX reference to your PR description"
+              echo "3. Update the PR"
+              exit 1
+            else
+              echo "✅ ADR reference found in PR description"
+            fi
+          else
+            echo "✅ Small PR (<200 lines) - ADR gate passed"
+          fi
+
+  # Pattern Validation - Check code follows established patterns
+  pattern-validation:
+    name: Pattern Compliance Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Check Pattern Compliance
+        run: |
+          echo "🔍 Checking pattern compliance..."
+          
+          # Check if new components follow naming conventions
+          PATTERN_VIOLATIONS=""
+          
+          # 1. Check React component naming (PascalCase)
+          echo "📋 Checking React component naming..."
+          INVALID_COMPONENTS=$(find . -name "*.tsx" -o -name "*.jsx" | grep -v node_modules | grep -v ".git" | while read file; do
+            basename=$(basename "$file" | sed 's/\.[^.]*$//')
+            if [[ ! $basename =~ ^[A-Z][a-zA-Z0-9]*$ ]]; then
+              echo "$file: Component should use PascalCase naming"
+            fi
+          done)
+          
+          if [ ! -z "$INVALID_COMPONENTS" ]; then
+            echo "❌ Component naming violations found:"
+            echo "$INVALID_COMPONENTS"
+            PATTERN_VIOLATIONS="$PATTERN_VIOLATIONS\n$INVALID_COMPONENTS"
+          else
+            echo "✅ Component naming follows PascalCase pattern"
+          fi
+          
+          # 2. Check for proper import patterns
+          echo "📋 Checking import patterns..."
+          IMPORT_VIOLATIONS=$(find . -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" | grep -v node_modules | grep -v ".git" | xargs grep -l "import.*from.*'\.\./" | head -5)
+          
+          if [ ! -z "$IMPORT_VIOLATIONS" ]; then
+            echo "⚠️  Relative imports detected (consider absolute imports):"
+            echo "$IMPORT_VIOLATIONS" | head -3
+            echo "💡 Tip: Use absolute imports from src/ for better maintainability"
+          else
+            echo "✅ Import patterns look good"
+          fi
+          
+          # 3. Check for ADR-driven development compliance
+          echo "📋 Checking ADR-driven development compliance..."
+          
+          # Count new architectural files without corresponding ADRs
+          NEW_ARCH_FILES=$(git diff --name-only origin/main...HEAD | grep -E "(config|setup|architecture|integration)" | wc -l)
+          RECENT_ADRS=$(find docs/adr -name "*.md" -newer $(git log --format="%ct" -n 1 origin/main | head -1) 2>/dev/null | wc -l || echo "0")
+          
+          if [ $NEW_ARCH_FILES -gt 2 ] && [ $RECENT_ADRS -eq 0 ]; then
+            echo "⚠️  Architectural changes detected without corresponding ADR"
+            echo "💡 Consider creating an ADR: ./tools/adr_new.sh 'Your Architectural Decision'"
+          fi
+          
+          # 4. Check for proper error handling patterns
+          echo "📋 Checking error handling patterns..."
+          MISSING_ERROR_HANDLING=$(find . -name "*.ts" -o -name "*.tsx" | grep -v node_modules | grep -v ".git" | xargs grep -l "fetch(" | xargs grep -L "catch\|try" | head -3)
+          
+          if [ ! -z "$MISSING_ERROR_HANDLING" ]; then
+            echo "⚠️  Files with fetch() calls missing error handling:"
+            echo "$MISSING_ERROR_HANDLING" | head -2
+            echo "💡 Add try-catch blocks or .catch() for proper error handling"
+          fi
+          
+          # Summary
+          if [ ! -z "$PATTERN_VIOLATIONS" ]; then
+            echo ""
+            echo "❌ Pattern validation failed with violations"
+            echo "Fix the issues above and push again"
+            exit 1
+          else
+            echo ""
+            echo "✅ All pattern validation checks passed!"
+          fi
+
+  # Enhanced Pattern Detection with Static Analysis
+  static-analysis:
+    name: Static Analysis & Anti-Pattern Detection
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run TypeScript Check
+        run: |
+          echo "🔍 Running TypeScript checks..."
+          if command -v tsc &> /dev/null; then
+            npx tsc --noEmit --skipLibCheck
+          else
+            echo "⚠️  TypeScript not configured - skipping type check"
+          fi
+      
+      - name: Run ESLint (if configured)
+        run: |
+          echo "🔍 Running ESLint checks..."
+          if [ -f ".eslintrc.js" ] || [ -f ".eslintrc.json" ] || [ -f "eslint.config.js" ]; then
+            npm run lint 2>/dev/null || npx eslint . --ext .ts,.tsx,.js,.jsx --max-warnings 10
+          else
+            echo "⚠️  ESLint not configured - skipping lint check"
+          fi
+      
+      - name: Anti-Pattern Detection
+        run: |
+          echo "🔍 Scanning for anti-patterns..."
+          
+          # Check for common anti-patterns
+          echo "📋 Checking for console.log statements in production code..."
+          CONSOLE_LOGS=$(find . -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" | grep -v node_modules | grep -v ".git" | xargs grep -n "console\." | head -5)
+          
+          if [ ! -z "$CONSOLE_LOGS" ]; then
+            echo "⚠️  console.log statements found (should use proper logging):"
+            echo "$CONSOLE_LOGS"
+          fi
+          
+          # Check for hardcoded URLs/secrets
+          echo "📋 Checking for hardcoded URLs and potential secrets..."
+          HARDCODED=$(find . -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" | grep -v node_modules | grep -v ".git" | xargs grep -n -E "(http://|https://|password|secret|key|token)" | grep -v "placeholder" | head -3)
+          
+          if [ ! -z "$HARDCODED" ]; then
+            echo "⚠️  Potential hardcoded values found:"
+            echo "$HARDCODED"
+            echo "💡 Use environment variables for configuration"
+          fi
+          
+          echo "✅ Anti-pattern detection completed"
+
+  # Pattern Usage Analytics
+  pattern-analytics:
+    name: Generate Pattern Usage Report
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Analyze Pattern Usage
+        run: |
+          echo "📊 Analyzing pattern usage across codebase..."
+          
+          # Count pattern implementations
+          echo "## Pattern Usage Report" > pattern-usage-report.md
+          echo "Generated: $(date)" >> pattern-usage-report.md
+          echo "" >> pattern-usage-report.md
+          
+          # ADR Pattern
+          ADR_COUNT=$(find docs/adr -name "*.md" 2>/dev/null | wc -l || echo "0")
+          echo "- **ADR Pattern**: $ADR_COUNT architecture decisions documented" >> pattern-usage-report.md
+          
+          # Component patterns
+          COMPONENT_COUNT=$(find . -name "*.tsx" | grep -v node_modules | wc -l)
+          echo "- **React Components**: $COMPONENT_COUNT components following PascalCase" >> pattern-usage-report.md
+          
+          # Pattern library usage
+          PATTERN_REFS=$(grep -r "Pattern:" docs/patterns/ 2>/dev/null | wc -l || echo "0")
+          echo "- **Documented Patterns**: $PATTERN_REFS patterns defined" >> pattern-usage-report.md
+          
+          # Recent pattern activity
+          RECENT_PATTERNS=$(git log --since="1 month ago" --oneline docs/patterns/ | wc -l)
+          echo "- **Pattern Activity**: $RECENT_PATTERNS pattern updates in last 30 days" >> pattern-usage-report.md
+          
+          echo "" >> pattern-usage-report.md
+          echo "✅ Pattern usage analysis completed"
+          
+          # Store as artifact
+          cat pattern-usage-report.md
+      
+      - name: Upload Pattern Analytics
+        uses: actions/upload-artifact@v4
+        with:
+          name: pattern-usage-report
+          path: pattern-usage-report.md
+          retention-days: 30

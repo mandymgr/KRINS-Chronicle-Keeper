@@ -1,0 +1,30 @@
+{
+  "name": "dev-memory-os-tools",
+  "version": "1.0.0",
+  "description": "Tools for Dev Memory OS - ADR automation, Slack bot, pattern management",
+  "main": "slack-adr-bot.js",
+  "scripts": {
+    "start": "node slack-adr-bot.js",
+    "dev": "nodemon slack-adr-bot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@slack/bolt": "^3.14.0",
+    "@octokit/rest": "^20.0.2",
+    "openai": "^4.20.1",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "adr",
+    "slack",
+    "bot",
+    "automation",
+    "architecture",
+    "decisions"
+  ],
+  "author": "Dev Memory OS Team",
+  "license": "MIT"
+}

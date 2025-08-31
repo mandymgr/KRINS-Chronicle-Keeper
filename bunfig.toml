@@ -1,0 +1,28 @@
+# 🚀 Revolutionary Dev Memory OS - Bun Configuration
+# Built by Krin & Mandy for maximum development speed
+
+[install]
+# Use exact versions for better reproducibility
+exact = true
+
+# Install peer dependencies automatically
+peer = true
+
+# Performance optimization
+cache = true
+
+# Don't create package-lock.json
+lockfile = false
+
+[install.scopes]
+# Allow all scopes for flexibility
+"*" = { trusted = true }
+
+[test]
+# Use our testing conventions
+root = "."
+preload = ["./test/setup.js"]
+
+[run]
+# Enable bun run optimizations
+shell = "system"

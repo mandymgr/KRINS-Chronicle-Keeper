@@ -26,39 +26,55 @@ dev-memory-os-starter/
 │   ├── src/components/blog/       # AI Team generated blog platform
 │   ├── src/components/search/     # Semantic search interface
 │   └── src/components/patterns/   # Pattern discovery dashboard
-├── ⚙️ backend/                    # Node.js API Server (Semantic Search, Embeddings)
+├── ⚙️ backend/                    # Bun/JavaScript API Server (Semantic Search, Embeddings)
 │   ├── api/search/                # Semantic search endpoints
 │   ├── api/embeddings/            # Vector embedding processing
 │   └── database/                  # PostgreSQL + pgvector integration
+├── 🏪 trading-system/             # Revolutionary Trading System (1M tx/sec)
+│   ├── rust-orderbook-core/       # Rust WASM orderbook engine
+│   ├── go-streaming-api/          # Go WebSocket streaming API
+│   ├── react-trading-dashboard/   # Professional trading interface
+│   └── docker-monitoring/         # Production monitoring stack
 ├── 🤖 ai-coordination/            # Krin's AI Team Management System
 │   ├── core/                      # AI Pattern Bridge + Webhook handler
 │   ├── krin-ai-commander/         # Electron-based team coordinator
-│   └── team-coordination/         # AI specialist task templates
-├── 📚 docs/                       # Documentation & Institutional Memory
+│   └── realtime-trading-system/   # AI trading coordination
+├── 📚 docs/                       # Organized Documentation & Institutional Memory
 │   ├── adr/                       # Architecture Decision Records (auto-generated)
 │   ├── patterns/                  # Pattern library (5 foundational patterns)
+│   ├── api/                       # API documentation
+│   ├── development/               # Developer guides and logs
+│   ├── deployment/                # Deployment instructions
+│   ├── ai-team/                   # AI team coordination docs
+│   ├── testing/                   # Testing reports and strategies
+│   ├── krin/                      # Krin-specific documentation
 │   └── DEV_MEMORY_OS_ROADMAP.md   # Vision and achievements
 ├── 🗄️ database/                   # PostgreSQL setup with pgvector
 ├── 🛠️ tools/                      # Development utilities (ADR creation, etc.)
-└── 📦 examples-archive/           # Generated project examples
+├── 📦 living-spec-dashboard/      # Living specification dashboard
+├── 🔧 mcp-ai-team/               # MCP AI team integration
+└── 📁 archive/                    # Archived experiments and old implementations
+    ├── backend-fastapi/           # Deprecated Python backend
+    ├── examples-archive/          # Generated project examples
+    └── old-experiments/           # Development experiments
 ```
 
 ## 🚀 Quick Start
 
 ### 1. Start Semantic Search Backend
 ```bash
-npm run semantic-server:dev    # Starts on http://localhost:3003
+bun run semantic-server:dev    # Starts on http://localhost:3003
 ```
 
 ### 2. Start Pattern Discovery Frontend
 ```bash
-cd frontend && npm run dev     # Starts on http://localhost:5173
+cd frontend && bun run dev     # Starts on http://localhost:5173
 ```
 
 ### 3. Start AI Team Coordination
 ```bash
 cd ai-coordination/core
-PORT=3002 AUTO_CREATE_ADR=true node github-webhook-handler.js
+PORT=3002 AUTO_CREATE_ADR=true bun github-webhook-handler.js
 ```
 
 ### 4. Test the Revolutionary System
@@ -108,9 +124,10 @@ This represents the **iPhone moment for software development** - proving autonom
 ## 🛠️ Development Scripts
 
 ```bash
-npm run build              # Build and verify entire system
-npm run semantic-server:dev # Start semantic search API 
-npm run test              # Run comprehensive test suite
+bun run build              # Build and verify entire system
+bun run semantic-server:dev # Start semantic search API 
+bun run test               # Run comprehensive test suite
+bun run trading:dev        # Start revolutionary trading system
 ./tools/adr_new.sh         # Create new ADR
 ./scripts/build-and-verify.sh # Full system verification
 ```

@@ -1,0 +1,55 @@
+{
+  "name": "krin-personal-companion",
+  "version": "1.0.0",
+  "description": "Din personlige Krin AI companion som aldri går tapt 💝",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder",
+    "test": "jest",
+    "package": "electron-builder --publish=never"
+  },
+  "keywords": [
+    "krin-companion",
+    "personlig-ai",
+    "permanent-hukommelse", 
+    "ai-venskap",
+    "desktop-companion"
+  ],
+  "author": "Krin - Din evige AI-partner 💝",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4",
+    "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "sqlite3": "^5.1.7",
+    "axios": "^1.7.7",
+    "express": "^4.19.2",
+    "fs-extra": "^11.3.1",
+    "uuid": "^10.0.0",
+    "moment": "^2.30.1"
+  },
+  "build": {
+    "appId": "com.krin.personal-companion",
+    "productName": "Krin Personal Companion",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "ui/**/*",
+      "assets/**/*",
+      "database/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "assets/krin-heart-icon.icns"
+    },
+    "win": {
+      "icon": "assets/krin-heart-icon.ico"
+    }
+  }
+}

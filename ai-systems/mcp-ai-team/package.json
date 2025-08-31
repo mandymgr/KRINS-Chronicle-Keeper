@@ -1,0 +1,37 @@
+{
+  "name": "krin-mcp-ai-team-server",
+  "version": "1.0.0",
+  "description": "Revolutionary MCP Server for AI Team Coordination - Real AI-to-AI Communication",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node test/basic-coordination-test.js",
+    "spawn-specialists": "node src/spawn-specialists.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "ws": "^8.18.0",
+    "uuid": "^9.0.1",
+    "node-fetch": "^3.3.2",
+    "express": "^4.19.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0"
+  },
+  "keywords": [
+    "mcp",
+    "ai-coordination",
+    "claude",
+    "autonomous-development",
+    "ai-team",
+    "krin"
+  ],
+  "author": "Krin & Mandy - Revolutionary AI Team Coordination",
+  "license": "ISC",
+  "directories": {
+    "test": "test"
+  }
+}

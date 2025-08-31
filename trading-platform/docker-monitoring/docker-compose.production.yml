@@ -1,0 +1,489 @@
+version: '3.8'
+
+# Revolutionary Trading System - Production Docker Orchestration
+# Optimized for 1 million transactions per second with comprehensive monitoring
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "5"
+    labels: "service,environment,version"
+
+x-healthcheck: &healthcheck
+  interval: 30s
+  timeout: 10s
+  retries: 3
+  start_period: 30s
+
+x-deploy: &deploy-high-performance
+  replicas: 3
+  update_config:
+    parallelism: 1
+    delay: 10s
+    failure_action: rollback
+    order: start-first
+  rollback_config:
+    parallelism: 1
+    delay: 5s
+    failure_action: pause
+  restart_policy:
+    condition: on-failure
+    delay: 5s
+    max_attempts: 3
+    window: 120s
+  placement:
+    constraints:
+      - node.role == worker
+  resources:
+    limits:
+      cpus: '2.0'
+      memory: 4G
+    reservations:
+      cpus: '1.0'
+      memory: 2G
+
+services:
+  # Rust WASM Orderbook Service
+  trading-rust-orderbook:
+    build:
+      context: ../rust-orderbook-core
+      dockerfile: Dockerfile.production
+    image: trading-system/rust-orderbook:${VERSION:-latest}
+    container_name: trading-rust-orderbook
+    deploy: *deploy-high-performance
+    environment:
+      - RUST_LOG=info
+      - RUST_BACKTRACE=1
+      - PERFORMANCE_TARGET=1000000
+    ports:
+      - "8081:8080"
+    networks:
+      - trading-network
+    restart: unless-stopped
+    logging: *logging
+    healthcheck:
+      <<: *healthcheck
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rust-orderbook.rule=Host(`orderbook.trading-system.local`)"
+      - "traefik.http.services.rust-orderbook.loadbalancer.server.port=8080"
+      - "prometheus.scrape=true"
+      - "prometheus.port=8080"
+      - "prometheus.path=/metrics"
+
+  # Go Streaming API
+  trading-go-api:
+    build:
+      context: ../go-streaming-api
+      dockerfile: Dockerfile
+    image: trading-system/go-streaming-api:${VERSION:-latest}
+    container_name: trading-go-api
+    deploy: *deploy-high-performance
+    environment:
+      - GO_ENV=production
+      - PORT=8080
+      - REDIS_URL=redis://trading-redis:6379
+      - POSTGRES_URL=postgres://trading_admin:${POSTGRES_PASSWORD}@trading-pgbouncer:5432/trading_system
+      - WS_ORIGINS=https://trading-dashboard.local,https://trading-system.local
+      - LOG_LEVEL=info
+      - METRICS_ENABLED=true
+    ports:
+      - "8080:8080"
+    networks:
+      - trading-network
+    restart: unless-stopped
+    logging: *logging
+    healthcheck:
+      <<: *healthcheck
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/health"]
+    depends_on:
+      - trading-redis
+      - trading-pgbouncer
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.go-api.rule=Host(`api.trading-system.local`)"
+      - "traefik.http.services.go-api.loadbalancer.server.port=8080"
+      - "prometheus.scrape=true"
+      - "prometheus.port=8080"
+      - "prometheus.path=/metrics"
+
+  # React Trading Dashboard
+  trading-react-dashboard:
+    build:
+      context: ../react-trading-dashboard
+      dockerfile: Dockerfile.production
+    image: trading-system/react-dashboard:${VERSION:-latest}
+    container_name: trading-react-dashboard
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_API_URL=https://api.trading-system.local
+      - REACT_APP_WS_URL=wss://api.trading-system.local/ws
+      - REACT_APP_VERSION=${VERSION:-latest}
+    ports:
+      - "3000:80"
+    networks:
+      - trading-network
+    restart: unless-stopped
+    logging: *logging
+    healthcheck:
+      <<: *healthcheck
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`trading-dashboard.local`)"
+      - "traefik.http.services.dashboard.loadbalancer.server.port=80"
+
+  # Traefik Reverse Proxy & Load Balancer
+  trading-traefik:
+    image: traefik:v3.0
+    container_name: trading-traefik
+    command:
+      - --api.dashboard=true
+      - --api.debug=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
+      - --certificatesresolvers.letsencrypt.acme.email=admin@trading-system.local
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+      - --metrics.prometheus=true
+      - --metrics.prometheus.addEntryPointsLabels=true
+      - --metrics.prometheus.addServicesLabels=true
+      - --accesslog=true
+      - --accesslog.filepath=/var/log/traefik/access.log
+      - --log.level=INFO
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8082:8080"  # Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik_letsencrypt:/letsencrypt
+      - traefik_logs:/var/log/traefik
+    networks:
+      - trading-network
+    restart: unless-stopped
+    logging: *logging
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`traefik.trading-system.local`)"
+      - "traefik.http.routers.api.service=api@internal"
+
+  # Prometheus Monitoring
+  trading-prometheus:
+    image: prom/prometheus:v2.45.0
+    container_name: trading-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+      - '--storage.tsdb.retention.size=10GB'
+      - '--query.max-concurrency=50'
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus-rules.yml:/etc/prometheus/rules.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - trading-network
+    restart: unless-stopped
+    logging: *logging
+    healthcheck:
+      <<: *healthcheck
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9090/-/healthy"]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.trading-system.local`)"
+
+  # Grafana Analytics & Visualization
+  trading-grafana:
+    image: grafana/grafana:10.0.0
+    container_name: trading-grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-revolutionary_grafana_2025}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
+      - GF_FEATURE_TOGGLES_ENABLE=ngalert
+      - GF_UNIFIED_ALERTING_ENABLED=true
+      - GF_ALERTING_ENABLED=false
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    networks:
+      - trading-network
+    restart: unless-stopped
+    logging: *logging
+    depends_on:
+      - trading-prometheus
+    healthcheck:
+      <<: *healthcheck
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health"]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.trading-system.local`)"
+
+  # AlertManager for notifications
+  trading-alertmanager:
+    image: prom/alertmanager:v0.25.0
+    container_name: trading-alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+      - '--web.external-url=http://alertmanager.trading-system.local'
+      - '--cluster.listen-address=0.0.0.0:9094'
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - alertmanager_data:/alertmanager
+    networks:
+      - trading-network
+    restart: unless-stopped
+    logging: *logging
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.alertmanager.rule=Host(`alertmanager.trading-system.local`)"
+
+  # Node Exporter for host metrics
+  trading-node-exporter:
+    image: prom/node-exporter:v1.6.0
+    container_name: trading-node-exporter
+    command:
+      - '--path.rootfs=/host'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+      - '--collector.systemd'
+      - '--collector.processes'
+    ports:
+      - "9100:9100"
+    volumes:
+      - '/:/host:ro,rslave'
+    networks:
+      - trading-network
+    restart: unless-stopped
+    logging: *logging
+    pid: host
+
+  # cAdvisor for container metrics
+  trading-cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.0
+    container_name: trading-cadvisor
+    ports:
+      - "8083:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    networks:
+      - trading-network
+    restart: unless-stopped
+    logging: *logging
+    privileged: true
+    devices:
+      - /dev/kmsg
+
+  # Loki for log aggregation
+  trading-loki:
+    image: grafana/loki:2.8.0
+    container_name: trading-loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki-config.yml:/etc/loki/local-config.yaml:ro
+      - loki_data:/tmp/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - trading-network
+    restart: unless-stopped
+    logging: *logging
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.loki.rule=Host(`loki.trading-system.local`)"
+
+  # Promtail for log shipping
+  trading-promtail:
+    image: grafana/promtail:2.8.0
+    container_name: trading-promtail
+    volumes:
+      - /var/log:/var/log:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./promtail-config.yml:/etc/promtail/docker-config.yaml:ro
+    command: -config.file=/etc/promtail/docker-config.yaml
+    networks:
+      - trading-network
+    restart: unless-stopped
+    logging: *logging
+    depends_on:
+      - trading-loki
+
+  # Jaeger for distributed tracing
+  trading-jaeger:
+    image: jaegertracing/all-in-one:1.46
+    container_name: trading-jaeger
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+      - SPAN_STORAGE_TYPE=badger
+      - BADGER_EPHEMERAL=false
+      - BADGER_DIRECTORY_VALUE=/badger/data
+      - BADGER_DIRECTORY_KEY=/badger/key
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "14250:14250"  # gRPC
+      - "14268:14268"  # HTTP
+      - "14269:14269"  # Admin port
+    volumes:
+      - jaeger_data:/badger
+    networks:
+      - trading-network
+    restart: unless-stopped
+    logging: *logging
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jaeger.rule=Host(`tracing.trading-system.local`)"
+
+  # Redis Exporter for cache metrics
+  trading-redis-exporter:
+    image: oliver006/redis_exporter:v1.51.0
+    container_name: trading-redis-exporter
+    environment:
+      - REDIS_ADDR=redis://trading-redis:6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-redis_revolutionary_2025}
+    ports:
+      - "9121:9121"
+    networks:
+      - trading-network
+    restart: unless-stopped
+    logging: *logging
+    depends_on:
+      - trading-redis
+
+  # Nginx for static asset serving and additional load balancing
+  trading-nginx:
+    image: nginx:1.24-alpine
+    container_name: trading-nginx
+    ports:
+      - "8084:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/html:/usr/share/nginx/html:ro
+      - nginx_logs:/var/log/nginx
+    networks:
+      - trading-network
+    restart: unless-stopped
+    logging: *logging
+    healthcheck:
+      <<: *healthcheck
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80/health"]
+
+  # Portainer for container management
+  trading-portainer:
+    image: portainer/portainer-ce:latest
+    container_name: trading-portainer
+    command: -H unix:///var/run/docker.sock --admin-password='$$2y$$10$$N5H7l.Ylf2yV7XW5qj1Aju4.U7VhMpQ0fCFzPOQEF8VrwWrQzKa.'
+    ports:
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - trading-network
+    restart: unless-stopped
+    logging: *logging
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer.rule=Host(`portainer.trading-system.local`)"
+
+networks:
+  trading-network:
+    driver: overlay
+    attachable: true
+    name: trading-production-network
+    ipam:
+      config:
+        - subnet: 10.10.0.0/16
+
+volumes:
+  # Database volumes (from postgres-realtime service)
+  trading_primary_data:
+    external: true
+  trading_replica_data:
+    external: true
+  trading_redis_data:
+    external: true
+  trading_backups:
+    external: true
+  
+  # Monitoring volumes
+  prometheus_data:
+    driver: local
+    name: prometheus_data
+  grafana_data:
+    driver: local
+    name: grafana_data
+  alertmanager_data:
+    driver: local
+    name: alertmanager_data
+  loki_data:
+    driver: local
+    name: loki_data
+  jaeger_data:
+    driver: local
+    name: jaeger_data
+  portainer_data:
+    driver: local
+    name: portainer_data
+  
+  # Proxy and load balancing
+  traefik_letsencrypt:
+    driver: local
+    name: traefik_letsencrypt
+  traefik_logs:
+    driver: local
+    name: traefik_logs
+  nginx_logs:
+    driver: local
+    name: nginx_logs
+
+# Global configuration
+configs:
+  prometheus_config:
+    file: ./prometheus.yml
+  grafana_datasources:
+    file: ./grafana/provisioning/datasources/datasources.yml
+  grafana_dashboards:
+    file: ./grafana/provisioning/dashboards/dashboards.yml
+  nginx_config:
+    file: ./nginx.conf
+
+secrets:
+  postgres_password:
+    external: true
+  redis_password:
+    external: true
+  grafana_password:
+    external: true

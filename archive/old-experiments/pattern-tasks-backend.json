@@ -1,0 +1,79 @@
+{
+  "type": "pattern_tasks_assignment",
+  "specialist": "backend",
+  "tasks": [
+    {
+      "id": "api-rate-limiting-backend-implementation",
+      "patternId": "api-rate-limiting",
+      "patternName": "API Rate Limiting",
+      "specialist": "backend",
+      "priority": 10,
+      "estimatedComplexity": "low",
+      "taskDescription": "Implement API Rate Limiting pattern using backend expertise",
+      "steps": [
+        "…",
+        "…"
+      ],
+      "requirements": {
+        "whenToUse": "…",
+        "context": "@cloud/@onprem/@PII",
+        "languages": [
+          "ts",
+          "py",
+          "java"
+        ],
+        "relatedPatterns": []
+      },
+      "deliverables": [
+        "Implement API Rate Limiting according to pattern specification",
+        "Create comprehensive tests for API Rate Limiting",
+        "Add documentation and usage examples",
+        "Ensure compliance with established patterns",
+        "API endpoints and business logic",
+        "Database schema and migrations",
+        "Error handling and logging",
+        "Performance optimization"
+      ]
+    },
+    {
+      "id": "ci-cd-gate-backend-implementation",
+      "patternId": "ci-cd-gate",
+      "patternName": "CI/CD Gate Pattern",
+      "specialist": "backend",
+      "priority": 5,
+      "estimatedComplexity": "medium",
+      "taskDescription": "Implement CI/CD Gate Pattern pattern using backend expertise",
+      "steps": [
+        "Definer terskel for når gate skal aktiveres (f.eks. >200 linjer endret)",
+        "Implementer automatisk sjekk i CI/CD pipeline",
+        "Krev spesifikk formatering i PR-beskrivelse (f.eks. ADR-XXXX)",
+        "Blokker merge hvis krav ikke er oppfylt",
+        "Gi klare feilmeldinger med instruksjoner for å løse"
+      ],
+      "requirements": {
+        "whenToUse": "For å sikre dokumentasjon ved store endringer (>200 linjer)",
+        "context": "@automation/@governance",
+        "languages": [
+          "yaml"
+        ],
+        "relatedPatterns": []
+      },
+      "deliverables": [
+        "Implement CI/CD Gate Pattern according to pattern specification",
+        "Create comprehensive tests for CI/CD Gate Pattern",
+        "Add documentation and usage examples",
+        "Ensure compliance with established patterns",
+        "API endpoints and business logic",
+        "Database schema and migrations",
+        "Error handling and logging",
+        "Performance optimization"
+      ]
+    }
+  ],
+  "timestamp": "2025-08-30T15:40:41.121Z",
+  "metadata": {
+    "source": "pattern-ai-coordinator",
+    "total_patterns": 2,
+    "coordinator_version": "1.0.0"
+  }
+}

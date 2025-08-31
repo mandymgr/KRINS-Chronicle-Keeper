@@ -1,0 +1,125 @@
+name: AI PR Explanation
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
+
+jobs:
+  explain-pr:
+    runs-on: ubuntu-latest
+    if: >
+      (github.event_name == 'pull_request') ||
+      (github.event_name == 'issue_comment' && 
+       github.event.issue.pull_request && 
+       contains(github.event.comment.body, '/explain'))
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'tools/package.json'
+          
+      - name: Install dependencies
+        working-directory: tools
+        run: npm ci
+        
+      - name: Get PR number
+        id: pr
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+          else
+            echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Check if PR is large enough for AI analysis
+        id: check_size
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_INFO=$(gh pr view ${{ steps.pr.outputs.number }} --json additions,deletions,changedFiles)
+          ADDITIONS=$(echo $PR_INFO | jq -r '.additions')
+          DELETIONS=$(echo $PR_INFO | jq -r '.deletions')  
+          CHANGED_FILES=$(echo $PR_INFO | jq -r '.changedFiles')
+          TOTAL_CHANGES=$((ADDITIONS + DELETIONS))
+          
+          echo "additions=$ADDITIONS" >> $GITHUB_OUTPUT
+          echo "deletions=$DELETIONS" >> $GITHUB_OUTPUT
+          echo "changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
+          echo "total_changes=$TOTAL_CHANGES" >> $GITHUB_OUTPUT
+          
+          # Skip AI analysis for very small changes (< 20 lines) unless manually requested
+          if [ "$TOTAL_CHANGES" -lt 20 ] && [ "${{ github.event_name }}" != "issue_comment" ]; then
+            echo "skip_analysis=true" >> $GITHUB_OUTPUT
+            echo "::notice ::Skipping AI analysis for small PR ($TOTAL_CHANGES lines changed)"
+          else
+            echo "skip_analysis=false" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Run AI PR Explanation
+        if: steps.check_size.outputs.skip_analysis == 'false'
+        working-directory: tools
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          node explain-pr.js \
+            --pr=${{ steps.pr.outputs.number }} \
+            --repo=${{ github.repository }} \
+            --comment=true \
+            --output=pr-analysis.json
+            
+      - name: Upload analysis results
+        if: steps.check_size.outputs.skip_analysis == 'false'
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-analysis-${{ steps.pr.outputs.number }}
+          path: tools/pr-analysis.json
+          retention-days: 30
+          
+      - name: Post size warning for large PRs
+        if: steps.check_size.outputs.total_changes > 500
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr comment ${{ steps.pr.outputs.number }} --body "
+          ## ⚠️ Large PR Detected
+          
+          This PR has **${{ steps.check_size.outputs.total_changes }}** lines changed across **${{ steps.check_size.outputs.changed_files }}** files.
+          
+          **Recommendations:**
+          - Consider breaking this into smaller, focused PRs
+          - Ensure ADR documentation exists for significant changes
+          - Request additional reviewers for thorough review
+          - Test extensively before merging
+          
+          *This is an automated warning to help maintain code quality.*
+          "
+          
+      - name: Check for missing ADR reference
+        if: steps.check_size.outputs.total_changes > 200
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_BODY=$(gh pr view ${{ steps.pr.outputs.number }} --json body -q '.body')
+          
+          if ! echo "$PR_BODY" | grep -i "adr-[0-9]" > /dev/null; then
+            echo "::warning ::Large PR missing ADR reference"
+            gh pr comment ${{ steps.pr.outputs.number }} --body "
+            ## 📋 ADR Reference Missing
+            
+            This PR has **${{ steps.check_size.outputs.total_changes }}** lines changed but doesn't reference an ADR.
+            
+            **Next steps:**
+            1. Create an ADR using: \`./tools/adr_new.sh \"Decision Title\" \"component\"\`
+            2. Add ADR reference to PR description (e.g., \"Implements ADR-042\")
+            
+            *This helps maintain architectural decision history and team alignment.*
+            "
+          fi

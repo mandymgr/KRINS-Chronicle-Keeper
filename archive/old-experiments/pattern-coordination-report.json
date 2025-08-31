@@ -1,0 +1,50 @@
+{
+  "timestamp": "2025-08-30T15:40:41.122Z",
+  "summary": {
+    "totalPatterns": 2,
+    "patternCategories": {
+      "backend": 1,
+      "general": 1
+    },
+    "specialistWorkload": {
+      "backend": 12,
+      "frontend": 19,
+      "testing": 10,
+      "performance": 11,
+      "security": 9
+    }
+  },
+  "patternAnalysis": [
+    {
+      "id": "api-rate-limiting",
+      "name": "API Rate Limiting",
+      "complexity": "low",
+      "priority": 10,
+      "languages": [
+        "ts",
+        "py",
+        "java"
+      ],
+      "stepsCount": 2,
+      "category": "backend"
+    },
+    {
+      "id": "ci-cd-gate",
+      "name": "CI/CD Gate Pattern",
+      "complexity": "medium",
+      "priority": 5,
+      "languages": [
+        "yaml"
+      ],
+      "stepsCount": 5,
+      "category": "general"
+    }
+  ],
+  "recommendations": [
+    {
+      "type": "coordination",
+      "priority": "medium",
+      "message": "Implement pattern-driven task delegation for improved AI team efficiency"
+    }
+  ]
+}

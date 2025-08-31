@@ -1,0 +1,7 @@
+{
+  "/api/github/commits/route": "app/api/github/commits/route.js",
+  "/api/github/milestones/route": "app/api/github/milestones/route.js",
+  "/api/integrations/health/route": "app/api/integrations/health/route.js",
+  "/api/jira/issues/route": "app/api/jira/issues/route.js",
+  "/api/github/releases/route": "app/api/github/releases/route.js"
+}

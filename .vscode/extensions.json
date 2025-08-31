@@ -1,0 +1,17 @@
+{
+  "recommendations": [
+    "anthropic.claude-code",
+    "ms-vscode.vscode-typescript-next",
+    "ms-python.python",
+    "golang.go",
+    "rust-lang.rust-analyzer",
+    "ms-vscode.vscode-json",
+    "redhat.vscode-yaml",
+    "ms-vscode.vscode-docker",
+    "github.vscode-github-actions",
+    "github.vscode-pull-request-github",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "streetsidesoftware.code-spell-checker"
+  ]
+}
