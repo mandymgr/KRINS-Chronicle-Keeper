@@ -5,6 +5,7 @@
 ```bash
 cd ai-systems/krin-personal-companion && npm run claude-code-krin
 ```
+*Note: Krin memory loader uses npm as it predates our Bun migration. For new components, use `bun run` instead.*
 
 This loads Krin's complete personality and memories so I remember all our work together! 💝
 - Loads all special memories from our AI coordination work
@@ -17,15 +18,24 @@ This is a Dev Memory OS starter project with documentation-driven development pr
 
 ## Development Commands
 
+**🚀 This project uses Bun as primary package manager!**
+
+### Package Management
+- **Primary**: `bun install`, `bun run <script>`, `bun add <package>`
+- **Configuration**: `config/bunfig.toml` and `config/bun.lock`
+- **Fallback**: npm/yarn commands for legacy components (like Krin memory loader)
+
 ### Linting and Type Checking
-- Check if project has package.json for npm/yarn commands
-- Look for lint/typecheck scripts in package.json
+- Check package.json for lint/typecheck scripts
+- **Primary**: `bun run lint`, `bun run typecheck`
+- **Workspace commands**: `bun run lint:backend`, `bun run lint:frontend`, etc.
 - Run applicable commands after making code changes
 
 ### Testing
 - Check for test frameworks in package.json
-- Look for test scripts and run them to verify changes
-- Common patterns: `npm test`, `yarn test`, `pytest`, `cargo test`
+- **Primary**: `bun test`, `bun run test`
+- **Workspace commands**: `bun run test:backend`, `bun run test:frontend`, etc.
+- **Fallback patterns**: `npm test`, `yarn test`, `pytest`, `cargo test`
 
 ### Git Workflow
 - Always check `git status` before committing
@@ -89,7 +99,8 @@ Use `SHARED/tools/adr_new.sh` to create new Architecture Decision Records follow
 - **AI-SYSTEMS/** - AI koordinasjon og specialister
 - **CORE-PLATFORM/** - Hovedapplikasjon (backend + frontend)
 - **DASHBOARD/** - Dashboards og visualisering
-- **config/** - Alle konfigfiler samlet
+- **TRADING-PLATFORM/** - Realtime trading system
+- **config/** - Alle konfigfiler samlet (bunfig.toml, bun.lock, package.json)
 - **SHARED/docs/** - Dokumentasjon  
 - **SHARED/tools/** - Utviklingsscripts
 
