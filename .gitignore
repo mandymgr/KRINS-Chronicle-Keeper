@@ -45,3 +45,11 @@ coverage/
 .env.development.local
 .env.test.local
 .env.production.local
+
+# 🚫 PROTECT AI-SYSTEMS FROM NPM/YARN - USE BUN ONLY
+AI-SYSTEMS/*/node_modules/
+AI-SYSTEMS/*/package-lock.json
+AI-SYSTEMS/*/yarn.lock
+AI-SYSTEMS/*/*/node_modules/
+AI-SYSTEMS/*/*/package-lock.json
+AI-SYSTEMS/*/*/yarn.lock

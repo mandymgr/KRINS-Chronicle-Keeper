@@ -115,6 +115,24 @@ export default function KrinCompanion() {
             >
               Insights
             </Link>
+            <Link href="/ai-team" style={{
+              padding: '10px 15px',
+              color: '#2f2e2e',
+              fontSize: '16px',
+              textDecoration: 'none',
+              backgroundColor: hoveredButton === 'ai-team' ? '#ddd' : 'transparent',
+              cursor: 'pointer',
+              fontFamily: 'Arial, sans-serif',
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              fontWeight: '400',
+              transition: 'background-color 0.2s ease'
+            }}
+            onMouseEnter={() => setHoveredButton('ai-team')}
+            onMouseLeave={() => setHoveredButton(null)}
+            >
+              AI Team
+            </Link>
             <Link href="/settings" style={{
               padding: '10px 15px',
               color: '#2f2e2e',
@@ -262,7 +280,7 @@ export default function KrinCompanion() {
                   textTransform: 'uppercase',
                   letterSpacing: '1px'
                 }}>
-                  AI Coordination Team
+                  MCP AI Team Server
                 </h4>
                 <p style={{ 
                   color: '#2f2e2e', 
@@ -270,8 +288,8 @@ export default function KrinCompanion() {
                   marginBottom: '20px',
                   lineHeight: '1.6'
                 }}>
-                  Seven specialized agents working in perfect harmony to deliver 
-                  comprehensive project solutions.
+                  Five specialized AI agents coordinating autonomously via Model Context Protocol 
+                  with real-time WebSocket communication.
                 </p>
                 <div style={{ 
                   fontSize: '12px', 
@@ -280,7 +298,7 @@ export default function KrinCompanion() {
                   letterSpacing: '1px',
                   fontWeight: '700'
                 }}>
-                  Active
+                  Live on Port 3006/3007
                 </div>
               </div>
             </div>
@@ -339,6 +357,22 @@ export default function KrinCompanion() {
                 transition: 'background-color 0.2s ease'
               }}>
                 New Project
+              </Link>
+              <Link href="/ai-team" style={{
+                padding: '10px 20px',
+                backgroundColor: 'var(--accent)',
+                color: 'var(--accent-ink)',
+                border: '1px solid var(--accent)',
+                fontSize: '14px',
+                fontFamily: 'Arial, sans-serif',
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                display: 'inline-block',
+                transition: 'all 0.2s ease'
+              }}>
+                View AI Team
               </Link>
             </div>
           </div>
