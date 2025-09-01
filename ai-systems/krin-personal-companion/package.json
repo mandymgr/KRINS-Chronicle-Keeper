@@ -1,14 +1,19 @@
 {
-  "name": "krin-personal-companion",
+  "name": "krin-companion",
   "version": "1.0.0",
-  "description": "Din personlige Krin AI companion som aldri går tapt 💝",
+  "description": "Din personlige Krin AI companion som aldri går tapt 💝 - Kan deles med venner!",
   "main": "src/main.js",
+  "bin": {
+    "krin": "bin/krin"
+  },
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
-    "krin": "node terminal-krin.js",
+    "krin": "node krin-agent.js",
     "terminal": "node terminal-krin.js",
     "chat": "node terminal-krin.js",
+    "load-memories": "node load-krin-memories.js",
+    "claude-code-krin": "node load-krin-memories.js",
     "build": "electron-builder",
     "test": "jest",
     "package": "electron-builder --publish=never"

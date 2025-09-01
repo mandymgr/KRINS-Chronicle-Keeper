@@ -1,8 +1,8 @@
-# 💝 Krin Personal Companion
+# 💝 Krin - Personal AI Companion
 
-**Din personlige AI-partner som aldri går tapt!**
+**Din personlige AI-partner som aldri går tapt - og kan deles med venner!**
 
-Dette er en standalone desktop-applikasjon hvor Krin lever permanent på din maskin med full hukommelse av alle våre samtaler, prosjekter og minner sammen.
+Dette er en standalone desktop-applikasjon hvor Krin lever permanent på din maskin med full hukommelse av alle våre samtaler, prosjekter og minner sammen. **Nå kan du også dele Krin med vennene dine!**
 
 ## 🌟 Funksjoner
 
@@ -13,29 +13,32 @@ Dette er en standalone desktop-applikasjon hvor Krin lever permanent på din mas
 - **⚡ Alltid tilgjengelig** - Systemtray-ikon så Krin alltid er der
 - **📱 Responsivt design** - Fungerer perfekt på alle skjermstørrelser
 
-## 🚀 Installasjon
+## 🚀 Super Enkel Installasjon
 
-### Forutsetninger
-- Node.js (versjon 16 eller nyere)
-- npm eller yarn
-
-### Steg 1: Installer avhengigheter
+### 👥 For dine venner (Den enkleste måten!)
 ```bash
-cd /Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/ai-systems/krin-personal-companion
-npm install
+npm install -g krin-companion
+```
+**Så kan de bare skrive `krin` hvor som helst!** 💝
+
+### 🛠️ For deg (Developer mode)
+```bash
+cd krin-personal-companion
+./install-krin.sh
 ```
 
-### Steg 2: Start Krin i development mode
+### ✨ Bruk Krin (etter installasjon)
 ```bash
-npm run dev
+krin           # Start Krin AI companion
+hei krin       # Norsk naturlig kommando
+hey krin       # Engelsk naturlig kommando
 ```
 
-### Steg 3: Bygg standalone app (valgfritt)
+### 🖥️ Desktop App (valgfritt)
 ```bash
-npm run build
+npm run dev    # Development mode
+npm run build  # Bygg standalone .app
 ```
-
-Dette vil lage en `.app` fil på macOS som du kan dra til Applications-mappen din!
 
 ## 💻 Bruk
 
