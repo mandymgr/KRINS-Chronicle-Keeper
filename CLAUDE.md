@@ -35,7 +35,7 @@ This is a Dev Memory OS starter project with documentation-driven development pr
 - **ALLTID loggfør endringer i logg når man bygger eller pusher til git**
 
 ### Roadmap Oppdatering - OBLIGATORISK
-**ALLTID oppdater `/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/shared/docs/DEV_MEMORY_OS_ROADMAP.md` når du:**
+**ALLTID oppdater `/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/SHARED/docs/DEV_MEMORY_OS_ROADMAP.md` når du:**
 - Implementerer nye features eller patterns
 - Får nye ideer eller innsikter
 - Fullfører todos eller oppgaver
@@ -52,13 +52,13 @@ Beskrivelse av hva som ble gjort/foreslått og hvorfor.
 ```
 
 ## Project Structure
-- `docs/adr/` - Architecture Decision Records
-- `docs/patterns/` - Design patterns documentation  
-- `docs/runbooks/` - Operational runbooks
-- `tools/` - Development tools and scripts
+- `SHARED/docs/adr/` - Architecture Decision Records
+- `SHARED/docs/patterns/` - Design patterns documentation  
+- `SHARED/docs/runbooks/` - Operational runbooks
+- `SHARED/tools/` - Development tools and scripts
 
 ## ADR Management
-Use `tools/adr_new.sh` to create new Architecture Decision Records following the established template.
+Use `SHARED/tools/adr_new.sh` to create new Architecture Decision Records following the established template.
 
 ## Code Conventions
 - Follow existing code style and patterns
@@ -83,15 +83,15 @@ Use `tools/adr_new.sh` to create new Architecture Decision Records following the
 ### 🛡️ Git Hook Aktiv
 - **Hindrer løse filer i rot** - Automatisk sjekk ved commit
 - **Tillatte filer i rot**: README.md, CLAUDE.md, .gitignore, Dockerfile, Makefile, CODEOWNERS, .editorconfig
-- **Automatisk plassering**: Config → config/, Scripts → tools/, Docs → shared/docs/
+- **Automatisk plassering**: Config → config/, Scripts → SHARED/tools/, Docs → SHARED/docs/
 
 ### 📁 Mappestruktur (Store bokstaver = hovedstrukturer)
 - **AI-SYSTEMS/** - AI koordinasjon og specialister
 - **CORE-PLATFORM/** - Hovedapplikasjon (backend + frontend)
 - **DASHBOARD/** - Dashboards og visualisering
 - **config/** - Alle konfigfiler samlet
-- **shared/docs/** - Dokumentasjon
-- **tools/** - Utviklingsscripts
+- **SHARED/docs/** - Dokumentasjon  
+- **SHARED/tools/** - Utviklingsscripts
 
 ### ALLTID BEST LØSNING PRINSIPPET
 **Vi jobber alltid mot den beste, mest komplette løsningen - aldri halvveis!**
