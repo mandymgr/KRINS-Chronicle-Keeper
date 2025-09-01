@@ -14,8 +14,9 @@ ALLOWED_ROOT_FILES=(
     ".editorconfig"
 )
 
-# Check for loose files being committed to root (exclude directories and allowed files)
-STAGED_ROOT_FILES=$(git diff --cached --name-only | grep -E '^[^/]+$')
+# Check for loose files being ADDED to root (exclude directories and allowed files)
+# Only check files being added, not deleted
+STAGED_ROOT_FILES=$(git diff --cached --name-status | grep -E '^A.*[^/]+$' | cut -f2 | grep -E '^[^/]+$')
 
 if [ ! -z "$STAGED_ROOT_FILES" ]; then
     FORBIDDEN_FILES=""
