@@ -17,7 +17,7 @@ dev-memory-os-starter/
 │   ├── ai-systems-reference/         # Referanse implementering
 │   ├── core/                         # AI Pattern Bridge & webhooks
 │   └── krin-ai-commander/           # Kommandolinje AI-koordinator
-├── 🏗️ CORE-PLATFORM/                # Hovedapplikasjonsplattform  
+├── 💫 KRINS-HUB/                    # Hovedapplikasjonsplattform  
 │   ├── backend/                      # pgvector semantic search API
 │   └── frontend/                     # React TypeScript pattern UI
 ├── 📈 TRADING-PLATFORM/              # Real-time trading system
@@ -51,8 +51,18 @@ bun run ai:krin-startup          # Load Krins minne i Claude Code
 bun run ai:superintelligence     # Start multi-agent orkestrator
 bun run ai:mcp-team             # Start MCP AI kommunikasjon
 
-# Platform services  
-bun run semantic-server:dev      # Semantic search API
+# Backend services (dual-backend arkitektur)
+bun run api:prod                # Production FastAPI semantic search (port 8000)  
+bun run api:dev                 # Development Express server (port 3003)
+bun run semantic-server:dev     # Semantic search API (legacy alias for api:dev)
+
+# Database infrastructure
+bun run db:up                   # Start PostgreSQL, Redis, Elasticsearch, MinIO
+bun run db:down                 # Stop database infrastructure  
+bun run db:init                 # Initialize database schema
+bun run db:init-simple          # Initialize simple schema (no pgvector)
+
+# Platform services
 bun run trading:dev             # Real-time trading system
 
 # Testing på tvers av alle workspaces
@@ -84,12 +94,20 @@ bun run lint                    # Lint alle komponenter
 - **Function**: AI-til-AI kommunikasjon og teamkoordinering  
 - **Integration**: Claude MCP protocol compliance
 
-## 🏗️ CORE-PLATFORM Detaljert
+## 💫 KRINS-HUB Detaljert
 
-### **Backend (Semantic Search Engine)**
-- **Technology**: Express, PostgreSQL, pgvector
-- **Features**: Semantic search, embedding processing, JWT auth
-- **Security**: Helmet, CORS, rate limiting, Winston logging
+### **Backend-API (Production Semantic Search)**
+- **Technology**: FastAPI, SQLAlchemy, PostgreSQL, pgvector
+- **Features**: Production-ready semantic search API, OpenAI integration, Redis caching
+- **Security**: JWT authentication, Pydantic validation, comprehensive monitoring
+- **Port**: 8000 - Production semantic search API
+- **Deploy**: Multi-stage Docker, proper logging, Celery async tasks
+
+### **Backend-Dev (Development Server)**  
+- **Technology**: Express.js, Node.js rapid prototyping
+- **Features**: Mock data, frontend development support, lightweight testing
+- **Port**: 3003 - Development and prototyping server
+- **Purpose**: Frontend development og rapid API prototyping
 
 ### **Frontend (Pattern Discovery UI)**
 - **Technology**: React 18, TypeScript, Vite, Tailwind CSS
@@ -129,10 +147,10 @@ bun run lint                    # Lint alle komponenter
 AI-SYSTEMS/krins-superintelligence-team
 ├── depends on: mcp-ai-team (AI communication)
 ├── integrates: krin-personal-companion (memory)
-└── uses: CORE-PLATFORM/backend (semantic search)
+└── uses: KRINS-HUB/backend (semantic search)
 
-CORE-PLATFORM/frontend  
-├── depends on: CORE-PLATFORM/backend (API)
+KRINS-HUB/frontend  
+├── depends on: KRINS-HUB/backend (API)
 └── uses: SHARED/docs (pattern discovery)
 
 TRADING-PLATFORM/react-trading-dashboard
@@ -148,7 +166,7 @@ TRADING-PLATFORM/react-trading-dashboard
 
 ### **Cross-workspace Development**
 - AI-systemer kan dele utilities og konfigurasjoner
-- CORE-PLATFORM komponenter har tett API kobling
+- KRINS-HUB komponenter har tett API kobling
 - TRADING-PLATFORM deler WebSocket infrastruktur
 
 ### **Deployment Strategy**

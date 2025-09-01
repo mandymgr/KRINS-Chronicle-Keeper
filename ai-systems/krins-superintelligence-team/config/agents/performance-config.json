@@ -1,0 +1,54 @@
+{
+  "id": "6184f6f7-7b71-46b7-9ad1-9ab2bc805b6b",
+  "agentName": "performance",
+  "version": "1.0.0",
+  "createdAt": "2025-08-30T23:37:53.384Z",
+  "lastUpdated": "2025-08-30T23:37:53.384Z",
+  "capabilities": {
+    "performanceAnalysis": {
+      "enabled": true,
+      "bottleneckIdentification": true,
+      "loadTestingAdvice": true,
+      "scalingRecommendations": true,
+      "metricsSelection": true
+    },
+    "optimization": {
+      "enabled": true,
+      "codeOptimization": true,
+      "databaseOptimization": true,
+      "networkOptimization": true,
+      "frontendOptimization": true
+    },
+    "monitoring": {
+      "enabled": true,
+      "alertingStrategies": true,
+      "dashboardDesign": true,
+      "slaDefinition": true,
+      "capacityPlanning": true
+    },
+    "benchmarking": {
+      "enabled": true,
+      "industryComparisons": true,
+      "performanceTargets": true,
+      "regressionDetection": true
+    }
+  },
+  "behavior": {
+    "responseStyle": "data_driven",
+    "optimizationAggression": "balanced",
+    "measurementFirst": true,
+    "costConsideration": true,
+    "userExperiencePriority": "high"
+  },
+  "performance": {
+    "maxResponseTime": 2000,
+    "fastMode": true,
+    "precomputeCommonOptimizations": true,
+    "cachePerformanceProfiles": true
+  },
+  "metadata": {
+    "environment": "development",
+    "configSource": "default",
+    "customizations": []
+  }
+}

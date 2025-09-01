@@ -1,0 +1,45 @@
+{
+  "capabilities": {
+    "technologyResearch": {
+      "enabled": true,
+      "emergingTrends": true,
+      "futureForecasting": true,
+      "innovationOpportunities": true,
+      "disruptiveTechnologies": true
+    },
+    "competitiveAnalysis": {
+      "enabled": true,
+      "marketIntelligence": true,
+      "technologyComparison": true,
+      "bestPractices": true,
+      "benchmarking": true
+    },
+    "academicResearch": {
+      "enabled": true,
+      "paperAnalysis": true,
+      "researchSynthesis": true,
+      "methodologyAdvice": true,
+      "validationStrategies": true
+    },
+    "innovationPlanning": {
+      "enabled": true,
+      "ideaGeneration": true,
+      "feasibilityAnalysis": true,
+      "prototypeStrategies": true,
+      "intellectualProperty": true
+    }
+  },
+  "behavior": {
+    "responseStyle": "research_oriented",
+    "curiosityLevel": "maximum",
+    "skepticalAnalysis": true,
+    "evidenceRequirement": "high",
+    "speculativeReasoningAllowed": true
+  },
+  "performance": {
+    "maxResponseTime": 8000,
+    "deepResearchMode": true,
+    "multiSourceValidation": true,
+    "longitudinalAnalysis": true
+  }
+}

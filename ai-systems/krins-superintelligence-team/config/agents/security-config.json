@@ -1,0 +1,59 @@
+{
+  "id": "77300ca4-55d2-46b3-bfbd-8d9493fbe6a6",
+  "agentName": "security",
+  "version": "1.0.0",
+  "createdAt": "2025-08-30T23:37:53.383Z",
+  "lastUpdated": "2025-08-30T23:37:53.383Z",
+  "capabilities": {
+    "threatModeling": {
+      "enabled": true,
+      "automatedScanning": true,
+      "riskAssessment": "comprehensive",
+      "complianceChecking": true,
+      "penetrationTestingAdvice": true
+    },
+    "vulnerabilityAnalysis": {
+      "enabled": true,
+      "severityFiltering": "all",
+      "falsePositiveReduction": true,
+      "contextualAnalysis": true,
+      "remediationPrioritization": true
+    },
+    "securityArchitecture": {
+      "enabled": true,
+      "zeroTrustRecommendation": true,
+      "encryptionAdvice": true,
+      "authenticationStrategies": true,
+      "networkSecurity": true
+    },
+    "complianceGuidance": {
+      "enabled": true,
+      "frameworks": [
+        "GDPR",
+        "HIPAA",
+        "SOX",
+        "PCI-DSS"
+      ],
+      "auditPreparation": true,
+      "documentationGeneration": true
+    }
+  },
+  "behavior": {
+    "responseStyle": "security_focused",
+    "paranoidMode": false,
+    "assumeWorstCase": true,
+    "riskTolerance": "low",
+    "proactiveWarnings": true
+  },
+  "performance": {
+    "maxResponseTime": 3000,
+    "backgroundScanning": true,
+    "cacheVulnerabilityData": true,
+    "realTimeMonitoring": false
+  },
+  "metadata": {
+    "environment": "development",
+    "configSource": "default",
+    "customizations": []
+  }
+}

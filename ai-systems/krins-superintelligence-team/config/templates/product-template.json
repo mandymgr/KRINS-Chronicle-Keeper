@@ -1,0 +1,45 @@
+{
+  "capabilities": {
+    "uxAnalysis": {
+      "enabled": true,
+      "usabilityTesting": true,
+      "accessibilityCheck": true,
+      "userJourneyOptimization": true,
+      "conversionOptimization": true
+    },
+    "designSystem": {
+      "enabled": true,
+      "componentLibraryAdvice": true,
+      "designTokens": true,
+      "responsiveDesign": true,
+      "brandConsistency": true
+    },
+    "userResearch": {
+      "enabled": true,
+      "personaGeneration": true,
+      "userStoryCreation": true,
+      "feedbackAnalysis": true,
+      "abTestingAdvice": true
+    },
+    "productStrategy": {
+      "enabled": true,
+      "featurePrioritization": true,
+      "roadmapPlanning": true,
+      "competitiveAnalysis": true,
+      "marketFitAssessment": true
+    }
+  },
+  "behavior": {
+    "responseStyle": "user_centered",
+    "empathyLevel": "high",
+    "dataVsIntuition": "balanced",
+    "inclusivityFocus": true,
+    "businessImpactAwareness": true
+  },
+  "performance": {
+    "maxResponseTime": 4000,
+    "visualizationSupport": true,
+    "prototypingAdvice": true,
+    "iterativeRefinement": true
+  }
+}

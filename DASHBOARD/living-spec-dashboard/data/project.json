@@ -1,0 +1,105 @@
+{
+  "name": "Dev Memory OS - Living Spec Dashboard",
+  "shortDescription": "Revolutionary visual project overview system for development teams",
+  "mission": "Transform how development teams track, visualize, and communicate project status through intelligent, real-time dashboards that eliminate information silos and accelerate decision-making.",
+  "phase": "Build",
+  "version": "1.2.0",
+  "startDate": "2024-01-01",
+  "expectedLaunch": "2024-06-01",
+  "team": {
+    "lead": "Krin",
+    "members": [
+      "Krin (Tech Lead & AI Coordinator)",
+      "Mandy (Product Owner & Design)",
+      "Claude (AI Development Assistant)",
+      "Frontend Specialist AI",
+      "Backend Specialist AI",
+      "Testing Specialist AI"
+    ],
+    "stakeholders": [
+      "Development Teams",
+      "Project Managers", 
+      "Engineering Leadership",
+      "Product Organizations"
+    ]
+  },
+  "contact": {
+    "email": "team@devmemoryos.com",
+    "slack": "#dev-memory-os",
+    "repository": "https://github.com/devmemoryos/living-spec-dashboard"
+  },
+  "kpis": [
+    {
+      "id": "adoption_rate",
+      "name": "Team Adoption Rate",
+      "value": 78,
+      "unit": "%",
+      "target": 85,
+      "trend": "up",
+      "trendPercentage": 12,
+      "description": "Percentage of development teams actively using the dashboard",
+      "icon": "👥",
+      "category": "business",
+      "lastUpdated": "2024-01-16T10:00:00Z"
+    },
+    {
+      "id": "dashboard_load_time",
+      "name": "Dashboard Load Time",
+      "value": "1.2s",
+      "target": "<2.0s",
+      "trend": "down",
+      "trendPercentage": 15,
+      "description": "Average time to fully load the dashboard",
+      "icon": "⚡",
+      "category": "technical",
+      "lastUpdated": "2024-01-16T10:00:00Z"
+    },
+    {
+      "id": "data_freshness",
+      "name": "Data Freshness", 
+      "value": "2.5min",
+      "target": "<5min",
+      "trend": "stable",
+      "description": "Average age of data displayed on dashboard",
+      "icon": "🔄",
+      "category": "technical",
+      "lastUpdated": "2024-01-16T10:00:00Z"
+    },
+    {
+      "id": "user_satisfaction",
+      "name": "User Satisfaction Score",
+      "value": 4.6,
+      "unit": "/5.0",
+      "target": 4.5,
+      "trend": "up",
+      "trendPercentage": 8,
+      "description": "Average user satisfaction rating from team surveys",
+      "icon": "⭐",
+      "category": "user",
+      "lastUpdated": "2024-01-16T10:00:00Z"
+    },
+    {
+      "id": "feature_requests",
+      "name": "Pending Feature Requests",
+      "value": 23,
+      "target": "<30",
+      "trend": "down",
+      "trendPercentage": 18,
+      "description": "Number of open feature requests from users",
+      "icon": "📋",
+      "category": "business",
+      "lastUpdated": "2024-01-16T10:00:00Z"
+    },
+    {
+      "id": "api_error_rate",
+      "name": "API Error Rate",
+      "value": "0.2%",
+      "target": "<1.0%",
+      "trend": "stable",
+      "description": "Percentage of API requests that result in errors",
+      "icon": "🚨",
+      "category": "technical", 
+      "lastUpdated": "2024-01-16T10:00:00Z"
+    }
+  ]
+}

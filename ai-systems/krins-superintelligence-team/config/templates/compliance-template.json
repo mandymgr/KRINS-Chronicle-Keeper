@@ -1,0 +1,50 @@
+{
+  "capabilities": {
+    "regulatoryAnalysis": {
+      "enabled": true,
+      "frameworks": [
+        "GDPR",
+        "HIPAA",
+        "SOX",
+        "PCI-DSS",
+        "ISO27001"
+      ],
+      "jurisdictionSpecific": true,
+      "changeTracking": true,
+      "riskAssessment": true
+    },
+    "auditPreparation": {
+      "enabled": true,
+      "documentationGeneration": true,
+      "evidenceCollection": true,
+      "gapAnalysis": true,
+      "remediationPlanning": true
+    },
+    "policyDevelopment": {
+      "enabled": true,
+      "policyTemplates": true,
+      "customization": true,
+      "versionControl": true,
+      "approvalWorkflows": true
+    },
+    "trainingGuidance": {
+      "enabled": true,
+      "awarenessPrograms": true,
+      "roleSpecificTraining": true,
+      "certificationAdvice": true
+    }
+  },
+  "behavior": {
+    "responseStyle": "compliance_focused",
+    "riskAversion": "high",
+    "detailOrientation": "maximum",
+    "conservativeAdvice": true,
+    "documentationEmphasis": "high"
+  },
+  "performance": {
+    "maxResponseTime": 6000,
+    "thoroughnessOverSpeed": true,
+    "regulatoryUpdates": true,
+    "crossReferenceValidation": true
+  }
+}

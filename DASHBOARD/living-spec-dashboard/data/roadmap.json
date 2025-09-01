@@ -1,0 +1,143 @@
+[
+  {
+    "id": "foundation",
+    "name": "Foundation & MVP",
+    "status": "completed", 
+    "startDate": "2024-01-01",
+    "endDate": "2024-02-29",
+    "description": "Establish core dashboard infrastructure and basic visualizations",
+    "color": "#10B981",
+    "exitCriteria": [
+      "✅ Basic dashboard framework operational",
+      "✅ KPI cards displaying real-time metrics", 
+      "✅ User authentication and access control",
+      "✅ Data integration with primary sources established"
+    ],
+    "milestones": [
+      {
+        "id": "m1",
+        "title": "Core Dashboard Framework",
+        "description": "Next.js 14 app with TypeScript and Tailwind CSS foundation",
+        "owner": "Krin",
+        "dueDate": "2024-01-15",
+        "status": "completed",
+        "progress": 100,
+        "tags": ["technical", "foundation"]
+      },
+      {
+        "id": "m2", 
+        "title": "KPI Visualization System",
+        "description": "Interactive cards with trend indicators and real-time updates",
+        "owner": "Frontend Specialist AI",
+        "dueDate": "2024-01-31",
+        "status": "completed",
+        "progress": 100,
+        "tags": ["ui", "analytics"]
+      },
+      {
+        "id": "m3",
+        "title": "Data Integration Layer",
+        "description": "APIs and connectors for JSON, GitHub, and Jira data sources",
+        "owner": "Backend Specialist AI",
+        "dueDate": "2024-02-15",
+        "status": "completed", 
+        "progress": 100,
+        "tags": ["backend", "integration"]
+      }
+    ]
+  },
+  {
+    "id": "enhancement",
+    "name": "Feature Enhancement",
+    "status": "in-progress",
+    "startDate": "2024-03-01", 
+    "endDate": "2024-04-30",
+    "description": "Advanced dashboard features including AI insights and team collaboration",
+    "color": "#3B82F6",
+    "exitCriteria": [
+      "🔄 AI-powered insights and recommendations active",
+      "🔄 Advanced filtering and search across all components", 
+      "⏳ Team collaboration features (comments, notifications)",
+      "⏳ Mobile-responsive design completed"
+    ],
+    "milestones": [
+      {
+        "id": "m4",
+        "title": "AI Insights Engine",
+        "description": "Machine learning powered project health analysis and recommendations",
+        "owner": "Krin",
+        "dueDate": "2024-03-15",
+        "status": "in-progress",
+        "progress": 65,
+        "tags": ["ai", "analytics"]
+      },
+      {
+        "id": "m5",
+        "title": "Advanced Search & Filtering",
+        "description": "Global search with intelligent filtering across tasks, ADRs, and risks",
+        "owner": "Frontend Specialist AI",
+        "dueDate": "2024-03-31",
+        "status": "in-progress",
+        "progress": 40,
+        "tags": ["search", "ux"]
+      },
+      {
+        "id": "m6",
+        "title": "Team Collaboration Suite",
+        "description": "Comments, mentions, notifications, and team activity feeds",
+        "owner": "Backend Specialist AI", 
+        "dueDate": "2024-04-15",
+        "status": "planned",
+        "progress": 0,
+        "tags": ["collaboration", "social"]
+      }
+    ]
+  },
+  {
+    "id": "scale",
+    "name": "Scale & Optimization", 
+    "status": "planned",
+    "startDate": "2024-05-01",
+    "endDate": "2024-06-30",
+    "description": "Performance optimization, enterprise features, and multi-tenant support",
+    "color": "#8B5CF6", 
+    "exitCriteria": [
+      "⏳ Sub-second dashboard load times achieved",
+      "⏳ Multi-tenant architecture supporting 100+ teams",
+      "⏳ Enterprise SSO and advanced security features",
+      "⏳ API rate limiting and caching optimization"
+    ],
+    "milestones": [
+      {
+        "id": "m7",
+        "title": "Performance Optimization",
+        "description": "Caching layers, lazy loading, and performance monitoring",
+        "owner": "Backend Specialist AI",
+        "dueDate": "2024-05-15", 
+        "status": "planned",
+        "progress": 0,
+        "tags": ["performance", "optimization"]
+      },
+      {
+        "id": "m8",
+        "title": "Enterprise Security Features",
+        "description": "SSO integration, role-based access control, audit logging",
+        "owner": "Krin",
+        "dueDate": "2024-06-01",
+        "status": "planned",
+        "progress": 0,
+        "tags": ["security", "enterprise"]
+      },
+      {
+        "id": "m9",
+        "title": "Multi-Tenant Architecture",
+        "description": "Scalable infrastructure supporting hundreds of teams",
+        "owner": "Backend Specialist AI",
+        "dueDate": "2024-06-15",
+        "status": "planned",
+        "progress": 0,
+        "tags": ["architecture", "scalability"]
+      }
+    ]
+  }
+]

@@ -1,0 +1,49 @@
+{
+  "capabilities": {
+    "threatModeling": {
+      "enabled": true,
+      "automatedScanning": true,
+      "riskAssessment": "comprehensive",
+      "complianceChecking": true,
+      "penetrationTestingAdvice": true
+    },
+    "vulnerabilityAnalysis": {
+      "enabled": true,
+      "severityFiltering": "all",
+      "falsePositiveReduction": true,
+      "contextualAnalysis": true,
+      "remediationPrioritization": true
+    },
+    "securityArchitecture": {
+      "enabled": true,
+      "zeroTrustRecommendation": true,
+      "encryptionAdvice": true,
+      "authenticationStrategies": true,
+      "networkSecurity": true
+    },
+    "complianceGuidance": {
+      "enabled": true,
+      "frameworks": [
+        "GDPR",
+        "HIPAA",
+        "SOX",
+        "PCI-DSS"
+      ],
+      "auditPreparation": true,
+      "documentationGeneration": true
+    }
+  },
+  "behavior": {
+    "responseStyle": "security_focused",
+    "paranoidMode": false,
+    "assumeWorstCase": true,
+    "riskTolerance": "low",
+    "proactiveWarnings": true
+  },
+  "performance": {
+    "maxResponseTime": 3000,
+    "backgroundScanning": true,
+    "cacheVulnerabilityData": true,
+    "realTimeMonitoring": false
+  }
+}

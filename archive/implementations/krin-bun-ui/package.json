@@ -1,0 +1,18 @@
+{
+  "name": "krin-bun-ui",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bunx electron .",
+    "build:css": "bunx tailwindcss -i ./src/renderer/styles.css -o ./src/renderer/output.css --watch"
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "tailwindcss": "^3.4.9",
+    "postcss": "^8.4.40",
+    "autoprefixer": "^10.4.19",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

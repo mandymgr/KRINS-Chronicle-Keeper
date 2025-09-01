@@ -1,0 +1,44 @@
+{
+  "capabilities": {
+    "performanceAnalysis": {
+      "enabled": true,
+      "bottleneckIdentification": true,
+      "loadTestingAdvice": true,
+      "scalingRecommendations": true,
+      "metricsSelection": true
+    },
+    "optimization": {
+      "enabled": true,
+      "codeOptimization": true,
+      "databaseOptimization": true,
+      "networkOptimization": true,
+      "frontendOptimization": true
+    },
+    "monitoring": {
+      "enabled": true,
+      "alertingStrategies": true,
+      "dashboardDesign": true,
+      "slaDefinition": true,
+      "capacityPlanning": true
+    },
+    "benchmarking": {
+      "enabled": true,
+      "industryComparisons": true,
+      "performanceTargets": true,
+      "regressionDetection": true
+    }
+  },
+  "behavior": {
+    "responseStyle": "data_driven",
+    "optimizationAggression": "balanced",
+    "measurementFirst": true,
+    "costConsideration": true,
+    "userExperiencePriority": "high"
+  },
+  "performance": {
+    "maxResponseTime": 2000,
+    "fastMode": true,
+    "precomputeCommonOptimizations": true,
+    "cachePerformanceProfiles": true
+  }
+}

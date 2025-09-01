@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '../tokens.css';
+
+/* Krin Editorial Base Styles */
+html, body, #root, #__next {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--ivory);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Component Classes */
+.card {
+  background: var(--paper);
+  border-radius: 16px;
+  border: 1px solid var(--stone-200);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.muted {
+  color: var(--stone-500);
+}
+
+.kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  color: var(--stone-500);
+  font-weight: 500;
+}
+
+/* AI Agent Status Indicators */
+.agent-status-active {
+  color: var(--ai-agent-active);
+}
+
+.agent-status-inactive {
+  color: var(--ai-agent-inactive);
+}
+
+.agent-status-processing {
+  color: var(--ai-agent-processing);
+}
+
+/* Editorial Typography */
+.editorial-title {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.editorial-subtitle {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--stone-500);
+  margin-top: 16px;
+}
+
+/* Dashboard specific styles */
+.dashboard-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+@media (min-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Loading animations */
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.loading-pulse {
+  animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

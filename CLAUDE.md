@@ -97,12 +97,12 @@ Use `SHARED/tools/adr_new.sh` to create new Architecture Decision Records follow
 
 ### 📁 Mappestruktur (Store bokstaver = hovedstrukturer)
 - **AI-SYSTEMS/** - AI koordinasjon og specialister
-- **CORE-PLATFORM/** - Hovedapplikasjon (backend + frontend)
+- **KRINS-HUB/** - Hovedapplikasjon (backend + frontend)
 - **DASHBOARD/** - Dashboards og visualisering
-- **TRADING-PLATFORM/** - Realtime trading system
 - **config/** - Alle konfigfiler samlet (bunfig.toml, bun.lock, package.json)
 - **SHARED/docs/** - Dokumentasjon  
 - **SHARED/tools/** - Utviklingsscripts
+- **archive/** - Eksperimentelle og arkiverte prosjekter
 
 ### ALLTID BEST LØSNING PRINSIPPET
 **Vi jobber alltid mot den beste, mest komplette løsningen - aldri halvveis!**

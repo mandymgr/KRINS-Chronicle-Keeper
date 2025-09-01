@@ -1,0 +1,195 @@
+{
+  "name": "krins-superintelligence",
+  "displayName": "Krins Superintelligence",
+  "description": "AI agent team collaboration directly in VS Code",
+  "version": "2.0.0",
+  "publisher": "krins-ai",
+  "icon": "assets/icon.png",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other",
+    "Machine Learning",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "ai",
+    "assistant",
+    "collaboration",
+    "nordic",
+    "superintelligence"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "krins.openAgentPanel",
+        "title": "Open Agent Panel",
+        "category": "Krins",
+        "icon": "$(robot)"
+      },
+      {
+        "command": "krins.reviewCurrentFile",
+        "title": "Review Current File",
+        "category": "Krins",
+        "icon": "$(search)"
+      },
+      {
+        "command": "krins.explainSelection",
+        "title": "Explain Selection",
+        "category": "Krins",
+        "icon": "$(question)"
+      },
+      {
+        "command": "krins.optimizeCode",
+        "title": "Optimize Code",
+        "category": "Krins",
+        "icon": "$(zap)"
+      },
+      {
+        "command": "krins.findIssues",
+        "title": "Find Issues",
+        "category": "Krins",
+        "icon": "$(warning)"
+      },
+      {
+        "command": "krins.generateTests",
+        "title": "Generate Tests",
+        "category": "Krins",
+        "icon": "$(beaker)"
+      },
+      {
+        "command": "krins.connectToServer",
+        "title": "Connect to Krins Server",
+        "category": "Krins",
+        "icon": "$(plug)"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "krinsAgentPanel",
+          "name": "🇳🇴 Krins Agents",
+          "when": "krins:connected"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "krins-superintelligence",
+          "title": "Krins Superintelligence",
+          "icon": "$(robot)"
+        }
+      ]
+    },
+    "menus": {
+      "editor/context": [
+        {
+          "when": "editorHasSelection",
+          "command": "krins.explainSelection",
+          "group": "krins@1"
+        },
+        {
+          "command": "krins.reviewCurrentFile",
+          "group": "krins@2"
+        },
+        {
+          "command": "krins.optimizeCode",
+          "group": "krins@3"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "krins.connectToServer",
+          "when": "view == krinsAgentPanel && !krins:connected",
+          "group": "navigation"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "krins.openAgentPanel",
+        "key": "ctrl+shift+k",
+        "mac": "cmd+shift+k"
+      },
+      {
+        "command": "krins.explainSelection",
+        "key": "ctrl+shift+e",
+        "mac": "cmd+shift+e",
+        "when": "editorHasSelection"
+      }
+    ],
+    "configuration": {
+      "title": "Krins Superintelligence",
+      "properties": {
+        "krins.serverUrl": {
+          "type": "string",
+          "default": "http://localhost:3002",
+          "description": "Krins superintelligence server URL"
+        },
+        "krins.enableRealTimeUpdates": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable real-time updates from agents"
+        },
+        "krins.agentPreferences": {
+          "type": "object",
+          "properties": {
+            "architect": {
+              "type": "boolean",
+              "default": true
+            },
+            "security": {
+              "type": "boolean", 
+              "default": true
+            },
+            "performance": {
+              "type": "boolean",
+              "default": true
+            },
+            "redteam": {
+              "type": "boolean",
+              "default": false
+            },
+            "compliance": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          "default": {
+            "architect": true,
+            "security": true,
+            "performance": true,
+            "redteam": false,
+            "compliance": true
+          },
+          "description": "Which agents to enable for analysis"
+        },
+        "krins.nordicTheme": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use Nordic-inspired UI styling"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/ws": "^8.5.10",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "ws": "^8.16.0",
+    "socket.io-client": "^4.7.5"
+  }
+}

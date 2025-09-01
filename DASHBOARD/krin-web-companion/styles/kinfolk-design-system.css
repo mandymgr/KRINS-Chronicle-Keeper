@@ -1,0 +1,631 @@
+/**
+ * KINFOLK EDITORIAL DESIGN SYSTEM
+ * Inspired by Kinfolk Magazine and RUM International
+ * Nordic/Scandinavian minimalist aesthetic
+ * 
+ * Usage: Import this file for complete design system
+ * Last updated: 2025-09-01
+ */
+
+/* ========================================
+   DESIGN TOKENS - KINFOLK EDITORIAL SYSTEM
+   ======================================== */
+
+:root {
+  /* === COLOR PALETTE === */
+  /* Primary Colors - Warm Browns & Naturals */
+  --kinfolk-primary: #8b7355;           /* Warm brown - primary brand color */
+  --kinfolk-primary-dark: #6b5b4f;      /* Darker brown - secondary/accent */
+  --kinfolk-primary-light: #a68b73;     /* Light brown - hover states */
+  
+  /* Neutral Colors - Editorial Grays */
+  --kinfolk-neutral-900: #2d2d2d;       /* Deep charcoal - primary text */
+  --kinfolk-neutral-700: #4a4a4a;       /* Medium gray - secondary text */
+  --kinfolk-neutral-500: #6b5b4f;       /* Brown-gray - muted text */
+  --kinfolk-neutral-300: #8b7355;       /* Light brown-gray - disabled */
+  --kinfolk-neutral-200: #d4c4b0;       /* Light beige - borders */
+  --kinfolk-neutral-100: #efefef;       /* Very light gray - subtle borders */
+  --kinfolk-neutral-50: #f8f6f2;        /* Off-white - backgrounds */
+  
+  /* Surface Colors */
+  --kinfolk-surface-primary: #ffffff;    /* Pure white - cards/content */
+  --kinfolk-surface-secondary: #fefefe;  /* Almost white - body background */
+  --kinfolk-surface-muted: #f8f6f2;      /* Warm off-white - sections */
+  
+  /* Status Colors - Muted Nordic Palette */
+  --kinfolk-success: #6b8068;           /* Muted sage green */
+  --kinfolk-warning: #a68b73;           /* Warm beige */
+  --kinfolk-error: #8b6b6b;             /* Muted burgundy */
+  --kinfolk-info: #7a8591;              /* Cool gray-blue */
+  
+  /* === TYPOGRAPHY === */
+  /* Font Families */
+  --kinfolk-font-serif: 'Georgia', 'Times New Roman', Times, serif;
+  --kinfolk-font-sans: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  --kinfolk-font-mono: 'Courier New', Courier, monospace;
+  
+  /* Font Weights */
+  --kinfolk-weight-light: 300;
+  --kinfolk-weight-normal: 400;
+  --kinfolk-weight-medium: 500;
+  --kinfolk-weight-semibold: 600;
+  
+  /* Font Sizes - Editorial Scale */
+  --kinfolk-text-xs: 0.6875rem;         /* 11px - fine print */
+  --kinfolk-text-sm: 0.75rem;           /* 12px - captions */
+  --kinfolk-text-base: 0.875rem;        /* 14px - navigation */
+  --kinfolk-text-md: 1rem;              /* 16px - body text */
+  --kinfolk-text-lg: 1.125rem;          /* 18px - large body */
+  --kinfolk-text-xl: 1.25rem;           /* 20px - subheadings */
+  --kinfolk-text-2xl: 1.5rem;           /* 24px - section headers */
+  --kinfolk-text-3xl: 2rem;             /* 32px - page titles */
+  --kinfolk-text-4xl: 2.5rem;           /* 40px - hero headlines */
+  --kinfolk-text-5xl: 3rem;             /* 48px - display text */
+  
+  /* Line Heights - Editorial Spacing */
+  --kinfolk-leading-tight: 1.2;         /* Headlines */
+  --kinfolk-leading-snug: 1.3;          /* Subheadings */
+  --kinfolk-leading-normal: 1.5;        /* UI text */
+  --kinfolk-leading-relaxed: 1.6;       /* Short paragraphs */
+  --kinfolk-leading-loose: 1.75;        /* Long-form reading */
+  --kinfolk-leading-extra-loose: 1.9;   /* Editorial spacing */
+  
+  /* Letter Spacing - Kinfolk Style */
+  --kinfolk-tracking-tighter: -0.025em;
+  --kinfolk-tracking-tight: -0.01em;
+  --kinfolk-tracking-normal: 0em;
+  --kinfolk-tracking-wide: 0.02em;
+  --kinfolk-tracking-wider: 0.05em;
+  --kinfolk-tracking-widest: 0.1em;
+  --kinfolk-tracking-ultra-wide: 0.15em;
+  
+  /* === SPACING SYSTEM === */
+  /* Editorial Spacing Scale */
+  --kinfolk-space-1: 0.25rem;           /* 4px */
+  --kinfolk-space-2: 0.5rem;            /* 8px */
+  --kinfolk-space-3: 0.75rem;           /* 12px */
+  --kinfolk-space-4: 1rem;              /* 16px */
+  --kinfolk-space-5: 1.25rem;           /* 20px */
+  --kinfolk-space-6: 1.5rem;            /* 24px */
+  --kinfolk-space-8: 2rem;              /* 32px */
+  --kinfolk-space-10: 2.5rem;           /* 40px */
+  --kinfolk-space-12: 3rem;             /* 48px */
+  --kinfolk-space-16: 4rem;             /* 64px */
+  --kinfolk-space-20: 5rem;             /* 80px */
+  --kinfolk-space-24: 6rem;             /* 96px */
+  --kinfolk-space-32: 8rem;             /* 128px */
+  
+  /* Editorial Section Spacing */
+  --kinfolk-section-xs: var(--kinfolk-space-8);
+  --kinfolk-section-sm: var(--kinfolk-space-12);
+  --kinfolk-section-md: var(--kinfolk-space-16);
+  --kinfolk-section-lg: var(--kinfolk-space-20);
+  --kinfolk-section-xl: var(--kinfolk-space-24);
+  --kinfolk-section-2xl: var(--kinfolk-space-32);
+  
+  /* === BORDERS & RADIUS === */
+  --kinfolk-border-width: 1px;
+  --kinfolk-border-width-thick: 2px;
+  --kinfolk-border-radius: 0px;         /* No rounded corners - editorial style */
+  --kinfolk-border-color: var(--kinfolk-neutral-100);
+  --kinfolk-border-color-strong: var(--kinfolk-neutral-200);
+  
+  /* === SHADOWS === */
+  --kinfolk-shadow-sm: 0 1px 2px 0 rgba(45, 45, 45, 0.05);
+  --kinfolk-shadow-md: 0 4px 6px -1px rgba(45, 45, 45, 0.1);
+  --kinfolk-shadow-lg: 0 10px 15px -3px rgba(45, 45, 45, 0.1);
+  --kinfolk-shadow-xl: 0 20px 25px -5px rgba(45, 45, 45, 0.1);
+  
+  /* === LAYOUT === */
+  --kinfolk-max-width-xs: 320px;
+  --kinfolk-max-width-sm: 480px;
+  --kinfolk-max-width-md: 640px;
+  --kinfolk-max-width-lg: 800px;
+  --kinfolk-max-width-xl: 1000px;       /* Editorial max-width */
+  --kinfolk-max-width-2xl: 1200px;
+  --kinfolk-max-width-full: 100%;
+  
+  /* Grid System */
+  --kinfolk-grid-gap: var(--kinfolk-space-8);
+  --kinfolk-grid-gap-lg: var(--kinfolk-space-12);
+  --kinfolk-grid-columns: repeat(auto-fit, minmax(360px, 1fr));
+  
+  /* === TRANSITIONS === */
+  --kinfolk-transition-fast: all 0.15s ease;
+  --kinfolk-transition-normal: all 0.2s ease;
+  --kinfolk-transition-slow: all 0.3s ease;
+  --kinfolk-transition-slower: all 0.5s ease;
+}
+
+/* ========================================
+   BASE STYLES - RESET & FOUNDATIONS
+   ======================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--kinfolk-font-serif);
+  font-size: var(--kinfolk-text-md);
+  font-weight: var(--kinfolk-weight-normal);
+  line-height: var(--kinfolk-leading-loose);
+  color: var(--kinfolk-neutral-900);
+  background-color: var(--kinfolk-surface-secondary);
+  letter-spacing: var(--kinfolk-tracking-normal);
+}
+
+/* ========================================
+   TYPOGRAPHY CLASSES
+   ======================================== */
+
+/* Headings */
+.kinfolk-heading-display {
+  font-family: var(--kinfolk-font-serif);
+  font-size: var(--kinfolk-text-5xl);
+  font-weight: var(--kinfolk-weight-light);
+  line-height: var(--kinfolk-leading-tight);
+  color: var(--kinfolk-neutral-900);
+  letter-spacing: var(--kinfolk-tracking-tighter);
+  margin-bottom: var(--kinfolk-space-8);
+}
+
+.kinfolk-heading-hero {
+  font-family: var(--kinfolk-font-serif);
+  font-size: var(--kinfolk-text-4xl);
+  font-weight: var(--kinfolk-weight-normal);
+  line-height: var(--kinfolk-leading-snug);
+  color: var(--kinfolk-neutral-900);
+  letter-spacing: var(--kinfolk-tracking-wide);
+  margin-bottom: var(--kinfolk-space-6);
+}
+
+.kinfolk-heading-section {
+  font-family: var(--kinfolk-font-serif);
+  font-size: var(--kinfolk-text-3xl);
+  font-weight: var(--kinfolk-weight-normal);
+  line-height: var(--kinfolk-leading-snug);
+  color: var(--kinfolk-neutral-900);
+  letter-spacing: var(--kinfolk-tracking-wide);
+  margin-bottom: var(--kinfolk-space-6);
+}
+
+.kinfolk-heading-subsection {
+  font-family: var(--kinfolk-font-serif);
+  font-size: var(--kinfolk-text-2xl);
+  font-weight: var(--kinfolk-weight-normal);
+  line-height: var(--kinfolk-leading-normal);
+  color: var(--kinfolk-neutral-900);
+  letter-spacing: var(--kinfolk-tracking-normal);
+  margin-bottom: var(--kinfolk-space-5);
+}
+
+.kinfolk-heading-card {
+  font-family: var(--kinfolk-font-serif);
+  font-size: var(--kinfolk-text-xl);
+  font-weight: var(--kinfolk-weight-normal);
+  line-height: var(--kinfolk-leading-normal);
+  color: var(--kinfolk-neutral-900);
+  text-transform: uppercase;
+  letter-spacing: var(--kinfolk-tracking-widest);
+  margin-bottom: var(--kinfolk-space-4);
+}
+
+/* Body Text */
+.kinfolk-body-large {
+  font-family: var(--kinfolk-font-serif);
+  font-size: var(--kinfolk-text-lg);
+  font-weight: var(--kinfolk-weight-normal);
+  line-height: var(--kinfolk-leading-loose);
+  color: var(--kinfolk-neutral-500);
+  font-style: italic;
+}
+
+.kinfolk-body-normal {
+  font-family: var(--kinfolk-font-serif);
+  font-size: var(--kinfolk-text-md);
+  font-weight: var(--kinfolk-weight-normal);
+  line-height: var(--kinfolk-leading-relaxed);
+  color: var(--kinfolk-neutral-700);
+}
+
+.kinfolk-body-small {
+  font-family: var(--kinfolk-font-serif);
+  font-size: var(--kinfolk-text-base);
+  font-weight: var(--kinfolk-weight-normal);
+  line-height: var(--kinfolk-leading-normal);
+  color: var(--kinfolk-neutral-500);
+}
+
+/* Navigation & UI Text */
+.kinfolk-nav-primary {
+  font-family: var(--kinfolk-font-serif);
+  font-size: var(--kinfolk-text-base);
+  font-weight: var(--kinfolk-weight-normal);
+  text-transform: uppercase;
+  letter-spacing: var(--kinfolk-tracking-widest);
+  color: var(--kinfolk-primary);
+}
+
+.kinfolk-nav-secondary {
+  font-family: var(--kinfolk-font-serif);
+  font-size: var(--kinfolk-text-sm);
+  font-weight: var(--kinfolk-weight-normal);
+  text-transform: uppercase;
+  letter-spacing: var(--kinfolk-tracking-ultra-wide);
+  color: var(--kinfolk-neutral-500);
+}
+
+/* Labels & Captions */
+.kinfolk-label {
+  font-family: var(--kinfolk-font-serif);
+  font-size: var(--kinfolk-text-sm);
+  font-weight: var(--kinfolk-weight-normal);
+  text-transform: uppercase;
+  letter-spacing: var(--kinfolk-tracking-ultra-wide);
+  color: var(--kinfolk-primary);
+}
+
+.kinfolk-caption {
+  font-family: var(--kinfolk-font-serif);
+  font-size: var(--kinfolk-text-xs);
+  font-weight: var(--kinfolk-weight-normal);
+  line-height: var(--kinfolk-leading-normal);
+  color: var(--kinfolk-neutral-500);
+  font-style: italic;
+}
+
+/* ========================================
+   COMPONENT CLASSES
+   ======================================== */
+
+/* Containers */
+.kinfolk-container {
+  min-height: 100vh;
+  background-color: var(--kinfolk-surface-secondary);
+  color: var(--kinfolk-neutral-900);
+  line-height: var(--kinfolk-leading-loose);
+}
+
+.kinfolk-section {
+  padding: var(--kinfolk-section-lg) var(--kinfolk-space-8);
+}
+
+.kinfolk-section-hero {
+  padding: var(--kinfolk-section-xl) var(--kinfolk-space-8);
+}
+
+.kinfolk-content-wrapper {
+  max-width: var(--kinfolk-max-width-xl);
+  margin: 0 auto;
+}
+
+/* Header */
+.kinfolk-header {
+  border-bottom: var(--kinfolk-border-width) solid var(--kinfolk-border-color);
+  background-color: var(--kinfolk-surface-primary);
+  padding: var(--kinfolk-section-md) var(--kinfolk-space-8) var(--kinfolk-section-sm);
+}
+
+.kinfolk-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--kinfolk-max-width-xl);
+  margin: 0 auto;
+}
+
+.kinfolk-header-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--kinfolk-space-12);
+}
+
+.kinfolk-header-nav {
+  display: flex;
+  gap: var(--kinfolk-space-2);
+}
+
+/* Avatar */
+.kinfolk-avatar {
+  position: relative;
+}
+
+.kinfolk-avatar-image {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--kinfolk-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--kinfolk-text-2xl);
+  color: var(--kinfolk-surface-primary);
+}
+
+.kinfolk-avatar-status {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--kinfolk-primary-dark);
+  border: var(--kinfolk-border-width-thick) solid var(--kinfolk-surface-primary);
+}
+
+/* Brand */
+.kinfolk-brand-title {
+  font-family: var(--kinfolk-font-serif);
+  font-size: var(--kinfolk-text-3xl);
+  font-weight: var(--kinfolk-weight-normal);
+  margin-bottom: var(--kinfolk-space-2);
+  color: var(--kinfolk-neutral-900);
+  letter-spacing: var(--kinfolk-tracking-wider);
+  text-transform: uppercase;
+}
+
+.kinfolk-brand-subtitle {
+  font-size: var(--kinfolk-text-base);
+  color: var(--kinfolk-primary);
+  font-weight: var(--kinfolk-weight-normal);
+  text-transform: uppercase;
+  letter-spacing: var(--kinfolk-tracking-ultra-wide);
+}
+
+/* Buttons */
+.kinfolk-button {
+  padding: var(--kinfolk-space-3);
+  color: var(--kinfolk-primary);
+  font-size: var(--kinfolk-text-base);
+  border: none;
+  border-radius: var(--kinfolk-border-radius);
+  background-color: transparent;
+  cursor: pointer;
+  font-family: var(--kinfolk-font-serif);
+  text-transform: uppercase;
+  letter-spacing: var(--kinfolk-tracking-widest);
+  transition: var(--kinfolk-transition-normal);
+}
+
+.kinfolk-button:hover {
+  color: var(--kinfolk-primary-dark);
+}
+
+.kinfolk-button-primary {
+  padding: var(--kinfolk-space-4) var(--kinfolk-space-8);
+  background-color: transparent;
+  color: var(--kinfolk-neutral-500);
+  border: var(--kinfolk-border-width) solid var(--kinfolk-neutral-200);
+  border-radius: var(--kinfolk-border-radius);
+  font-size: var(--kinfolk-text-base);
+  font-family: var(--kinfolk-font-serif);
+  text-transform: uppercase;
+  letter-spacing: var(--kinfolk-tracking-ultra-wide);
+  cursor: pointer;
+  transition: var(--kinfolk-transition-slow);
+}
+
+.kinfolk-button-primary:hover {
+  background-color: var(--kinfolk-surface-muted);
+  border-color: var(--kinfolk-primary);
+  color: var(--kinfolk-primary);
+}
+
+/* Cards */
+.kinfolk-card {
+  background-color: var(--kinfolk-surface-primary);
+  border: var(--kinfolk-border-width) solid var(--kinfolk-border-color);
+  padding: var(--kinfolk-section-sm) var(--kinfolk-space-10);
+  text-align: center;
+  transition: var(--kinfolk-transition-normal);
+}
+
+.kinfolk-card:hover {
+  box-shadow: var(--kinfolk-shadow-md);
+}
+
+.kinfolk-card-header {
+  margin-bottom: var(--kinfolk-space-6);
+}
+
+.kinfolk-card-content {
+  margin-bottom: var(--kinfolk-space-8);
+}
+
+.kinfolk-card-footer {
+  margin-top: var(--kinfolk-space-6);
+}
+
+/* Grid Layouts */
+.kinfolk-grid {
+  display: grid;
+  grid-template-columns: var(--kinfolk-grid-columns);
+  gap: var(--kinfolk-grid-gap-lg);
+  margin-bottom: var(--kinfolk-space-8);
+}
+
+.kinfolk-grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+}
+
+.kinfolk-grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+/* Editorial Sections */
+.kinfolk-editorial-section {
+  background-color: var(--kinfolk-surface-primary);
+  padding: var(--kinfolk-section-md) 0;
+  text-align: center;
+  margin-bottom: var(--kinfolk-section-lg);
+}
+
+.kinfolk-editorial-intro {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.kinfolk-actions {
+  text-align: center;
+  margin-bottom: var(--kinfolk-section-lg);
+}
+
+.kinfolk-actions-list {
+  display: inline-flex;
+  gap: var(--kinfolk-space-8);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+/* Text Alignment */
+.kinfolk-text-left { text-align: left; }
+.kinfolk-text-center { text-align: center; }
+.kinfolk-text-right { text-align: right; }
+
+/* Text Transform */
+.kinfolk-uppercase { text-transform: uppercase; }
+.kinfolk-lowercase { text-transform: lowercase; }
+.kinfolk-capitalize { text-transform: capitalize; }
+
+/* Font Style */
+.kinfolk-italic { font-style: italic; }
+.kinfolk-not-italic { font-style: normal; }
+
+/* Font Weight */
+.kinfolk-font-light { font-weight: var(--kinfolk-weight-light); }
+.kinfolk-font-normal { font-weight: var(--kinfolk-weight-normal); }
+.kinfolk-font-medium { font-weight: var(--kinfolk-weight-medium); }
+.kinfolk-font-semibold { font-weight: var(--kinfolk-weight-semibold); }
+
+/* Letter Spacing */
+.kinfolk-tracking-tight { letter-spacing: var(--kinfolk-tracking-tight); }
+.kinfolk-tracking-normal { letter-spacing: var(--kinfolk-tracking-normal); }
+.kinfolk-tracking-wide { letter-spacing: var(--kinfolk-tracking-wide); }
+.kinfolk-tracking-wider { letter-spacing: var(--kinfolk-tracking-wider); }
+.kinfolk-tracking-widest { letter-spacing: var(--kinfolk-tracking-widest); }
+
+/* Colors */
+.kinfolk-text-primary { color: var(--kinfolk-primary); }
+.kinfolk-text-primary-dark { color: var(--kinfolk-primary-dark); }
+.kinfolk-text-neutral-900 { color: var(--kinfolk-neutral-900); }
+.kinfolk-text-neutral-700 { color: var(--kinfolk-neutral-700); }
+.kinfolk-text-neutral-500 { color: var(--kinfolk-neutral-500); }
+
+/* Background Colors */
+.kinfolk-bg-primary { background-color: var(--kinfolk-surface-primary); }
+.kinfolk-bg-secondary { background-color: var(--kinfolk-surface-secondary); }
+.kinfolk-bg-muted { background-color: var(--kinfolk-surface-muted); }
+
+/* Spacing */
+.kinfolk-p-0 { padding: 0; }
+.kinfolk-p-1 { padding: var(--kinfolk-space-1); }
+.kinfolk-p-2 { padding: var(--kinfolk-space-2); }
+.kinfolk-p-3 { padding: var(--kinfolk-space-3); }
+.kinfolk-p-4 { padding: var(--kinfolk-space-4); }
+.kinfolk-p-6 { padding: var(--kinfolk-space-6); }
+.kinfolk-p-8 { padding: var(--kinfolk-space-8); }
+
+.kinfolk-m-0 { margin: 0; }
+.kinfolk-m-1 { margin: var(--kinfolk-space-1); }
+.kinfolk-m-2 { margin: var(--kinfolk-space-2); }
+.kinfolk-m-3 { margin: var(--kinfolk-space-3); }
+.kinfolk-m-4 { margin: var(--kinfolk-space-4); }
+.kinfolk-m-6 { margin: var(--kinfolk-space-6); }
+.kinfolk-m-8 { margin: var(--kinfolk-space-8); }
+
+/* Display */
+.kinfolk-block { display: block; }
+.kinfolk-inline-block { display: inline-block; }
+.kinfolk-inline { display: inline; }
+.kinfolk-flex { display: flex; }
+.kinfolk-grid { display: grid; }
+.kinfolk-hidden { display: none; }
+
+/* Flex */
+.kinfolk-flex-col { flex-direction: column; }
+.kinfolk-flex-row { flex-direction: row; }
+.kinfolk-items-center { align-items: center; }
+.kinfolk-justify-center { justify-content: center; }
+.kinfolk-justify-between { justify-content: space-between; }
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+  :root {
+    --kinfolk-text-4xl: 2rem;
+    --kinfolk-text-3xl: 1.75rem;
+    --kinfolk-section-xl: var(--kinfolk-space-16);
+    --kinfolk-section-lg: var(--kinfolk-space-12);
+    --kinfolk-section-md: var(--kinfolk-space-10);
+  }
+  
+  .kinfolk-header-content {
+    flex-direction: column;
+    gap: var(--kinfolk-space-6);
+    text-align: center;
+  }
+  
+  .kinfolk-header-nav {
+    justify-content: center;
+  }
+  
+  .kinfolk-actions-list {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .kinfolk-grid {
+    grid-template-columns: 1fr;
+    gap: var(--kinfolk-grid-gap);
+  }
+}
+
+@media (max-width: 480px) {
+  .kinfolk-section {
+    padding: var(--kinfolk-section-md) var(--kinfolk-space-4);
+  }
+  
+  .kinfolk-header {
+    padding: var(--kinfolk-section-sm) var(--kinfolk-space-4);
+  }
+  
+  .kinfolk-card {
+    padding: var(--kinfolk-space-8) var(--kinfolk-space-6);
+  }
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+  .kinfolk-container {
+    background-color: white;
+    color: black;
+  }
+  
+  .kinfolk-button,
+  .kinfolk-header-nav {
+    display: none;
+  }
+  
+  .kinfolk-card {
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+}

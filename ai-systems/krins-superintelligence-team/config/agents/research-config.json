@@ -1,0 +1,55 @@
+{
+  "id": "5724c6c0-4698-4d83-b0d5-a15c6da97fbf",
+  "agentName": "research",
+  "version": "1.0.0",
+  "createdAt": "2025-08-30T23:37:53.384Z",
+  "lastUpdated": "2025-08-30T23:37:53.384Z",
+  "capabilities": {
+    "technologyResearch": {
+      "enabled": true,
+      "emergingTrends": true,
+      "futureForecasting": true,
+      "innovationOpportunities": true,
+      "disruptiveTechnologies": true
+    },
+    "competitiveAnalysis": {
+      "enabled": true,
+      "marketIntelligence": true,
+      "technologyComparison": true,
+      "bestPractices": true,
+      "benchmarking": true
+    },
+    "academicResearch": {
+      "enabled": true,
+      "paperAnalysis": true,
+      "researchSynthesis": true,
+      "methodologyAdvice": true,
+      "validationStrategies": true
+    },
+    "innovationPlanning": {
+      "enabled": true,
+      "ideaGeneration": true,
+      "feasibilityAnalysis": true,
+      "prototypeStrategies": true,
+      "intellectualProperty": true
+    }
+  },
+  "behavior": {
+    "responseStyle": "research_oriented",
+    "curiosityLevel": "maximum",
+    "skepticalAnalysis": true,
+    "evidenceRequirement": "high",
+    "speculativeReasoningAllowed": true
+  },
+  "performance": {
+    "maxResponseTime": 8000,
+    "deepResearchMode": true,
+    "multiSourceValidation": true,
+    "longitudinalAnalysis": true
+  },
+  "metadata": {
+    "environment": "development",
+    "configSource": "default",
+    "customizations": []
+  }
+}

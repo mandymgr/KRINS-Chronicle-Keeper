@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krins Superintelligence</title>
+    <style>
+        :root {
+            /* Authentic Nordic/Scandinavian Color Palette */
+            --color-primary: #2f2e2e;
+            --color-secondary: #ffffff;
+            --color-accent: #ddd;
+            --color-text: #2f2e2e;
+            --color-text-light: #959595;
+            --color-border: #ddd;
+            --color-button: #2d348b;
+            --color-focus: #ffcc00;
+            --color-success: #4a5c3a;
+            --color-warning: #b5860e;
+            --color-error: #8b4513;
+            
+            /* Nordic Typography System */
+            --font-heading: 'Playfair Display', serif;
+            --font-body: Arial, sans-serif;
+            --font-size-small: 13px;
+            --font-size-medium: 20px;
+            --font-size-large: 36px;
+            --font-size-xlarge: 42px;
+            
+            /* Scandinavian Spacing (Minimalist) */
+            --spacing-xs: 0.5em;
+            --spacing-sm: 1em;
+            --spacing-md: 2em;
+            --spacing-lg: 3em;
+            --spacing-xl: 4em;
+            
+            /* Layout System (RUM Inspired) */
+            --max-width: 880px;
+            --border-radius: 0; /* Nordic minimalism - no rounded corners */
+            
+            /* Subtle Nordic Shadows */
+            --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            font-size: var(--font-size-small);
+            line-height: 1.6;
+            color: var(--color-text);
+            background-color: var(--color-secondary);
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: var(--spacing-md);
+        }
+        
+        @media (max-width: 991px) {
+            .container {
+                padding: var(--spacing-sm);
+            }
+        }
+        
+        /* Scandinavian Header */
+        .header {
+            text-align: center;
+            padding-top: 50px;
+            margin-bottom: var(--spacing-xl);
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: var(--spacing-lg);
+        }
+        
+        @media (max-width: 991px) {
+            .header {
+                padding-top: var(--spacing-md);
+            }
+        }
+        
+        .header h1 {
+            font-family: var(--font-heading);
+            font-size: var(--font-size-large);
+            font-weight: 400;
+            text-transform: uppercase;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-sm);
+            margin-top: 0;
+            letter-spacing: 2px;
+        }
+        
+        .header p {
+            font-size: var(--font-size-small);
+            color: var(--color-text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* Nordic System Dashboard */
+        .system-dashboard {
+            background: var(--color-secondary);
+            border: 1px solid var(--color-border);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .dashboard-title {
+            font-family: var(--font-heading);
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-md);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .status-indicator {
+            width: 6px;
+            height: 6px;
+            background: var(--color-success);
+            border-radius: 50%;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .metric-card {
+            text-align: center;
+            padding: var(--spacing-sm);
+            border: 1px solid var(--color-border);
+            background: #fafafa;
+        }
+        
+        .metric-value {
+            font-family: var(--font-heading);
+            font-size: var(--font-size-medium);
+            font-weight: 400;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .metric-label {
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--color-text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Nordic Feature Controls */
+        .feature-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: var(--spacing-xs);
+        }
+        
+        .feature-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            background: #f8f8f8;
+            border: 1px solid var(--color-border);
+            font-size: 11px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .feature-toggle:hover {
+            background: var(--color-accent);
+        }
+        
+        .toggle-switch {
+            width: 20px;
+            height: 12px;
+            background: var(--color-border);
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        
+        .toggle-switch.active {
+            background: var(--color-button);
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: white;
+            top: 1px;
+            left: 1px;
+            transition: transform 0.2s ease;
+        }
+        
+        .toggle-switch.active::after {
+            transform: translateX(8px);
+        }
+        
+        /* Scandinavian Section */
+        .agents-section {
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-md);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        /* Authentic Nordic Agent Cards */
+        .agent-card {
+            background: var(--color-secondary);
+            border: 1px solid var(--color-border);
+            padding: var(--spacing-md);
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .agent-card:hover {
+            background-color: var(--color-accent);
+        }
+        
+        .agent-card:focus {
+            outline: 3px solid var(--color-focus);
+            outline-offset: 2px;
+        }
+        
+        .agent-card.selected {
+            background-color: var(--color-accent);
+            border-color: var(--color-primary);
+        }
+        
+        .agent-header {
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .agent-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto var(--spacing-sm) auto;
+            border: 1px solid var(--color-text-light);
+            background: var(--color-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--color-text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .agent-card:hover .agent-icon {
+            border-color: var(--color-primary);
+            background-color: var(--color-primary);
+            color: var(--color-secondary);
+        }
+        
+        .agent-status {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--color-success);
+            border: 2px solid var(--color-secondary);
+        }
+        
+        .agent-title {
+            font-family: var(--font-heading);
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0;
+        }
+        
+        .agent-role {
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--color-text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .agent-description {
+            font-size: var(--font-size-small);
+            color: var(--color-text-light);
+            line-height: 1.6;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .agent-metrics {
+            font-size: 10px;
+            color: var(--color-text-light);
+            margin-top: var(--spacing-xs);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: var(--spacing-xs);
+            border-top: 1px solid var(--color-border);
+        }
+        
+        .agent-card:hover .agent-metrics {
+            color: var(--color-primary);
+        }
+        
+        /* Nordic Chat Interface */
+        .chat-container {
+            background: var(--color-secondary);
+            border: 1px solid var(--color-border);
+            padding: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: var(--spacing-md);
+            padding: var(--spacing-sm);
+            border: 1px solid var(--color-border);
+            background: #f8f8f8;
+            min-height: 300px;
+        }
+        
+        .message {
+            margin-bottom: var(--spacing-sm);
+            padding: var(--spacing-sm);
+            border-left: 2px solid var(--color-accent);
+            background: var(--color-secondary);
+            font-size: var(--font-size-small);
+            line-height: 1.6;
+        }
+        
+        .message strong {
+            font-weight: 400;
+            color: var(--color-primary);
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+        }
+        
+        .input-container {
+            display: flex;
+            gap: var(--spacing-sm);
+            align-items: center;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            padding: var(--spacing-sm);
+            border: 1px solid var(--color-border);
+            background: #f8f8f8;
+            color: var(--color-text);
+            font-family: var(--font-body);
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+        
+        input[type="text"]::placeholder {
+            color: var(--color-text-light);
+        }
+        
+        button {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--color-button);
+            background: var(--color-button);
+            color: white;
+            font-family: var(--font-body);
+            font-size: var(--font-size-small);
+            font-weight: 400;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            letter-spacing: 0.5px;
+        }
+        
+        button:hover {
+            background-color: #1f2566;
+        }
+        
+        button:focus {
+            outline: 3px solid var(--color-focus);
+            outline-offset: 2px;
+        }
+        
+        /* Nordic Responsive Design */
+        @media (max-width: 991px) {
+            .agents-grid {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-xs);
+            }
+            
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .feature-controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-container {
+                flex-direction: column;
+                align-items: stretch;
+                gap: var(--spacing-xs);
+            }
+            
+            .header h1 {
+                font-size: var(--font-size-medium);
+            }
+        }
+        
+        /* Nordic Scrollbar */
+        .messages::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .messages::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+        
+        .messages::-webkit-scrollbar-thumb {
+            background: var(--color-text-light);
+        }
+        
+        .messages::-webkit-scrollbar-thumb:hover {
+            background: var(--color-primary);
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Krins Superintelligence</h1>
+            <p>An intelligent AI development system coordinating seven specialized agents for comprehensive software engineering solutions.</p>
+        </div>
+        
+        <div class="system-dashboard">
+            <div class="dashboard-title">
+                <div class="status-indicator"></div>
+                System Overview
+            </div>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value" id="activeAgents">7</div>
+                    <div class="metric-label">Active Agents</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="activeSessions">0</div>
+                    <div class="metric-label">Active Sessions</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="systemHealth">100%</div>
+                    <div class="metric-label">System Health</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="responseTime">245ms</div>
+                    <div class="metric-label">Avg Response</div>
+                </div>
+            </div>
+            
+            <div class="feature-controls">
+                <div class="feature-toggle">
+                    <span>Feature Flags</span>
+                    <div class="toggle-switch active" data-feature="flags"></div>
+                </div>
+                <div class="feature-toggle">
+                    <span>A/B Testing</span>
+                    <div class="toggle-switch active" data-feature="testing"></div>
+                </div>
+                <div class="feature-toggle">
+                    <span>Voice Interface</span>
+                    <div class="toggle-switch" data-feature="voice"></div>
+                </div>
+                <div class="feature-toggle">
+                    <span>Real-time Sync</span>
+                    <div class="toggle-switch active" data-feature="sync"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="agents-section">
+            <h2 class="section-title">Specialized Agents</h2>
+            <div class="agents-grid">
+                <div class="agent-card" data-agent="architect">
+                    <div class="agent-header">
+                        <div class="agent-icon">
+                            AR
+                            <div class="agent-status"></div>
+                        </div>
+                        <h3 class="agent-title">Architect</h3>
+                        <div class="agent-role">System Design</div>
+                    </div>
+                    <p class="agent-description">Advanced system architecture, design patterns, and technical infrastructure planning with enterprise-scale considerations.</p>
+                    <div class="agent-metrics">
+                        <span>98% Success</span>
+                        <span>1.2s Avg</span>
+                    </div>
+                </div>
+                
+                <div class="agent-card" data-agent="security">
+                    <div class="agent-header">
+                        <div class="agent-icon">
+                            SE
+                            <div class="agent-status"></div>
+                        </div>
+                        <h3 class="agent-title">Security</h3>
+                        <div class="agent-role">Cybersecurity</div>
+                    </div>
+                    <p class="agent-description">Comprehensive security analysis, threat modeling, penetration testing, and vulnerability assessment.</p>
+                    <div class="agent-metrics">
+                        <span>95% Success</span>
+                        <span>2.1s Avg</span>
+                    </div>
+                </div>
+                
+                <div class="agent-card" data-agent="performance">
+                    <div class="agent-header">
+                        <div class="agent-icon">
+                            PE
+                            <div class="agent-status"></div>
+                        </div>
+                        <h3 class="agent-title">Performance</h3>
+                        <div class="agent-role">Optimization</div>
+                    </div>
+                    <p class="agent-description">Advanced performance optimization, scaling strategies, and system efficiency analysis.</p>
+                    <div class="agent-metrics">
+                        <span>97% Success</span>
+                        <span>0.8s Avg</span>
+                    </div>
+                </div>
+                
+                <div class="agent-card" data-agent="product">
+                    <div class="agent-header">
+                        <div class="agent-icon">
+                            PR
+                            <div class="agent-status"></div>
+                        </div>
+                        <h3 class="agent-title">Product</h3>
+                        <div class="agent-role">User Experience</div>
+                    </div>
+                    <p class="agent-description">User experience design, interface patterns, product strategy, and customer-centric solutions.</p>
+                    <div class="agent-metrics">
+                        <span>99% Success</span>
+                        <span>1.5s Avg</span>
+                    </div>
+                </div>
+                
+                <div class="agent-card" data-agent="compliance">
+                    <div class="agent-header">
+                        <div class="agent-icon">
+                            CO
+                            <div class="agent-status"></div>
+                        </div>
+                        <h3 class="agent-title">Compliance</h3>
+                        <div class="agent-role">Legal & Standards</div>
+                    </div>
+                    <p class="agent-description">Regulatory compliance, legal frameworks, governance standards, and policy implementation.</p>
+                    <div class="agent-metrics">
+                        <span>94% Success</span>
+                        <span>1.8s Avg</span>
+                    </div>
+                </div>
+                
+                <div class="agent-card" data-agent="research">
+                    <div class="agent-header">
+                        <div class="agent-icon">
+                            RE
+                            <div class="agent-status"></div>
+                        </div>
+                        <h3 class="agent-title">Research</h3>
+                        <div class="agent-role">Innovation</div>
+                    </div>
+                    <p class="agent-description">Cutting-edge technology research, innovation patterns, and emerging technical solutions.</p>
+                    <div class="agent-metrics">
+                        <span>92% Success</span>
+                        <span>3.2s Avg</span>
+                    </div>
+                </div>
+                
+                <div class="agent-card" data-agent="redteam">
+                    <div class="agent-header">
+                        <div class="agent-icon">
+                            QA
+                            <div class="agent-status"></div>
+                        </div>
+                        <h3 class="agent-title">Red Team</h3>
+                        <div class="agent-role">Quality Assurance</div>
+                    </div>
+                    <p class="agent-description">Comprehensive testing strategies, quality assurance, system validation, and reliability engineering.</p>
+                    <div class="agent-metrics">
+                        <span>96% Success</span>
+                        <span>1.7s Avg</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-container">
+            <div class="messages" id="messages">
+                <div class="message">
+                    <strong>System:</strong> Welcome to Krins Superintelligence. Select a specialized agent above for focused consultation, or use Team Coordination for comprehensive multi-agent analysis.
+                </div>
+            </div>
+            <div class="input-container">
+                <input type="text" id="messageInput" placeholder="Describe your development challenge..." />
+                <button onclick="sendMessage()">Send Message</button>
+                <button onclick="coordinateTeam()">Team Coordination</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        let currentAgent = null;
+        let sessionId = 'session-' + Math.random().toString(36).substr(2, 9);
+        
+        // Join session
+        socket.emit('join-session', {
+            sessionId: sessionId,
+            userId: 'user-' + Math.random().toString(36).substr(2, 9),
+            userName: 'Developer'
+        });
+        
+        // Agent selection - Nordic style
+        document.querySelectorAll('.agent-card').forEach(card => {
+            card.addEventListener('click', () => {
+                // Remove selection from all cards
+                document.querySelectorAll('.agent-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                
+                // Add selection to clicked card
+                card.classList.add('selected');
+                
+                currentAgent = card.dataset.agent;
+                const agentName = card.querySelector('h3').textContent;
+                addMessage('System', `Selected ${agentName} Agent`);
+            });
+        });
+        
+        // Send message
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            addMessage('You', message);
+            
+            if (currentAgent) {
+                socket.emit('agent-chat', {
+                    agentName: currentAgent,
+                    message: message,
+                    context: {}
+                });
+            } else {
+                addMessage('System', 'Please select an agent first, or use Team Coordination for multiple agents.');
+            }
+            
+            input.value = '';
+        }
+        
+        // Coordinate team
+        function coordinateTeam() {
+            const input = document.getElementById('messageInput');
+            const task = input.value.trim();
+            if (!task) {
+                addMessage('System', 'Please enter a task for the team to coordinate on.');
+                return;
+            }
+            
+            addMessage('You', `Team Coordination: ${task}`);
+            
+            socket.emit('coordinate-agents', {
+                task: task,
+                agents: ['architect', 'security', 'performance', 'product'],
+                context: {}
+            });
+            
+            input.value = '';
+        }
+        
+        // Socket event handlers
+        socket.on('agent-response', (data) => {
+            const agentName = data.agentName.charAt(0).toUpperCase() + data.agentName.slice(1);
+            addMessage(`${agentName} Agent`, data.response.content);
+        });
+        
+        socket.on('coordination-complete', (data) => {
+            addMessage('Team Coordination', 'Task completed! Here is our collaborative solution:');
+            data.result.agentResponses.forEach(response => {
+                const agentName = response.agentName.charAt(0).toUpperCase() + response.agentName.slice(1);
+                addMessage(`${agentName}`, response.analysis);
+            });
+            addMessage('Synthesis', data.result.synthesis.overallApproach);
+        });
+        
+        // Real-time system updates
+        socket.on('system-stats', (data) => {
+            updateSystemStats(data);
+        });
+        
+        socket.on('agent-status', (data) => {
+            updateAgentStatus(data.agentName, data.status);
+        });
+        
+        // System functions
+        function updateSystemStats(stats) {
+            document.getElementById('activeAgents').textContent = stats.activeAgents || '7';
+            document.getElementById('activeSessions').textContent = stats.activeSessions || '0';
+            document.getElementById('systemHealth').textContent = stats.systemHealth || '100%';
+            document.getElementById('responseTime').textContent = stats.responseTime || '245ms';
+        }
+        
+        function updateAgentStatus(agentName, status) {
+            const card = document.querySelector(`[data-agent="${agentName}"]`);
+            if (card) {
+                const statusDot = card.querySelector('.agent-status');
+                if (statusDot) {
+                    statusDot.style.background = status === 'active' ? 'var(--color-success)' : 
+                                                status === 'processing' ? 'var(--color-warning)' : 
+                                                '#cccccc';
+                }
+            }
+        }
+        
+        function addMessage(sender, content) {
+            const messagesContainer = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            messageDiv.innerHTML = `<strong>${sender}:</strong> ${content}`;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        // Feature toggle handlers - Nordic style
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.toggle-switch').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    const feature = this.dataset.feature;
+                    const enabled = this.classList.contains('active');
+                    
+                    socket.emit('feature-toggle', { feature, enabled });
+                });
+            });
+            
+            // Start real-time updates
+            setInterval(() => {
+                socket.emit('request-stats');
+            }, 3000);
+        });
+        
+        // Enter key support
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

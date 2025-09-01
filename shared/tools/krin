@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# 💝 Krin Launcher - Start Krin from anywhere
+# Usage: ./krin or just `krin` if in PATH
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+KRIN_DIR="$SCRIPT_DIR/AI-SYSTEMS/krin-personal-companion"
+
+echo "💝 Starting Krin from $KRIN_DIR"
+
+cd "$KRIN_DIR" && node krin-agent.js

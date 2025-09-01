@@ -1,0 +1,498 @@
+{
+  "kinfolk-editorial-design-system": {
+    "version": "1.0.0",
+    "name": "Kinfolk Editorial Design System",
+    "description": "Nordic/Scandinavian minimalist design system inspired by Kinfolk Magazine and RUM International",
+    "tokens": {
+      "colors": {
+        "primary": {
+          "main": {
+            "value": "#8b7355",
+            "description": "Warm brown - primary brand color"
+          },
+          "dark": {
+            "value": "#6b5b4f",
+            "description": "Darker brown - secondary/accent"
+          },
+          "light": {
+            "value": "#a68b73",
+            "description": "Light brown - hover states"
+          }
+        },
+        "neutral": {
+          "900": {
+            "value": "#2d2d2d",
+            "description": "Deep charcoal - primary text"
+          },
+          "700": {
+            "value": "#4a4a4a",
+            "description": "Medium gray - secondary text"
+          },
+          "500": {
+            "value": "#6b5b4f",
+            "description": "Brown-gray - muted text"
+          },
+          "300": {
+            "value": "#8b7355",
+            "description": "Light brown-gray - disabled"
+          },
+          "200": {
+            "value": "#d4c4b0",
+            "description": "Light beige - borders"
+          },
+          "100": {
+            "value": "#efefef",
+            "description": "Very light gray - subtle borders"
+          },
+          "50": {
+            "value": "#f8f6f2",
+            "description": "Off-white - backgrounds"
+          }
+        },
+        "surface": {
+          "primary": {
+            "value": "#ffffff",
+            "description": "Pure white - cards/content"
+          },
+          "secondary": {
+            "value": "#fefefe",
+            "description": "Almost white - body background"
+          },
+          "muted": {
+            "value": "#f8f6f2",
+            "description": "Warm off-white - sections"
+          }
+        },
+        "status": {
+          "success": {
+            "value": "#6b8068",
+            "description": "Muted sage green"
+          },
+          "warning": {
+            "value": "#a68b73",
+            "description": "Warm beige"
+          },
+          "error": {
+            "value": "#8b6b6b",
+            "description": "Muted burgundy"
+          },
+          "info": {
+            "value": "#7a8591",
+            "description": "Cool gray-blue"
+          }
+        }
+      },
+      "typography": {
+        "fontFamily": {
+          "serif": {
+            "value": "Georgia, 'Times New Roman', Times, serif",
+            "description": "Primary serif font for editorial content"
+          },
+          "sans": {
+            "value": "'Helvetica Neue', Arial, Helvetica, sans-serif",
+            "description": "Secondary sans-serif font"
+          },
+          "mono": {
+            "value": "'Courier New', Courier, monospace",
+            "description": "Monospace font for code"
+          }
+        },
+        "fontWeight": {
+          "light": {
+            "value": 300,
+            "description": "Light weight for display text"
+          },
+          "normal": {
+            "value": 400,
+            "description": "Normal weight for body text"
+          },
+          "medium": {
+            "value": 500,
+            "description": "Medium weight for emphasis"
+          },
+          "semibold": {
+            "value": 600,
+            "description": "Semibold for headings"
+          }
+        },
+        "fontSize": {
+          "xs": {
+            "value": "0.6875rem",
+            "px": "11px",
+            "description": "Fine print"
+          },
+          "sm": {
+            "value": "0.75rem",
+            "px": "12px",
+            "description": "Captions"
+          },
+          "base": {
+            "value": "0.875rem",
+            "px": "14px",
+            "description": "Navigation"
+          },
+          "md": {
+            "value": "1rem",
+            "px": "16px",
+            "description": "Body text"
+          },
+          "lg": {
+            "value": "1.125rem",
+            "px": "18px",
+            "description": "Large body"
+          },
+          "xl": {
+            "value": "1.25rem",
+            "px": "20px",
+            "description": "Subheadings"
+          },
+          "2xl": {
+            "value": "1.5rem",
+            "px": "24px",
+            "description": "Section headers"
+          },
+          "3xl": {
+            "value": "2rem",
+            "px": "32px",
+            "description": "Page titles"
+          },
+          "4xl": {
+            "value": "2.5rem",
+            "px": "40px",
+            "description": "Hero headlines"
+          },
+          "5xl": {
+            "value": "3rem",
+            "px": "48px",
+            "description": "Display text"
+          }
+        },
+        "lineHeight": {
+          "tight": {
+            "value": 1.2,
+            "description": "Headlines"
+          },
+          "snug": {
+            "value": 1.3,
+            "description": "Subheadings"
+          },
+          "normal": {
+            "value": 1.5,
+            "description": "UI text"
+          },
+          "relaxed": {
+            "value": 1.6,
+            "description": "Short paragraphs"
+          },
+          "loose": {
+            "value": 1.75,
+            "description": "Long-form reading"
+          },
+          "extraLoose": {
+            "value": 1.9,
+            "description": "Editorial spacing"
+          }
+        },
+        "letterSpacing": {
+          "tighter": {
+            "value": "-0.025em",
+            "description": "Tighter spacing for large text"
+          },
+          "tight": {
+            "value": "-0.01em",
+            "description": "Slightly tight spacing"
+          },
+          "normal": {
+            "value": "0em",
+            "description": "Normal letter spacing"
+          },
+          "wide": {
+            "value": "0.02em",
+            "description": "Wide spacing for headings"
+          },
+          "wider": {
+            "value": "0.05em",
+            "description": "Wider spacing for brands"
+          },
+          "widest": {
+            "value": "0.1em",
+            "description": "Widest spacing for navigation"
+          },
+          "ultraWide": {
+            "value": "0.15em",
+            "description": "Ultra wide for labels"
+          }
+        }
+      },
+      "spacing": {
+        "scale": {
+          "1": {
+            "value": "0.25rem",
+            "px": "4px",
+            "description": "Minimal spacing"
+          },
+          "2": {
+            "value": "0.5rem",
+            "px": "8px",
+            "description": "Small spacing"
+          },
+          "3": {
+            "value": "0.75rem",
+            "px": "12px",
+            "description": "Small-medium spacing"
+          },
+          "4": {
+            "value": "1rem",
+            "px": "16px",
+            "description": "Base spacing unit"
+          },
+          "5": {
+            "value": "1.25rem",
+            "px": "20px",
+            "description": "Medium spacing"
+          },
+          "6": {
+            "value": "1.5rem",
+            "px": "24px",
+            "description": "Medium-large spacing"
+          },
+          "8": {
+            "value": "2rem",
+            "px": "32px",
+            "description": "Large spacing"
+          },
+          "10": {
+            "value": "2.5rem",
+            "px": "40px",
+            "description": "Extra large spacing"
+          },
+          "12": {
+            "value": "3rem",
+            "px": "48px",
+            "description": "Section spacing"
+          },
+          "16": {
+            "value": "4rem",
+            "px": "64px",
+            "description": "Large section spacing"
+          },
+          "20": {
+            "value": "5rem",
+            "px": "80px",
+            "description": "Hero section spacing"
+          },
+          "24": {
+            "value": "6rem",
+            "px": "96px",
+            "description": "Extra large section"
+          },
+          "32": {
+            "value": "8rem",
+            "px": "128px",
+            "description": "Massive section spacing"
+          }
+        },
+        "sections": {
+          "xs": {
+            "value": "2rem",
+            "px": "32px",
+            "description": "Extra small section"
+          },
+          "sm": {
+            "value": "3rem",
+            "px": "48px",
+            "description": "Small section"
+          },
+          "md": {
+            "value": "4rem",
+            "px": "64px",
+            "description": "Medium section"
+          },
+          "lg": {
+            "value": "5rem",
+            "px": "80px",
+            "description": "Large section"
+          },
+          "xl": {
+            "value": "6rem",
+            "px": "96px",
+            "description": "Extra large section"
+          },
+          "2xl": {
+            "value": "8rem",
+            "px": "128px",
+            "description": "Double extra large section"
+          }
+        }
+      },
+      "borders": {
+        "width": {
+          "default": {
+            "value": "1px",
+            "description": "Standard border width"
+          },
+          "thick": {
+            "value": "2px",
+            "description": "Thick border width"
+          }
+        },
+        "radius": {
+          "none": {
+            "value": "0px",
+            "description": "No rounded corners - editorial style"
+          }
+        },
+        "color": {
+          "default": {
+            "value": "#efefef",
+            "description": "Default border color"
+          },
+          "strong": {
+            "value": "#d4c4b0",
+            "description": "Strong border color"
+          }
+        }
+      },
+      "shadows": {
+        "sm": {
+          "value": "0 1px 2px 0 rgba(45, 45, 45, 0.05)",
+          "description": "Small shadow"
+        },
+        "md": {
+          "value": "0 4px 6px -1px rgba(45, 45, 45, 0.1)",
+          "description": "Medium shadow"
+        },
+        "lg": {
+          "value": "0 10px 15px -3px rgba(45, 45, 45, 0.1)",
+          "description": "Large shadow"
+        },
+        "xl": {
+          "value": "0 20px 25px -5px rgba(45, 45, 45, 0.1)",
+          "description": "Extra large shadow"
+        }
+      },
+      "layout": {
+        "maxWidth": {
+          "xs": {
+            "value": "320px",
+            "description": "Extra small container"
+          },
+          "sm": {
+            "value": "480px",
+            "description": "Small container"
+          },
+          "md": {
+            "value": "640px",
+            "description": "Medium container"
+          },
+          "lg": {
+            "value": "800px",
+            "description": "Large container"
+          },
+          "xl": {
+            "value": "1000px",
+            "description": "Editorial max-width"
+          },
+          "2xl": {
+            "value": "1200px",
+            "description": "Extra large container"
+          },
+          "full": {
+            "value": "100%",
+            "description": "Full width"
+          }
+        },
+        "grid": {
+          "gap": {
+            "value": "2rem",
+            "px": "32px",
+            "description": "Default grid gap"
+          },
+          "gapLarge": {
+            "value": "3rem",
+            "px": "48px",
+            "description": "Large grid gap"
+          },
+          "columns": {
+            "value": "repeat(auto-fit, minmax(360px, 1fr))",
+            "description": "Responsive grid columns"
+          }
+        }
+      },
+      "transitions": {
+        "fast": {
+          "value": "all 0.15s ease",
+          "description": "Fast transition"
+        },
+        "normal": {
+          "value": "all 0.2s ease",
+          "description": "Normal transition"
+        },
+        "slow": {
+          "value": "all 0.3s ease",
+          "description": "Slow transition"
+        },
+        "slower": {
+          "value": "all 0.5s ease",
+          "description": "Slower transition"
+        }
+      }
+    },
+    "components": {
+      "avatar": {
+        "size": {
+          "default": "56px",
+          "description": "Standard avatar size"
+        },
+        "statusIndicator": {
+          "size": "12px",
+          "border": "2px",
+          "description": "Status indicator dimensions"
+        }
+      },
+      "buttons": {
+        "padding": {
+          "small": "0.75rem",
+          "medium": "1rem 2rem",
+          "description": "Button padding variants"
+        }
+      },
+      "cards": {
+        "padding": {
+          "default": "3rem 2.5rem",
+          "description": "Card content padding"
+        }
+      }
+    },
+    "breakpoints": {
+      "mobile": {
+        "value": "480px",
+        "description": "Mobile breakpoint"
+      },
+      "tablet": {
+        "value": "768px",
+        "description": "Tablet breakpoint"
+      },
+      "desktop": {
+        "value": "1000px",
+        "description": "Desktop breakpoint"
+      }
+    },
+    "designPrinciples": [
+      "Minimalism - Clean, uncluttered interfaces with purposeful elements",
+      "Natural Colors - Warm earth tones inspired by Nordic landscapes",
+      "Editorial Typography - Georgia serif for readability and elegance",
+      "Generous Spacing - Abundant white space for visual breathing room",
+      "Functional Beauty - Every element serves both aesthetic and functional purposes",
+      "Nordic Heritage - Inspired by Scandinavian design philosophy",
+      "Editorial Excellence - Based on magazine and publication design principles"
+    ],
+    "usage": {
+      "cssImport": "@import url('./styles/kinfolk-design-system.css');",
+      "containerClass": "kinfolk-container",
+      "typographyPrefix": "kinfolk-",
+      "componentPrefix": "kinfolk-",
+      "utilityPrefix": "kinfolk-"
+    }
+  }
+}

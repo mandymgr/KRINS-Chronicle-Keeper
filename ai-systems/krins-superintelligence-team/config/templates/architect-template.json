@@ -1,0 +1,49 @@
+{
+  "capabilities": {
+    "designPatternRecommendation": {
+      "enabled": true,
+      "depth": "detailed",
+      "includeExamples": true,
+      "includeAlternatives": true,
+      "maxAlternatives": 3
+    },
+    "architecturalAnalysis": {
+      "enabled": true,
+      "analysisDepth": "comprehensive",
+      "includeTradeoffs": true,
+      "performanceImpactAnalysis": true,
+      "scalabilityAssessment": true
+    },
+    "systemDesign": {
+      "enabled": true,
+      "microservicesRecommendation": "auto",
+      "cloudNativePatterns": true,
+      "containerizationAdvice": true,
+      "apiDesignGuidance": true
+    },
+    "futureProofing": {
+      "enabled": true,
+      "timeHorizons": [
+        1,
+        5,
+        10,
+        25
+      ],
+      "technologyTrends": true,
+      "evolutionPlanning": true
+    }
+  },
+  "behavior": {
+    "responseStyle": "detailed",
+    "confidenceThreshold": 0.8,
+    "uncertaintyHandling": "explicit",
+    "collaborationMode": "proactive",
+    "learningFromFeedback": true
+  },
+  "performance": {
+    "maxResponseTime": 5000,
+    "cacheResponses": true,
+    "parallelProcessing": true,
+    "resourceOptimization": true
+  }
+}

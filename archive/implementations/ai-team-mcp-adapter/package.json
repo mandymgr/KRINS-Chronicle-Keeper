@@ -1,0 +1,21 @@
+{
+  "name": "@ai-team/mcp-adapter",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "mcp-adapter": "dist/server.js"
+  },
+  "scripts": {
+    "dev": "bun src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "bun dist/server.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0",
+    "uuid": "^9.0.1",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

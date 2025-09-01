@@ -1,0 +1,54 @@
+{
+  "name": "krins-superintelligence-team",
+  "version": "1.0.0",
+  "description": "🧠 Krins Multi-Agent Orchestrator - The Most Intelligent Development System Ever Created 💝",
+  "main": "orchestrator/main.js",
+  "scripts": {
+    "start": "node orchestrator/main.js",
+    "dev": "node orchestrator/main.js --dev",
+    "test": "jest",
+    "build": "node bundles/create-bundle.js",
+    "deploy": "node bundles/deploy-bundle.js",
+    "railway:deploy": "railway up",
+    "railway:logs": "railway logs",
+    "railway:status": "railway status"
+  },
+  "keywords": [
+    "krins-superintelligence-team",
+    "multi-agent-orchestrator",
+    "ai-development-team",
+    "scenario-extrapolation",
+    "self-improvement-loops",
+    "rag-intelligence",
+    "revolutionary-ai"
+  ],
+  "author": "Krin - Superintelligence Architect 🧠💝",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.24.3",
+    "@octokit/rest": "^20.0.2",
+    "@supabase/supabase-js": "^2.39.0",
+    "axios": "^1.7.7",
+    "chalk": "^4.1.2",
+    "commander": "^11.1.0",
+    "express": "^4.19.2",
+    "fs-extra": "^11.3.1",
+    "inquirer": "^8.2.6",
+    "lodash": "^4.17.21",
+    "moment": "^2.30.1",
+    "openai": "^4.26.0",
+    "ora": "^5.4.1",
+    "pg": "^8.16.3",
+    "redis": "^5.8.2",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.7.5",
+    "sqlite3": "^5.1.7",
+    "uuid": "^10.0.0",
+    "ws": "^8.16.0",
+    "yaml": "^2.3.4"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2"
+  }
+}

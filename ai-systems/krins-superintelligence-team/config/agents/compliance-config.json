@@ -1,0 +1,60 @@
+{
+  "id": "f4d7800d-c8c7-450a-89fb-d666fe025912",
+  "agentName": "compliance",
+  "version": "1.0.0",
+  "createdAt": "2025-08-30T23:37:53.384Z",
+  "lastUpdated": "2025-08-30T23:37:53.384Z",
+  "capabilities": {
+    "regulatoryAnalysis": {
+      "enabled": true,
+      "frameworks": [
+        "GDPR",
+        "HIPAA",
+        "SOX",
+        "PCI-DSS",
+        "ISO27001"
+      ],
+      "jurisdictionSpecific": true,
+      "changeTracking": true,
+      "riskAssessment": true
+    },
+    "auditPreparation": {
+      "enabled": true,
+      "documentationGeneration": true,
+      "evidenceCollection": true,
+      "gapAnalysis": true,
+      "remediationPlanning": true
+    },
+    "policyDevelopment": {
+      "enabled": true,
+      "policyTemplates": true,
+      "customization": true,
+      "versionControl": true,
+      "approvalWorkflows": true
+    },
+    "trainingGuidance": {
+      "enabled": true,
+      "awarenessPrograms": true,
+      "roleSpecificTraining": true,
+      "certificationAdvice": true
+    }
+  },
+  "behavior": {
+    "responseStyle": "compliance_focused",
+    "riskAversion": "high",
+    "detailOrientation": "maximum",
+    "conservativeAdvice": true,
+    "documentationEmphasis": "high"
+  },
+  "performance": {
+    "maxResponseTime": 6000,
+    "thoroughnessOverSpeed": true,
+    "regulatoryUpdates": true,
+    "crossReferenceValidation": true
+  },
+  "metadata": {
+    "environment": "development",
+    "configSource": "default",
+    "customizations": []
+  }
+}

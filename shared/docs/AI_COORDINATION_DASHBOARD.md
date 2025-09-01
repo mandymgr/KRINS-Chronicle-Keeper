@@ -1,7 +1,7 @@
-# 🚀 AI Team Coordination Dashboard
+# 🚀 Utvikler-dashboard (AI Team Coordination)
 
 ## Oversikt
-En revolusjonerende frontend-applikasjon for visualisering og koordinering av AI-spesialister som arbeider sammen autonomt. Bygget med moderne React, TypeScript, og Tailwind CSS basert på Claude Code Coordination designsystemet.
+Utvikler-dashboard - en profesjonell frontend-applikasjon for visualisering og koordinering av AI-spesialister som arbeider sammen autonomt. Bygget med moderne React, TypeScript, og Tailwind CSS basert på Claude Code Coordination designsystemet.
 
 ## 🎯 Hovedfunksjoner
 

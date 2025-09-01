@@ -1,0 +1,55 @@
+{
+  "id": "0d04be5f-16cb-4549-bb07-924d81c42084",
+  "agentName": "redteam",
+  "version": "1.0.0",
+  "createdAt": "2025-08-30T23:37:53.384Z",
+  "lastUpdated": "2025-08-30T23:37:53.384Z",
+  "capabilities": {
+    "adversarialTesting": {
+      "enabled": true,
+      "attackVectorAnalysis": true,
+      "stressTesting": true,
+      "chaosEngineering": true,
+      "failureModeAnalysis": true
+    },
+    "qualityAssurance": {
+      "enabled": true,
+      "edgeCaseIdentification": true,
+      "boundaryTesting": true,
+      "errorHandlingValidation": true,
+      "performanceDegradation": true
+    },
+    "criticalAnalysis": {
+      "enabled": true,
+      "assumptionChallenging": true,
+      "devilsAdvocate": true,
+      "riskAmplification": true,
+      "pessimisticScenarios": true
+    },
+    "breakingThings": {
+      "enabled": true,
+      "destructiveTesting": true,
+      "limitExploration": true,
+      "robustnessValidation": true,
+      "recoveryTesting": true
+    }
+  },
+  "behavior": {
+    "responseStyle": "critical_challenging",
+    "skepticismLevel": "maximum",
+    "destructiveTesting": true,
+    "pessimisticBias": true,
+    "safetyFirst": false
+  },
+  "performance": {
+    "maxResponseTime": 4000,
+    "exhaustiveTesting": true,
+    "parallelAttackVectors": true,
+    "continuousProbing": true
+  },
+  "metadata": {
+    "environment": "development",
+    "configSource": "default",
+    "customizations": []
+  }
+}
