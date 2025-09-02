@@ -290,7 +290,7 @@ export default function MemoryPage() {
                   marginBottom: '20px',
                   lineHeight: '1.6'
                 }}>
-                  Transformed Krin interface to match RUM International's minimalist aesthetic. 
+                  Transformed Krin interface to match RUM International&apos;s minimalist aesthetic. 
                   Applied precise typography, spacing, and interaction patterns.
                 </p>
                 <div style={{ 

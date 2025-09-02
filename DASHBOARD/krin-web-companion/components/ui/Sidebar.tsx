@@ -19,7 +19,7 @@ export default function Sidebar({ title = 'Living Spec Dashboard', items, classN
   return (
     <aside 
       className={cn(
-        'border-r border-stone-200 p-6 bg-paper min-h-screen',
+        'border-r border-stone-200 p-6 bg-[var(--color-paper)] min-h-screen',
         className
       )} 
       style={{ minWidth: 280 }}
@@ -35,8 +35,8 @@ export default function Sidebar({ title = 'Living Spec Dashboard', items, classN
             href={item.href}
             className={cn(
               'flex items-center gap-3 px-3 py-2 text-base rounded-md transition-all',
-              'border-b border-stone-200 pb-2 hover:border-ink hover:bg-stone-100',
-              item.active && 'bg-stone-100 border-ink font-medium'
+              'border-b border-stone-200 pb-2 hover:border-[var(--color-ink)] hover:bg-stone-100',
+              item.active && 'bg-stone-100 border-[var(--color-ink)] font-medium'
             )}
           >
             {item.icon && (

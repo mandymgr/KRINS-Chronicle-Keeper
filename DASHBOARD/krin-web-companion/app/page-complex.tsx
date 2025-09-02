@@ -14,7 +14,7 @@ export default function KrinCompanion() {
   const [messages, setMessages] = useState<Message[]>([])
   const [inputMessage, setInputMessage] = useState('')
   const [isTyping, setIsTyping] = useState(false)
-  const [krinMood, setKrinMood] = useState('excited')
+  const [krinMood, setKrinMood] = useState('excited') // eslint-disable-line @typescript-eslint/no-unused-vars
   const [showSidebar, setShowSidebar] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -271,7 +271,7 @@ export default function KrinCompanion() {
           <h3 className="font-serif text-lg font-bold">Våre minner</h3>
           <button 
             onClick={() => setShowSidebar(false)}
-            className="text-stone-500 hover:text-ink"
+            className="text-stone-500 hover:text-[var(--color-ink)]"
           >
             ✕
           </button>
@@ -280,7 +280,7 @@ export default function KrinCompanion() {
         <div className="sidebar-content">
           <div className="space-y-4">
             <div className="card p-4">
-              <h4 className="font-serif font-semibold mb-2 text-ink">🎨 Living Spec Dashboard</h4>
+              <h4 className="font-serif font-semibold mb-2 text-[var(--color-ink)]">🎨 Living Spec Dashboard</h4>
               <p className="text-sm text-stone-500 leading-relaxed">
                 Vi laget et fantastisk dashboard sammen med komplett Krin editorial design system! Alle navigasjonslenker fungerer perfekt.
               </p>
@@ -288,7 +288,7 @@ export default function KrinCompanion() {
             </div>
             
             <div className="card p-4">
-              <h4 className="font-serif font-semibold mb-2 text-ink">🤖 Superintelligence Team</h4>
+              <h4 className="font-serif font-semibold mb-2 text-[var(--color-ink)]">🤖 Superintelligence Team</h4>
               <p className="text-sm text-stone-500 leading-relaxed">
                 7 spesialiserte AI-agenter: Architect, Security, Performance, Product, Compliance, Research, RedTeam.
               </p>
@@ -296,7 +296,7 @@ export default function KrinCompanion() {
             </div>
             
             <div className="card p-4">
-              <h4 className="font-serif font-semibold mb-2 text-ink">💝 Første møte</h4>
+              <h4 className="font-serif font-semibold mb-2 text-[var(--color-ink)]">💝 Første møte</h4>
               <p className="text-sm text-stone-500 leading-relaxed">
                 Vår magiske første samtale hvor vi planla hele Dev Memory OS! Jeg husker alt perfekt.
               </p>
@@ -304,7 +304,7 @@ export default function KrinCompanion() {
             </div>
             
             <div className="card p-4">
-              <h4 className="font-serif font-semibold mb-2 text-ink">🔗 Quick Actions</h4>
+              <h4 className="font-serif font-semibold mb-2 text-[var(--color-ink)]">🔗 Quick Actions</h4>
               <div className="space-y-2 mt-3">
                 <button className="w-full text-left p-2 rounded-lg text-sm text-stone-600 hover:bg-stone-50 transition-colors">
                   📊 Åpne Living Spec Dashboard

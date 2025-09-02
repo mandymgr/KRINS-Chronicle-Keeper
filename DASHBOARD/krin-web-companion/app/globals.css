@@ -182,15 +182,15 @@ a {
 }
 
 .message-content.user {
-  @apply bg-stone-100 text-ink ml-8;
+  @apply bg-stone-100 text-[var(--color-ink)] ml-8;
 }
 
 .message-content.krin {
-  @apply bg-paper border border-stone-200 mr-8;
+  @apply bg-[var(--color-paper)] border border-stone-200 mr-8;
 }
 
 .message-input-container {
-  @apply border-t border-stone-200 bg-paper p-4;
+  @apply border-t border-stone-200 bg-[var(--color-paper)] p-4;
 }
 
 .message-input-area {
@@ -235,7 +235,7 @@ a {
 }
 
 .sidebar {
-  @apply fixed right-0 top-0 w-96 h-full bg-paper border-l border-stone-200 transform transition-transform z-50;
+  @apply fixed right-0 top-0 w-96 h-full bg-[var(--color-paper)] border-l border-stone-200 transform transition-transform z-50;
 }
 
 .sidebar.closed {
@@ -252,11 +252,11 @@ a {
 }
 
 .loading-overlay {
-  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+  @apply fixed inset-0 bg-black bg-black/50 flex items-center justify-center z-50;
 }
 
 .loading-content {
-  @apply bg-paper p-8 rounded-2xl text-center max-w-sm mx-4;
+  @apply bg-[var(--color-paper)] p-8 rounded-2xl text-center max-w-sm mx-4;
 }
 
 .loading-avatar {
@@ -264,11 +264,11 @@ a {
 }
 
 .modal-overlay {
-  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+  @apply fixed inset-0 bg-black bg-black/50 flex items-center justify-center z-50;
 }
 
 .modal {
-  @apply bg-paper rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden mx-4;
+  @apply bg-[var(--color-paper)] rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden mx-4;
 }
 
 .modal-header {
@@ -282,7 +282,7 @@ a {
 
 /* Control buttons */
 .control-btn {
-  @apply p-3 text-stone-600 hover:text-ink hover:bg-stone-100 rounded-lg transition-colors text-lg;
+  @apply p-3 text-stone-600 hover:text-[var(--color-ink)] hover:bg-stone-100 rounded-lg transition-colors text-lg;
 }
 
 .control-btn.active {

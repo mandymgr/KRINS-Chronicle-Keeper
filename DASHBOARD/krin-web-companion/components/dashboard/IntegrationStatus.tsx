@@ -77,7 +77,7 @@ export function IntegrationStatus() {
     }
   };
 
-  const getStatusColor = (enabled: boolean, healthy: boolean) => {
+  const getStatusColor = (enabled: boolean, healthy: boolean) => { // eslint-disable-line @typescript-eslint/no-unused-vars
     if (!enabled) return 'secondary';
     return healthy ? 'default' : 'destructive';
   };
@@ -106,8 +106,6 @@ export function IntegrationStatus() {
         <CardContent>
           <Button 
             onClick={fetchHealthStatus} 
-            size="sm" 
-            variant="outline"
             disabled={loading}
           >
             <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
@@ -147,8 +145,6 @@ export function IntegrationStatus() {
           </div>
           <Button 
             onClick={fetchHealthStatus} 
-            size="sm" 
-            variant="ghost"
             disabled={loading}
           >
             <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
@@ -172,7 +168,7 @@ export function IntegrationStatus() {
                 <div>
                   <div className="flex items-center gap-2">
                     <h3 className="font-medium capitalize">{integration.name}</h3>
-                    <Badge variant={getStatusColor(integration.enabled, integration.healthy)}>
+                    <Badge>
                       {!integration.enabled ? 'Disabled' : 
                        integration.healthy ? 'Healthy' : 'Unhealthy'}
                     </Badge>

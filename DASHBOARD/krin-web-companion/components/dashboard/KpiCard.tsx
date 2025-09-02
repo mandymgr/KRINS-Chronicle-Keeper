@@ -11,7 +11,7 @@ interface KpiCardProps {
 }
 
 export function KpiCard({ kpi, className }: KpiCardProps) {
-  const { icon: trendIcon, color: trendColor } = getTrendDisplay(kpi.trend);
+  const { icon: trendIcon, color: trendColor } = getTrendDisplay(kpi.trend || 'neutral');
   
   const getCategoryColor = (category: string) => {
     switch (category) {
@@ -41,7 +41,6 @@ export function KpiCard({ kpi, className }: KpiCardProps) {
             {kpi.icon}
           </span>
           <Badge
-            variant="outline"
             className={cn('text-xs', getCategoryColor(kpi.category))}
           >
             {kpi.category}

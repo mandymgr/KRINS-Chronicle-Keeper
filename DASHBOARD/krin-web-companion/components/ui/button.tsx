@@ -11,13 +11,13 @@ const buttonVariants = cva(
         accent:
           'bg-accent text-accent-ink shadow hover:opacity-95 rounded-md',
         ghost:
-          'bg-transparent text-ink hover:bg-stone-100 rounded-md',
+          'bg-transparent text-[var(--color-ink)] hover:bg-stone-100 rounded-md',
         outline:
-          'bg-transparent text-ink border border-stone-200 hover:border-ink hover:bg-stone-100 rounded-md',
+          'bg-transparent text-[var(--color-ink)] border border-stone-200 hover:border-[var(--color-ink)] hover:bg-stone-100 rounded-md',
         destructive:
           'bg-red-600 text-white shadow-sm hover:bg-red-600/90 rounded-md',
         secondary:
-          'bg-stone-100 text-ink shadow-sm hover:bg-stone-200 rounded-md',
+          'bg-stone-100 text-[var(--color-ink)] shadow-sm hover:bg-stone-200 rounded-md',
         link: 'text-accent underline-offset-4 hover:underline',
         success:
           'bg-ai-active text-white shadow hover:bg-ai-active/90 rounded-md',

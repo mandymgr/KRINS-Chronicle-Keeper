@@ -37,6 +37,15 @@ module.exports = {
         background: "var(--color-ivory)",
         foreground: "var(--color-ink)",
       },
+      textColor: {
+        // Custom text colors
+        ink: "var(--color-ink)",
+        paper: "var(--color-paper)",
+        accent: "var(--color-accent)",
+        stone: {
+          500: "var(--stone-500)"
+        }
+      },
       fontFamily: {
         sans: ["var(--font-sans)"],
         serif: ["var(--font-serif)"],

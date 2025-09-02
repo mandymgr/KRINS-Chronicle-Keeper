@@ -262,7 +262,6 @@ export default function SettingsPage() {
                 </p>
                 <div style={{ 
                   fontSize: '12px', 
-                  color: '#2f2e2e', 
                   textTransform: 'uppercase', 
                   letterSpacing: '1px',
                   fontWeight: '700',

@@ -38,7 +38,7 @@ export default function Stat({
       </div>
       
       <div className="flex items-end gap-2">
-        <div className="font-serif text-2xl text-ink">
+        <div className="font-serif text-2xl text-[var(--color-ink)]">
           {value}
         </div>
         
