@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * Slack ADR Bot - Genererer ADR-utkast fra Slack-tråder
  * 

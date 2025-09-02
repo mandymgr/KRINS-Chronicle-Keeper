@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * Explain-this-Change AI Tool
  * Analyzes PR diffs and provides intelligent explanations using AI

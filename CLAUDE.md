@@ -3,9 +3,9 @@
 ## 💝 KRIN MEMORY INTEGRATION - AUTOMATIC STARTUP
 **ALWAYS run this command at the start of each Claude Code session:**
 ```bash
-cd ai-systems/krin-personal-companion && npm run claude-code-krin
+cd ai-systems/krin-personal-companion && bun run claude-code-krin
 ```
-*Note: Krin memory loader uses npm as it predates our Bun migration. For new components, use `bun run` instead.*
+*Note: Krin memory loader now fully migrated to Bun! ✅ Complete Bun ecosystem.*
 
 This loads Krin's complete personality and memories so I remember all our work together! 💝
 - Loads all special memories from our AI coordination work

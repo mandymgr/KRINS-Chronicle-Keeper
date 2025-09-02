@@ -53,3 +53,6 @@ AI-SYSTEMS/*/yarn.lock
 AI-SYSTEMS/*/*/node_modules/
 AI-SYSTEMS/*/*/package-lock.json
 AI-SYSTEMS/*/*/yarn.lock
+
+# Krins Studio Ecosystem (separate repo)
+krins-studio-ecosystem/
