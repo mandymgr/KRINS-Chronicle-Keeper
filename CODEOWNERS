@@ -1,8 +1,45 @@
-# Patterns og domeneområder
-/docs/patterns/*   @team-platform
-/docs/adr/*        @tech-leads
-/docs/runbooks/*   @sre-team
+# KRINS-Chronicle-Keeper - Code Ownership
 
-# Eksempel komponenter
-/apps/web/*        @frontend-team
-/services/search/* @search-team
+# Core Organizational Intelligence System
+* @krins-team
+
+# Decision Management
+/docs/adr/* @decision-architects
+/DECISION_MANAGEMENT/* @decision-architects
+/tools/adr_new.sh @decision-architects
+
+# AI Integration & Intelligence
+/AI_INTEGRATION/* @ai-specialists
+/tools/pattern-ai-coordinator.js @ai-specialists
+/tools/slack-adr-bot.js @ai-specialists
+
+# Knowledge Organization
+/docs/patterns/* @platform-architects
+/docs/runbooks/* @sre-team
+/KNOWLEDGE_ORGANIZATION/* @platform-architects
+/tools/create-pattern.js @platform-architects
+/tools/validate-patterns.js @platform-architects
+
+# Governance & Process
+/GOVERNANCE_PROCESS/* @compliance-team
+/.github/workflows/* @devops-team
+/.github/pull_request_template.md @compliance-team
+
+# Team Collaboration
+/TEAM_COLLABORATION/* @collaboration-specialists
+
+# Analytics & Intelligence
+/ORGANIZATIONAL_INTELLIGENCE/* @data-architects
+/tools/pattern-analytics-engine.js @data-architects
+
+# Core Configuration & Documentation
+/.mcp.json @ai-specialists
+/CLAUDE.md @krins-team
+/AI_TEAM_MISSION_BRIEFING.md @krins-team
+/KRINS-WORKFLOW.md @krins-team
+/README.md @krins-team
+/docs/claude-collaboration/* @krins-team
+
+# Build & Quality
+/.github/workflows/adr-gate.yml @devops-team @compliance-team
+/tools/explain-pr.js @devops-team

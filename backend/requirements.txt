@@ -1,0 +1,43 @@
+# KRINS-Chronicle-Keeper FastAPI Backend Dependencies
+
+# Web Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+
+# Database
+asyncpg==0.29.0
+psycopg2-binary==2.9.9
+
+# Data Validation & Serialization
+pydantic==2.5.0
+pydantic[email]==2.5.0
+
+# HTTP Client & CORS
+httpx==0.25.2
+python-multipart==0.0.6
+
+# Environment & Configuration
+python-dotenv==1.0.0
+
+# Logging & Monitoring
+structlog==23.2.0
+prometheus-client==0.19.0
+
+# Date & Time
+python-dateutil==2.8.2
+
+# Development & Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+black==23.11.0
+isort==5.12.0
+mypy==1.7.1
+
+# Optional: AI/ML for enhanced intelligence features
+openai==1.3.5
+numpy==1.25.2
+scikit-learn==1.3.2
+
+# Optional: Vector similarity for semantic search (if using pgvector)
+sentence-transformers==2.2.2

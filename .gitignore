@@ -1,2 +1,24 @@
 .vscode/
 !.vscode/extensions.json
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.DS_Store
+frontend/bun.lock
+
+# Backend
+backend/.env
+backend/__pycache__/
+*.pyc
+
+# System
+.DS_Store
+
+# Node modules everywhere  
+**/node_modules/
+
+# Large binary files
+AI_INTEGRATION/krin-companion/KRIN-SYSTEM/dist/
+*.dmg
+*.zip
+*.app
