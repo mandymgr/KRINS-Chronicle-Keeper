@@ -11,6 +11,7 @@ psycopg2-binary==2.9.9
 # Data Validation & Serialization
 pydantic==2.5.0
 pydantic[email]==2.5.0
+email-validator==2.1.0
 
 # HTTP Client & CORS
 httpx==0.25.2
@@ -18,6 +19,11 @@ python-multipart==0.0.6
 
 # Environment & Configuration
 python-dotenv==1.0.0
+
+# Authentication & Security
+PyJWT==2.8.0
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
 
 # Logging & Monitoring
 structlog==23.2.0

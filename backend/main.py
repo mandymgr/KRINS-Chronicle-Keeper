@@ -18,6 +18,8 @@ from api.adrs import adr_router
 from api.decisions import decision_router
 from api.intelligence import intelligence_router
 from api.analytics import analytics_router
+from api.auth import auth_router
+from auth.middleware import configure_middleware
 
 # Configure logging
 logging.basicConfig(
@@ -43,6 +45,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Configure authentication middleware
+configure_middleware(app)
 
 # Database connection pool
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://krins:krins_password@localhost:5433/krins_db")
@@ -128,6 +133,7 @@ async def api_info():
     }
 
 # Include routers
+app.include_router(auth_router, prefix="/auth", tags=["Authentication"])
 app.include_router(adr_router, prefix="/api/v1/adrs", tags=["ADRs"])
 app.include_router(decision_router, prefix="/api/v1/decisions", tags=["Decisions"])
 app.include_router(intelligence_router, prefix="/api/v1/intelligence", tags=["Intelligence"])
