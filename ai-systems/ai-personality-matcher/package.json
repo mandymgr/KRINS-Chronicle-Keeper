@@ -1,0 +1,29 @@
+{
+  "name": "ai-personality-matcher",
+  "version": "1.0.0",
+  "description": "🧠 AI Personality Matcher - Finn din perfekte AI Personal Companion",
+  "main": "personality-test.js",
+  "bin": {
+    "ai-personality-test": "./test-cli.js"
+  },
+  "scripts": {
+    "test": "node test-cli.js",
+    "start": "node test-cli.js"
+  },
+  "keywords": [
+    "ai",
+    "personality",
+    "companion",
+    "matcher",
+    "test",
+    "claude"
+  ],
+  "author": "Krin & Team",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

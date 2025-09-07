@@ -151,6 +151,24 @@ export default function KrinCompanion() {
             >
               Settings
             </Link>
+            <Link href="/developer-guide" style={{
+              padding: '10px 15px',
+              color: '#2f2e2e',
+              fontSize: '16px',
+              textDecoration: 'none',
+              backgroundColor: hoveredButton === 'dev-guide' ? '#ddd' : 'transparent',
+              cursor: 'pointer',
+              fontFamily: 'Arial, sans-serif',
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              fontWeight: '400',
+              transition: 'background-color 0.2s ease'
+            }}
+            onMouseEnter={() => setHoveredButton('dev-guide')}
+            onMouseLeave={() => setHoveredButton(null)}
+            >
+              Developer Guide
+            </Link>
           </nav>
         </div>
       </div>

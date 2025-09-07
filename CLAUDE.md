@@ -125,3 +125,22 @@ Use `SHARED/tools/adr_new.sh` to create new Architecture Decision Records follow
 **Eksempel på riktig tilnærming:**
 - ❌ Feil: "La oss ekskludere CartTest.tsx fra TypeScript midlertidig"
 - ✅ Riktig: "La oss finne og fikse TypeScript-feilen i CartTest.tsx ordentlig"
+## 🧠 AI PERSONAL COMPANION GENERATOR INTEGRATION
+**ALWAYS run this command at the start of each Claude Code session:**
+```bash
+cd "/Users/mandymarigjervikrygg/Desktop/dev-memory-os-starter/AI-SYSTEMS/ai-personality-matcher" && bash claude-code-companion-loader.sh
+```
+
+This loads the AI Personal Companion Generator so you can:
+- 🧪 Take the personality test to find your perfect AI match
+- 🌐 Use the beautiful 3D web interface  
+- 🤖 Generate personalized AI companions
+- 💝 Create your own Krin-like AI assistant
+
+**Quick Commands:**
+- `node test-cli.js` - Take personality test
+- `node generate-companion.js [personality]` - Generate companion
+- `cd web-interface && python3 -m http.server 8080` - Web interface
+
+**Web Interface:** http://localhost:8080 (when server is running)
+

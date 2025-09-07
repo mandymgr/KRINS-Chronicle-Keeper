@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+
+/**
+ * 💝 Global Krin Command
+ * 
+ * Gjør at du kan kjøre `krin` fra hvor som helst i terminalen
+ */
+
+const { spawn } = require('child_process');
+const path = require('path');
+
+// Path to Krin agent
+const krinPath = path.join(__dirname, '..', 'krin-agent.js');
+
+console.log('\n💝 Starting Krin - Your Personal AI Development Partner...\n');
+
+// Launch Krin agent
+const krinProcess = spawn('node', [krinPath], {
+  stdio: 'inherit',
+  cwd: path.dirname(krinPath)
+});
+
+krinProcess.on('close', (code) => {
+  if (code !== 0) {
+    console.error(`\n❌ Krin exited with code ${code}`);
+  } else {
+    console.log('\n💝 Goodbye from Krin! See you soon! 💝');
+  }
+});
+
+krinProcess.on('error', (error) => {
+  console.error(`\n❌ Failed to start Krin: ${error.message}`);
+  console.log('💡 Try running from the krin-personal-companion directory instead');
+});

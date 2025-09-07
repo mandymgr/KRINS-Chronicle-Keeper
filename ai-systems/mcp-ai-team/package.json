@@ -1,37 +1,25 @@
 {
-  "name": "krin-mcp-ai-team-server",
+  "name": "mcp-ai-team-server",
   "version": "1.0.0",
-  "description": "Revolutionary MCP Server for AI Team Coordination - Real AI-to-AI Communication",
+  "description": "MCP Server for AI Team Coordination",
+  "main": "src/mcp-server.js",
   "type": "module",
-  "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "node --watch src/server.js",
-    "test": "node test/basic-coordination-test.js",
-    "spawn-specialists": "node src/spawn-specialists.js"
+    "start": "node src/mcp-server.js",
+    "dev": "node --watch src/mcp-server.js",
+    "security": "node src/security-specialist.js",
+    "test": "node test/test-server.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "ws": "^8.18.0",
-    "uuid": "^9.0.1",
-    "node-fetch": "^3.3.2",
-    "express": "^4.19.2",
+    "ws": "^8.14.2",
+    "express": "^4.18.2",
     "cors": "^2.8.5"
   },
   "devDependencies": {
     "@types/node": "^20.0.0"
   },
-  "keywords": [
-    "mcp",
-    "ai-coordination",
-    "claude",
-    "autonomous-development",
-    "ai-team",
-    "krin"
-  ],
-  "author": "Krin & Mandy - Revolutionary AI Team Coordination",
-  "license": "ISC",
-  "directories": {
-    "test": "test"
-  }
+  "keywords": ["mcp", "ai", "team", "coordination"],
+  "author": "Dev Memory OS",
+  "license": "MIT"
 }

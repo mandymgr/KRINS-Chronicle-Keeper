@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "ai-team-server": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "AI-SYSTEMS/mcp-ai-team/src/mcp-server.js"
+      ],
+      "env": {}
+    },
+    "filesystem-server": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/mandymarigjervikrygg/Desktop/code/dev-memory-os-starter"
+      ],
+      "env": {}
+    }
+  }
+}

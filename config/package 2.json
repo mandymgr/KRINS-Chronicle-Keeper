@@ -1,0 +1,73 @@
+{
+  "name": "dev-memory-os-starter",
+  "version": "1.0.0",
+  "description": "Dette er et minimalt, praktisk utgangspunkt for å fange beslutninger (ADR), patterns og runbooks — koblet til CI gjennom en enkel GitHub Action som krever ADR-referanse på store PR-er.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "build": "./shared/scripts/build-and-verify.sh",
+    "build:quick": "./shared/scripts/build-and-verify.sh --quick",
+    "build:railway": "bun run build:frontend && bun run build:backend",
+    "build:frontend": "cd core-platform/frontend && bun install && bun run build",
+    "build:backend": "cd core-platform/backend && bun install",
+    "verify": "./shared/scripts/build-and-verify.sh",
+    "start": "bun core-platform/backend/server.js",
+    "start:production": "NODE_ENV=production bun core-platform/backend/server.js",
+    "start:dev": "NODE_ENV=development bun core-platform/backend/server.js",
+    "migrate": "bun core-platform/database/migrate.js",
+    "migrate:reset": "bun core-platform/database/migrate.js --reset",
+    "db:seed": "bun core-platform/database/seed.js",
+    "db:init": "psql $DATABASE_URL -f core-platform/database/init.sql",
+    "webhook": "cd ai-systems/core && bun github-webhook-handler.js",
+    "webhook:dev": "cd ai-systems/core && PORT=3002 AUTO_CREATE_ADR=true bun github-webhook-handler.js",
+    "semantic-server": "bun core-platform/backend/server.js",
+    "semantic-server:dev": "NODE_ENV=development bun core-platform/backend/server.js",
+    "process-adrs": "bun core-platform/backend/embedding/adr-batch-processor.js",
+    "process-adrs:dry": "bun core-platform/backend/embedding/adr-batch-processor.js --dry-run",
+    "test": "bun run test:backend && bun run test:frontend && bun run test:trading",
+    "test:backend": "cd core-platform/backend && bun test",
+    "test:frontend": "cd core-platform/frontend && bun test",
+    "test:trading": "cd trading-platform/realtime-trading-system && bun test",
+    "test:integration": "bun core-platform/backend/test/integration.js",
+    "lint": "bun run lint:backend && bun run lint:frontend && bun run lint:trading",
+    "lint:backend": "cd core-platform/backend && bun run lint",
+    "lint:frontend": "cd core-platform/frontend && bun run lint",
+    "lint:trading": "cd trading-platform/realtime-trading-system && bun run lint",
+    "validate-patterns": "bun shared/tools/validate-patterns.js",
+    "validate-patterns:fix": "bun shared/tools/validate-patterns.js --fix",
+    "create-pattern": "bun shared/tools/create-pattern.js",
+    "coordinate-ai-patterns": "bun shared/tools/pattern-ai-coordinator.js",
+    "precommit": "bun run validate-patterns && bun run build",
+    "prepare": "chmod +x shared/scripts/build-and-verify.sh",
+    "trading:start": "cd trading-platform/realtime-trading-system && bun start",
+    "trading:dev": "cd trading-platform/realtime-trading-system && bun dev",
+    "dashboard:living-spec": "cd dashboards/living-spec-dashboard && bun dev",
+    "dashboard:living-spec:build": "cd dashboards/living-spec-dashboard && bun run build",
+    "ai:coordinator": "cd ai-systems/core && bun ai-pattern-bridge.js",
+    "ai:webhook": "cd ai-systems/core && bun github-webhook-handler.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mandymgr/Krins-Dev-Memory-OS.git"
+  },
+  "keywords": [
+    "ai-coordination", 
+    "pattern-driven-development",
+    "revolutionary-development",
+    "adr",
+    "institutional-memory",
+    "multi-terminal-ai"
+  ],
+  "author": "Krin & Mandy",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mandymgr/Krins-Dev-Memory-OS/issues"
+  },
+  "homepage": "https://github.com/mandymgr/Krins-Dev-Memory-OS#readme",
+  "devDependencies": {
+    "husky": "^8.0.3"
+  }
+}

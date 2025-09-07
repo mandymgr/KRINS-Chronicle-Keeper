@@ -1,19 +1,30 @@
-# ADR-{{NUMBER}}: {{TITLE}}
-**Dato:** {{DATE}}  •  **Komponent:** {{COMPONENT}}  •  **Eier:** {{OWNER}}
+# ADR-XXXX: [Title]
 
-## Problem
-Beskriv bruker-/operasjonsproblemet, og legg ved målbare symptomer (tall/kilder).
+## Status
+Proposed | Accepted | Rejected | Superseded | Deprecated
 
-## Alternativer
-1) <Alternativ A> – fordeler/ulemper (sikkerhet/ytelse/kost/risiko)
-2) <Alternativ B> – …
-3) <Do nothing> – konsekvens
+## Context
+What is the issue that we're seeing that is motivating this decision or change?
 
-## Beslutning
-Valgt: <A/B/...>. Begrunnelse (maks 5 linjer). Rollback-plan (hvordan og når).
+## Decision
+What is the change that we're proposing and/or doing?
 
-## Evidens (før/etter)
-Før: <tall, kilder>  •  Etter (forventet/observert): <tall, kilder>
+## Consequences
+What becomes easier or more difficult to do because of this change?
 
-## Lenker
-PR: #...  •  Runbook: /docs/runbooks/<id>.md  •  Metrikker: <Grafana/Query>  •  Issue/Incident: #...
+### Positive Consequences
+- 
+
+### Negative Consequences
+- 
+
+### Risks
+- 
+
+## Alternatives Considered
+What other options were evaluated?
+
+## References
+- Link to relevant discussions
+- Link to implementation PR
+- Related ADRs

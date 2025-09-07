@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "ai-team-server": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/Users/mandymarigjervikrygg/Desktop/code/dev-memory-os-starter/AI-SYSTEMS/mcp-ai-team/src/mcp-server.js"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Personal Companion Generator</title>
+    <link rel="stylesheet" href="styles.css?v=3">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="nav-content">
+            <div class="logo">
+                <h1>AI Companion Generator</h1>
+                <span class="tagline">Find Your Perfect AI Partner</span>
+            </div>
+            <div class="nav-links">
+                <a href="#test">Personality Test</a>
+                <a href="#companions">Companions</a>
+                <a href="#about">About</a>
+                <a href="#install" class="cta-link">Install</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with 3D Scene -->
+    <section class="hero-section">
+        <div class="scene-container">
+            <!-- 3D Mountain Landscape -->
+            <div class="landscape">
+                <div class="mountains">
+                    <div class="mountain mountain-1"></div>
+                    <div class="mountain mountain-2"></div>
+                    <div class="mountain mountain-3"></div>
+                </div>
+                
+                <!-- Floating Spheres -->
+                <div class="floating-spheres">
+                    <div class="sphere sphere-1"></div>
+                    <div class="sphere sphere-2"></div>
+                    <div class="sphere sphere-3"></div>
+                    <div class="sphere sphere-4"></div>
+                    <div class="sphere sphere-5"></div>
+                </div>
+
+                <!-- Forest -->
+                <div class="forest">
+                    <div class="tree tree-1"></div>
+                    <div class="tree tree-2"></div>
+                    <div class="tree tree-3"></div>
+                    <div class="tree tree-4"></div>
+                    <div class="tree tree-5"></div>
+                </div>
+
+                <!-- Platform with Content -->
+                <div class="content-platform">
+                    <div class="platform-content">
+                        <h1 class="hero-title">
+                            Discover Your Perfect
+                            <span class="highlight">AI Companion</span>
+                        </h1>
+                        <p class="hero-subtitle">
+                            Take our intelligent personality test and get matched with an AI assistant 
+                            perfectly tailored to your working style and preferences.
+                        </p>
+                        <div class="hero-actions">
+                            <button class="primary-btn" onclick="startPersonalityTest()">
+                                Take Personality Test
+                            </button>
+                            <button class="secondary-btn" onclick="exploreCompanions()">
+                                Explore Companions
+                            </button>
+                        </div>
+                        
+                        <!-- Stats -->
+                        <div class="stats-row">
+                            <div class="stat">
+                                <div class="stat-number">10</div>
+                                <div class="stat-label">AI Personalities</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">8</div>
+                                <div class="stat-label">Smart Questions</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">1</div>
+                                <div class="stat-label">Perfect Match</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personality Cards Preview -->
+                    <div class="personality-preview">
+                        <div class="preview-card card-krin">
+                            <div class="card-icon">💝</div>
+                            <div class="card-name">Krin</div>
+                            <div class="card-desc">Loving tech partner</div>
+                        </div>
+                        <div class="preview-card card-nova">
+                            <div class="card-icon">⚡</div>
+                            <div class="card-name">Nova</div>
+                            <div class="card-desc">High-energy guru</div>
+                        </div>
+                        <div class="preview-card card-sage">
+                            <div class="card-icon">🎨</div>
+                            <div class="card-name">Sage</div>
+                            <div class="card-desc">Creative philosopher</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Personality Test Section -->
+    <section id="test" class="test-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Personality Test</h2>
+                <p>Answer 8 carefully designed questions to discover your ideal AI companion match</p>
+            </div>
+            
+            <div class="test-container" id="testContainer">
+                <div class="test-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <span class="progress-text" id="progressText">Question 1 of 8</span>
+                </div>
+                
+                <div class="question-container" id="questionContainer">
+                    <!-- Questions will be populated by JavaScript -->
+                </div>
+                
+                <div class="test-actions">
+                    <button class="secondary-btn" id="prevBtn" onclick="previousQuestion()" disabled>
+                        Previous
+                    </button>
+                    <button class="primary-btn" id="nextBtn" onclick="nextQuestion()" disabled>
+                        Next
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-container" id="resultsContainer" style="display: none;">
+                <div class="results-header">
+                    <h3>Your Perfect AI Companion Match!</h3>
+                </div>
+                <div class="top-match" id="topMatch">
+                    <!-- Results will be populated by JavaScript -->
+                </div>
+                <div class="all-matches" id="allMatches">
+                    <!-- All matches will be shown here -->
+                </div>
+                <div class="results-actions">
+                    <button class="primary-btn" onclick="generateCompanion()">
+                        Generate My Companion
+                    </button>
+                    <button class="secondary-btn" onclick="retakeTest()">
+                        Retake Test
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Companions Gallery -->
+    <section id="companions" class="companions-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Meet The Companions</h2>
+                <p>Each AI companion has a unique personality designed for different working styles</p>
+            </div>
+            
+            <div class="companions-grid" id="companionsGrid">
+                <!-- Companions will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section id="install" class="install-section">
+        <div class="container">
+            <div class="install-content">
+                <div class="install-info">
+                    <h2>Get Started Today</h2>
+                    <p>Install the AI Personal Companion Generator and create your perfect AI assistant in minutes.</p>
+                    
+                    <div class="install-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Download & Install</h4>
+                                <p>Run our one-click installer script</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Take The Test</h4>
+                                <p>Complete the personality assessment</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Meet Your AI</h4>
+                                <p>Start working with your perfect match</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="install-code">
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>Terminal</span>
+                            <button onclick="copyInstallCommand()">Copy</button>
+                        </div>
+                        <code>
+curl -fsSL https://raw.githubusercontent.com/your-repo/ai-companion-generator/main/install.sh | bash
+                        </code>
+                    </div>
+                    
+                    <div class="requirements">
+                        <h4>Requirements</h4>
+                        <ul>
+                            <li>Node.js 14.0.0 or higher</li>
+                            <li>npm or bun package manager</li>
+                            <li>macOS, Linux, or WSL on Windows</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>AI Companion Generator</h4>
+                    <p>Creating personalized AI assistants for developers worldwide.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#documentation">Documentation</a></li>
+                        <li><a href="#github">GitHub</a></li>
+                        <li><a href="#support">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Companions</h4>
+                    <ul>
+                        <li><a href="#krin">Krin - Loving Partner</a></li>
+                        <li><a href="#nova">Nova - Productivity Guru</a></li>
+                        <li><a href="#sage">Sage - Creative Philosopher</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AI Companion Generator. Built with 💝 by Krin & Team.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="personality-test.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

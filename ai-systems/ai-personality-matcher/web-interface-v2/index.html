@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Personal Companion Generator - Botanisk</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="nav-content">
+            <div class="logo">
+                <h1>AI Companion Generator</h1>
+                <span class="tagline">Botanisk Personlighetsmatching</span>
+            </div>
+            <div class="nav-links">
+                <a href="#test">Personlighetstest</a>
+                <a href="#companions">Companions</a>
+                <a href="#about">Om Oss</a>
+                <a href="#install" class="cta-link">Installer</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Botanical 3D Scene -->
+    <section class="hero-section">
+        <div class="botanical-scene">
+            <!-- Background Gradient -->
+            <div class="scene-background"></div>
+            
+            <!-- Floating Butterflies -->
+            <div class="butterflies">
+                <div class="butterfly butterfly-1">
+                    <div class="wing wing-top-left"></div>
+                    <div class="wing wing-top-right"></div>
+                    <div class="wing wing-bottom-left"></div>
+                    <div class="wing wing-bottom-right"></div>
+                    <div class="body"></div>
+                </div>
+                <div class="butterfly butterfly-2">
+                    <div class="wing wing-top-left"></div>
+                    <div class="wing wing-top-right"></div>
+                    <div class="wing wing-bottom-left"></div>
+                    <div class="wing wing-bottom-right"></div>
+                    <div class="body"></div>
+                </div>
+                <div class="butterfly butterfly-3">
+                    <div class="wing wing-top-left"></div>
+                    <div class="wing wing-top-right"></div>
+                    <div class="wing wing-bottom-left"></div>
+                    <div class="wing wing-bottom-right"></div>
+                    <div class="body"></div>
+                </div>
+            </div>
+
+            <!-- Central Device/Platform -->
+            <div class="central-platform">
+                <div class="device-frame">
+                    <div class="device-screen">
+                        <div class="screen-content">
+                            <h1 class="hero-title">
+                                Discover Your Perfect
+                                <span class="highlight">AI Garden Companion</span>
+                            </h1>
+                            <p class="hero-subtitle">
+                                Like flowers in a garden, each AI personality blooms with unique traits. 
+                                Find the one that complements your development style perfectly.
+                            </p>
+                            <div class="hero-actions">
+                                <button class="primary-btn bloom-btn" onclick="startPersonalityTest()">
+                                    🌸 Start Personality Test
+                                </button>
+                                <button class="secondary-btn garden-btn" onclick="exploreGarden()">
+                                    🦋 Explore Garden
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Engraved Details -->
+                <div class="device-engravings">
+                    <div class="engraving engraving-1"></div>
+                    <div class="engraving engraving-2"></div>
+                    <div class="engraving engraving-3"></div>
+                </div>
+            </div>
+
+            <!-- Left Flower Arrangement -->
+            <div class="flower-arrangement left-arrangement">
+                <!-- Large Peony -->
+                <div class="flower peony-large">
+                    <div class="flower-center"></div>
+                    <div class="petal petal-1"></div>
+                    <div class="petal petal-2"></div>
+                    <div class="petal petal-3"></div>
+                    <div class="petal petal-4"></div>
+                    <div class="petal petal-5"></div>
+                    <div class="petal petal-6"></div>
+                    <div class="petal petal-7"></div>
+                    <div class="petal petal-8"></div>
+                </div>
+                
+                <!-- Flowing Stems -->
+                <div class="stem-group">
+                    <div class="stem stem-1"></div>
+                    <div class="stem stem-2"></div>
+                    <div class="stem stem-3"></div>
+                </div>
+                
+                <!-- Small buds -->
+                <div class="bud-cluster">
+                    <div class="bud bud-1"></div>
+                    <div class="bud bud-2"></div>
+                    <div class="bud bud-3"></div>
+                </div>
+            </div>
+
+            <!-- Right Flower Arrangement -->
+            <div class="flower-arrangement right-arrangement">
+                <!-- White Cosmos Flowers -->
+                <div class="flower cosmos-1">
+                    <div class="cosmos-center"></div>
+                    <div class="cosmos-petal cp-1"></div>
+                    <div class="cosmos-petal cp-2"></div>
+                    <div class="cosmos-petal cp-3"></div>
+                    <div class="cosmos-petal cp-4"></div>
+                    <div class="cosmos-petal cp-5"></div>
+                    <div class="cosmos-petal cp-6"></div>
+                    <div class="cosmos-petal cp-7"></div>
+                    <div class="cosmos-petal cp-8"></div>
+                </div>
+                
+                <div class="flower cosmos-2">
+                    <div class="cosmos-center"></div>
+                    <div class="cosmos-petal cp-1"></div>
+                    <div class="cosmos-petal cp-2"></div>
+                    <div class="cosmos-petal cp-3"></div>
+                    <div class="cosmos-petal cp-4"></div>
+                    <div class="cosmos-petal cp-5"></div>
+                    <div class="cosmos-petal cp-6"></div>
+                    <div class="cosmos-petal cp-7"></div>
+                    <div class="cosmos-petal cp-8"></div>
+                </div>
+
+                <!-- Delicate branches -->
+                <div class="branch-group">
+                    <div class="branch branch-1"></div>
+                    <div class="branch branch-2"></div>
+                    <div class="small-flowers">
+                        <div class="small-flower sf-1"></div>
+                        <div class="small-flower sf-2"></div>
+                        <div class="small-flower sf-3"></div>
+                        <div class="small-flower sf-4"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scattered Elements -->
+            <div class="scattered-elements">
+                <div class="floating-petal fp-1"></div>
+                <div class="floating-petal fp-2"></div>
+                <div class="floating-petal fp-3"></div>
+                <div class="floating-petal fp-4"></div>
+                <div class="floating-petal fp-5"></div>
+                <div class="floating-leaf fl-1"></div>
+                <div class="floating-leaf fl-2"></div>
+                <div class="floating-leaf fl-3"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Personality Test Section -->
+    <section id="test" class="test-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>🌸 Botanisk Personlighetstest</h2>
+                <p>Som hver blomst i en hage har sin unike karakter, har hver AI sin spesielle personlighet. 
+                   La oss finne den som blomstre best sammen med deg.</p>
+            </div>
+            
+            <div class="test-container" id="testContainer">
+                <div class="test-progress">
+                    <div class="progress-garden">
+                        <div class="progress-soil"></div>
+                        <div class="progress-growth" id="progressGrowth"></div>
+                        <div class="progress-flower">
+                            <div class="progress-bloom" id="progressBloom"></div>
+                        </div>
+                    </div>
+                    <span class="progress-text" id="progressText">Spørsmål 1 av 8 - Planter frø 🌱</span>
+                </div>
+                
+                <div class="question-container" id="questionContainer">
+                    <!-- Questions will be populated by JavaScript -->
+                </div>
+                
+                <div class="test-actions">
+                    <button class="secondary-btn" id="prevBtn" onclick="previousQuestion()" disabled>
+                        ← Forrige
+                    </button>
+                    <button class="primary-btn bloom-btn" id="nextBtn" onclick="nextQuestion()" disabled>
+                        Neste →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-container" id="resultsContainer" style="display: none;">
+                <div class="results-header">
+                    <h3>🌺 Din Personlige AI-Hage Blomstrer!</h3>
+                </div>
+                <div class="results-garden">
+                    <div class="top-match-flower" id="topMatchFlower">
+                        <!-- Results will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="all-matches-garden" id="allMatchesGarden">
+                    <!-- All matches will be shown here -->
+                </div>
+                <div class="results-actions">
+                    <button class="primary-btn bloom-btn" onclick="generateCompanion()">
+                        🌿 Skape Min AI-Companion
+                    </button>
+                    <button class="secondary-btn" onclick="retakeTest()">
+                        🔄 Ta Test På Nytt
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Garden Section -->
+    <section id="companions" class="garden-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>🦋 AI-Hagen - Møt Personlighetene</h2>
+                <p>Hver AI-personlighet er som en unik blomst i en vakker hage. Utforsk deres særegne trekk og finn din perfekte match.</p>
+            </div>
+            
+            <div class="garden-grid" id="gardenGrid">
+                <!-- Companions will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section id="install" class="install-section">
+        <div class="container">
+            <div class="install-content">
+                <div class="install-info">
+                    <h2>🌱 Plant Din AI-Hage I Dag</h2>
+                    <p>Installer AI Personal Companion Generator og dyrk din perfekte AI-utviklingspartner i få minutter.</p>
+                    
+                    <div class="growth-steps">
+                        <div class="growth-step">
+                            <div class="step-seed">🌰</div>
+                            <div class="step-content">
+                                <h4>Plant Frø</h4>
+                                <p>Last ned og installer systemet</p>
+                            </div>
+                        </div>
+                        <div class="growth-step">
+                            <div class="step-sprout">🌱</div>
+                            <div class="step-content">
+                                <h4>Gro & Blomstre</h4>
+                                <p>Ta personlighetstesten</p>
+                            </div>
+                        </div>
+                        <div class="growth-step">
+                            <div class="step-flower">🌸</div>
+                            <div class="step-content">
+                                <h4>Høst Fruktene</h4>
+                                <p>Nyt din personlige AI-companion</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="install-code">
+                    <div class="code-garden">
+                        <div class="code-header">
+                            <span>🌿 Terminal</span>
+                            <button onclick="copyInstallCommand()">Kopier Frø</button>
+                        </div>
+                        <code>
+curl -fsSL https://raw.githubusercontent.com/your-repo/ai-companion-generator/main/install.sh | bash
+                        </code>
+                    </div>
+                    
+                    <div class="growth-requirements">
+                        <h4>🌱 Vekst-Krav</h4>
+                        <ul>
+                            <li>Node.js 14.0.0 eller høyere</li>
+                            <li>npm eller bun pakkemanager</li>
+                            <li>macOS, Linux, eller WSL på Windows</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>🌸 AI Companion Generator</h4>
+                    <p>Dyrker personlige AI-assistenter for utviklere over hele verden.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>🌿 Ressurser</h4>
+                    <ul>
+                        <li><a href="#documentation">Dokumentasjon</a></li>
+                        <li><a href="#github">GitHub</a></li>
+                        <li><a href="#support">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>🦋 AI-Hagen</h4>
+                    <ul>
+                        <li><a href="#krin">Krin - Kjærlig Partner</a></li>
+                        <li><a href="#nova">Nova - Produktivitets Guru</a></li>
+                        <li><a href="#sage">Sage - Kreativ Filosof</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AI Companion Generator. Dyrket med 💝 av Krin & Team.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../personality-test.js"></script>
+    <script src="app-botanical.js"></script>
+</body>
+</html>
