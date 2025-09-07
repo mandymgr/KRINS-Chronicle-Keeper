@@ -1,0 +1,33 @@
+# 🚀 KRINS Chronicle Keeper - Bun Configuration
+# Advanced organizational intelligence platform with AI integration
+
+[install]
+# Use exact versions for better reproducibility
+exact = true
+
+# Install peer dependencies automatically
+peer = true
+
+# Performance optimization
+cache = true
+
+# Don't create package-lock.json (use bun.lockb instead)
+lockfile = false
+
+[install.scopes]
+# Allow all scopes for flexibility with AI integrations
+"*" = { trusted = true }
+
+[test]
+# Use our testing conventions
+root = "."
+preload = ["./test/setup.js"]
+
+[run]
+# Enable bun run optimizations
+shell = "system"
+
+# KRINS-specific optimizations
+[env]
+# Ensure TypeScript modules load properly
+NODE_ENV = "development"
