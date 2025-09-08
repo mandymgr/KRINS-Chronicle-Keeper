@@ -1,0 +1,61 @@
+#!/bin/bash
+# Prevent committing loose files in root directory
+
+echo "🔍 Checking for loose files in root..."
+
+# Define files that ARE allowed in root
+ALLOWED_ROOT_FILES=(
+    "README.md"
+    "CLAUDE.md" 
+    ".gitignore"
+    "Dockerfile"
+    "Makefile"
+    "CODEOWNERS"
+    ".editorconfig"
+)
+
+# Check for loose files being ADDED to root (exclude directories and allowed files)
+# Only check files being added, not deleted
+STAGED_ROOT_FILES=$(git diff --cached --name-status | grep -E '^A.*[^/]+$' | cut -f2 | grep -E '^[^/]+$')
+
+if [ ! -z "$STAGED_ROOT_FILES" ]; then
+    FORBIDDEN_FILES=""
+    
+    while IFS= read -r file; do
+        # Skip if file is in allowed list
+        allowed=false
+        for allowed_file in "${ALLOWED_ROOT_FILES[@]}"; do
+            if [ "$file" = "$allowed_file" ]; then
+                allowed=true
+                break
+            fi
+        done
+        
+        # Skip if it's a directory
+        if [ -d "$file" ]; then
+            allowed=true
+        fi
+        
+        if [ "$allowed" = false ]; then
+            FORBIDDEN_FILES="$FORBIDDEN_FILES$file\n"
+        fi
+    done <<< "$STAGED_ROOT_FILES"
+    
+    if [ ! -z "$FORBIDDEN_FILES" ]; then
+        echo "❌ COMMIT BLOCKED: Loose files in root directory!"
+        echo ""
+        echo "🚫 These files don't belong in root:"
+        echo -e "$FORBIDDEN_FILES" | sed 's/^/   - /'
+        echo ""
+        echo "💡 Move them to appropriate directories:"
+        echo "   📁 Config files (*.json, *.lock, *.toml, .env*) → config/"
+        echo "   🔧 Scripts (*.sh, *.py, *.js) → tools/"
+        echo "   📚 Documentation (*.md starting with uppercase) → shared/docs/"
+        echo "   🏗️ Components/code → CORE-PLATFORM/ or AI-SYSTEMS/"
+        echo ""
+        echo "Then run: git add [appropriate_directory]/"
+        exit 1
+    fi
+fi
+
+echo "✅ No forbidden files in root - commit allowed!"
