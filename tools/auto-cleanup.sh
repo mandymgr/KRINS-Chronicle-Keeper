@@ -60,6 +60,7 @@ clean_build_artifacts() {
     
     # Define PROTECTED paths that should NEVER be touched
     PROTECTED_PATHS=(
+        # Core development directories
         "./src"
         "./app"
         "./pages" 
@@ -74,6 +75,8 @@ clean_build_artifacts() {
         "./config"
         "./.github"
         "./shared"
+        
+        # Project-specific directories
         "./CORE-PLATFORM"
         "./AI-SYSTEMS"
         "./AI_INTEGRATION"
@@ -82,6 +85,59 @@ clean_build_artifacts() {
         "./ai-systems"
         "./frontend"
         "./backend"
+        
+        # Planning and documentation directories
+        "./adrs"
+        "./archive" 
+        "./backup"
+        "./backups"
+        "./planning"
+        "./strategies"
+        "./specifications"
+        "./analysis"
+        "./reports"
+        
+        # Organization and workflow directories
+        "./DASHBOARD"
+        "./GOVERNANCE_PROCESS"
+        "./KNOWLEDGE_ORGANIZATION"
+        "./TEAM_COLLABORATION"
+        "./ORGANIZATIONAL_INTELLIGENCE"
+        
+        # Any directory containing valuable data
+        "./data"
+        "./assets"
+        "./resources"
+        "./templates"
+        "./examples"
+        "./samples"
+    )
+    
+    # Define PROTECTED file patterns that should NEVER be touched
+    PROTECTED_FILE_PATTERNS=(
+        "*WORKFLOW*"
+        "*PLAN*"
+        "*STRATEGY*"
+        "*BACKUP*"
+        "*roadmap*"
+        "*spec*"
+        "*analysis*"
+        "*report*"
+        "ADR-*"
+        "*decision*"
+        "*architecture*"
+        "*design*"
+        "README*"
+        "CHANGELOG*"
+        "LICENSE*"
+        "CONTRIBUTING*"
+        "*.md"
+        "*.txt"
+        "*.doc*"
+        "*.pdf"
+        "*.json"
+        "*.yml"
+        "*.yaml"
     )
     
     # ULTRA-SAFE: Only clean build directories that are NOT in protected paths
@@ -105,14 +161,23 @@ clean_build_artifacts() {
                 
                 # Only clean if not protected AND clearly a build output
                 if [ "$is_protected" = false ]; then
-                    # Double-check: must be in root or in DASHBOARD/ directory
-                    if [[ "$path" == "./$build_dir" ]] || [[ "$path" == *"/DASHBOARD/"* ]]; then
-                        BUILD_SIZE=$(du -sk "$path" 2>/dev/null | cut -f1 || echo 0)
-                        info "SAFE TO CLEAN: $path (${BUILD_SIZE}KB)"
-                        rm -rf "$path" 2>/dev/null || true
-                        clean_action "Removed safe build directory: $path" "$BUILD_SIZE"
+                    # CRITICAL: Check for any valuable files inside the directory
+                    VALUABLE_FILES=$(find "$path" -name "*.md" -o -name "*.txt" -o -name "*.json" -o -name "README*" -o -name "CHANGELOG*" 2>/dev/null | head -5)
+                    
+                    if [ ! -z "$VALUABLE_FILES" ]; then
+                        warning "SAFETY BLOCK: $path contains valuable files:"
+                        echo "$VALUABLE_FILES" | sed 's/^/      - /'
+                        warning "PROTECTED: $path preserved (contains documentation)"
                     else
-                        warning "SAFETY CHECK: Skipping $path (not in safe location)"
+                        # Double-check: must be in root or in DASHBOARD/ directory
+                        if [[ "$path" == "./$build_dir" ]] || [[ "$path" == *"/DASHBOARD/"* ]]; then
+                            BUILD_SIZE=$(du -sk "$path" 2>/dev/null | cut -f1 || echo 0)
+                            info "SAFE TO CLEAN: $path (${BUILD_SIZE}KB, no valuable files)"
+                            rm -rf "$path" 2>/dev/null || true
+                            clean_action "Removed safe build directory: $path" "$BUILD_SIZE"
+                        else
+                            warning "SAFETY CHECK: Skipping $path (not in safe location)"
+                        fi
                     fi
                 else
                     info "PROTECTED: $path preserved"
@@ -122,20 +187,57 @@ clean_build_artifacts() {
     done
     
     # ULTRA-SAFE: Only remove obvious temporary files with specific extensions
+    # CRITICAL: NEVER include patterns that could match valuable files
     SAFE_TEMP_PATTERNS=(
         "*.tmp"
         "*.temp"  
         ".DS_Store"
         "Thumbs.db"
         "desktop.ini"
+        "*.log"  # Only if not in protected directory
+        "*.cache"
+        "*.swp"
+        "*.swo"
+        "*~"     # Vim backup files
     )
     
     for pattern in "${SAFE_TEMP_PATTERNS[@]}"; do
         TEMP_FILES=$(find . -name "$pattern" -not -path "*/node_modules/*" -not -path "*/.git/*" 2>/dev/null || true)
         if [ ! -z "$TEMP_FILES" ]; then
-            info "Removing safe temp files: $pattern"
-            echo "$TEMP_FILES" | xargs rm -f 2>/dev/null || true
-            clean_action "Removed safe temporary files: $pattern"
+            # Double-check each file against protected patterns
+            SAFE_TO_DELETE=""
+            while IFS= read -r temp_file; do
+                file_is_protected=false
+                
+                # Check against protected file patterns
+                filename=$(basename "$temp_file")
+                for protected_pattern in "${PROTECTED_FILE_PATTERNS[@]}"; do
+                    if [[ "$filename" == $protected_pattern ]] || [[ "$temp_file" == *"$protected_pattern"* ]]; then
+                        file_is_protected=true
+                        warning "PROTECTED: Keeping $temp_file (matches pattern: $protected_pattern)"
+                        break
+                    fi
+                done
+                
+                # Check if file is in protected directory
+                for protected_path in "${PROTECTED_PATHS[@]}"; do
+                    if [[ "$temp_file" == *"$protected_path"* ]]; then
+                        file_is_protected=true
+                        warning "PROTECTED: Keeping $temp_file (in protected path: $protected_path)"
+                        break
+                    fi
+                done
+                
+                if [ "$file_is_protected" = false ]; then
+                    SAFE_TO_DELETE="$SAFE_TO_DELETE$temp_file\n"
+                fi
+            done <<< "$TEMP_FILES"
+            
+            if [ ! -z "$SAFE_TO_DELETE" ]; then
+                info "Removing verified safe temp files: $pattern"
+                echo -e "$SAFE_TO_DELETE" | grep -v '^$' | xargs rm -f 2>/dev/null || true
+                clean_action "Removed verified safe temporary files: $pattern"
+            fi
         fi
     done
     

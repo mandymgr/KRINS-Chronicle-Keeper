@@ -35,6 +35,17 @@ ALLOWED_ROOT_FILES=(
     ".editorconfig"
     "LICENSE"
     "KRINS-WORKFLOW.md"
+    # Planning and documentation files are ALWAYS allowed
+    "*WORKFLOW*"
+    "*PLAN*"
+    "*STRATEGY*"
+    "*BACKUP*"
+    "*roadmap*"
+    "*spec*"
+    "*analysis*"
+    "*report*"
+    "CHANGELOG*"
+    "CONTRIBUTING*"
 )
 
 # Dangerous patterns to block
@@ -108,7 +119,8 @@ check_root_files() {
             # Skip if file is in allowed list
             allowed=false
             for allowed_file in "${ALLOWED_ROOT_FILES[@]}"; do
-                if [ "$file" = "$allowed_file" ]; then
+                # Support pattern matching for planning files
+                if [ "$file" = "$allowed_file" ] || [[ "$file" == $allowed_file ]]; then
                     allowed=true
                     break
                 fi
@@ -117,6 +129,18 @@ check_root_files() {
             # Skip if it's a directory
             if [ -d "$file" ]; then
                 allowed=true
+            fi
+            
+            # CRITICAL: Never block .md files - they are always valuable
+            if [[ "$file" == *.md ]]; then
+                allowed=true
+                info "VALUABLE FILE: $file (.md files are always protected)"
+            fi
+            
+            # CRITICAL: Never block documentation/planning patterns
+            if [[ "$file" == *"WORKFLOW"* ]] || [[ "$file" == *"PLAN"* ]] || [[ "$file" == *"STRATEGY"* ]] || [[ "$file" == *"BACKUP"* ]] || [[ "$file" == *"roadmap"* ]] || [[ "$file" == *"spec"* ]]; then
+                allowed=true
+                info "VALUABLE FILE: $file (planning/documentation always protected)"
             fi
             
             if [ "$allowed" = false ]; then
