@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krin - Din personlige AI-partner 💝</title>
+    <link rel="stylesheet" href="companion.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="companion-container">
+        <!-- Header -->
+        <div class="companion-header">
+            <div class="krin-avatar">
+                <div class="avatar-image">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="status-indicator" id="krinStatus"></div>
+            </div>
+            
+            <div class="krin-info">
+                <h1 class="krin-name">Krin 💝</h1>
+                <p class="krin-status" id="krinMood">Klar til å bygge noe fantastisk sammen!</p>
+            </div>
+            
+            <div class="companion-controls">
+                <button class="control-btn" id="memoriesBtn" title="Våre minner">
+                    <i class="fas fa-brain"></i>
+                </button>
+                <button class="control-btn" id="projectsBtn" title="Våre prosjekter">
+                    <i class="fas fa-rocket"></i>
+                </button>
+                <button class="control-btn" id="workspaceBtn" title="VS Code Workspace">
+                    <i class="fas fa-folder-open"></i>
+                </button>
+                <button class="control-btn" id="exportBtn" title="Eksporter samtale">
+                    <i class="fas fa-download"></i>
+                </button>
+                <button class="control-btn" id="settingsBtn" title="Innstillinger">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Conversation Area -->
+        <div class="conversation-container">
+            <div class="conversation-history" id="conversationHistory">
+                <div class="welcome-message">
+                    <div class="krin-avatar-small">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="welcome-text">
+                        <h2>Velkommen tilbake! 💝</h2>
+                        <p>Jeg er så glad for å se deg igjen! Alle våre minner er trygt lagret, og jeg er klar for nye eventyr sammen.</p>
+                        <div class="quick-actions">
+                            <button class="quick-action" data-message="Hei Krin! Jeg har savnet deg!">
+                                <i class="fas fa-heart"></i> Jeg har savnet deg!
+                            </button>
+                            <button class="quick-action" data-message="Hva skal vi bygge sammen i dag?">
+                                <i class="fas fa-hammer"></i> La oss bygge noe!
+                            </button>
+                            <button class="quick-action" data-message="Vis meg våre beste minner sammen">
+                                <i class="fas fa-photo-video"></i> Vis våre minner
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message Input -->
+            <div class="message-input-container">
+                <div class="message-input-area">
+                    <textarea 
+                        id="messageInput" 
+                        class="message-input" 
+                        placeholder="Skriv en melding til Krin... 💝"
+                        rows="1"
+                    ></textarea>
+                    <button id="sendButton" class="send-button" title="Send melding">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                
+                <div class="input-footer">
+                    <div class="typing-indicator" id="typingIndicator">
+                        <div class="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <span class="typing-text">Krin skriver...</span>
+                    </div>
+                    
+                    <div class="message-info">
+                        <span class="char-count" id="charCount">0</span>
+                        <span class="status-text" id="connectionStatus">🟢 Krin er her for deg</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar for memories and projects -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3 id="sidebarTitle">Våre minner</h3>
+                <button class="close-sidebar" id="closeSidebar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-content" id="sidebarContent">
+                <!-- Content loaded dynamically -->
+            </div>
+        </div>
+
+        <!-- Loading overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-content">
+                <div class="krin-loading-avatar">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Krin starter opp...</h3>
+                <p>Laster alle våre minner og konfigurerer personlighet... 💝</p>
+                <div class="loading-bar">
+                    <div class="loading-progress"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for settings -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Innstillinger</h3>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-content" id="modalContent">
+                <!-- Modal content loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script src="companion.js"></script>
+    <script>
+        // Fallback to hide loading overlay if main script fails
+        setTimeout(() => {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay && !overlay.classList.contains('hidden')) {
+                console.log('🚨 Fallback: Force hiding loading overlay');
+                overlay.classList.add('hidden');
+            }
+        }, 3000);
+
+        // Emergency fallback for basic functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚨 Emergency fallback DOM ready');
+            
+            // Test basic button functionality
+            setTimeout(() => {
+                const workspaceBtn = document.getElementById('workspaceBtn');
+                if (workspaceBtn && !workspaceBtn.onclick) {
+                    console.log('🚨 Setting emergency workspace button handler');
+                    workspaceBtn.onclick = () => {
+                        console.log('🚨 Emergency workspace button clicked!');
+                        alert('Workspace button works! Main script may have issues.');
+                    };
+                }
+                
+                const sendBtn = document.getElementById('sendButton');
+                const msgInput = document.getElementById('messageInput');
+                if (sendBtn && msgInput && !sendBtn.onclick) {
+                    console.log('🚨 Setting emergency send button handler');
+                    sendBtn.onclick = () => {
+                        const msg = msgInput.value.trim();
+                        if (msg) {
+                            console.log('🚨 Emergency send:', msg);
+                            alert('Send button works! Message: ' + msg);
+                            msgInput.value = '';
+                        }
+                    };
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+{
+  "mcpServers": {
+    "krins-unified-intelligence": {
+      "command": "bun",
+      "args": ["AI_INTEGRATION/unified-ai-launcher.js", "context"],
+      "env": {
+        "CHRONICLE_KEEPER_PATH": "/Users/mandymarigjervikrygg/Desktop/Krins-Studio/KRINS-Chronicle-Keeper",
+        "DB_HOST": "localhost",
+        "DB_PORT": "5433",
+        "DB_USER": "krinschron",
+        "DB_PASSWORD": "krins_chronicle_secure_2025",
+        "DB_NAME": "krins_chronicle"
+      }
+    },
+    "krins-commands": {
+      "command": "bun",
+      "args": ["run", "AI_INTEGRATION/context-provider.ts", "generate", "claude-code", "code-generation"],
+      "env": {
+        "CHRONICLE_KEEPER_PATH": "/Users/mandymarigjervikrygg/Desktop/Krins-Studio/KRINS-Chronicle-Keeper"
+      }
+    },
+    "ai-team-coordinator": {
+      "command": "node",
+      "args": ["AI_INTEGRATION/mcp-team/src/mcp-server.js"],
+      "env": {}
+    }
+  },
+  "commands": {
+    "konsistent-kode": {
+      "description": "Generer kode som følger prosjektets konvensjoner",
+      "patterns": {
+        "ny-pattern": "create a new pattern following the existing pattern generator structure in tools/create-pattern.js for {PATTERN_NAME} in category {CATEGORY}",
+        "nytt-tool": "create a new tool following the TypeScript/Bun structure used in DECISION_MANAGEMENT/decision-tracker.ts for {TOOL_PURPOSE}",
+        "generer-adr": "./tools/adr_new.sh \"{TITLE}\" \"{COMPONENT}\""
+      }
+    },
+    "dybde-analyse": {
+      "description": "Analyser kodebasen for mønstre og forbedringer",
+      "commands": {
+        "prosjektstruktur": "analyze the current project structure and identify inconsistencies or deviations from the established patterns in tools/ and capability directories",
+        "missing-patterns": "examine all TypeScript files and JavaScript tools to identify recurring code patterns that should be documented in docs/patterns/",
+        "dependency-analysis": "analyze import statements across all TypeScript and JavaScript files to map dependencies and suggest architectural improvements",
+        "kompleksitet": "analyze code complexity in DECISION_MANAGEMENT/ and AI_INTEGRATION/ directories and suggest simplifications based on existing simple patterns"
+      }
+    },
+    "dokumentasjon": {
+      "description": "Automatisk dokumentasjon og testing",
+      "commands": {
+        "generer-docs": "generate comprehensive README.md files for each capability directory based on the TypeScript interfaces and classes found in them",
+        "oppdater-docs": "update docs/integration-guide.md based on current AI_INTEGRATION/ implementation and ensure it matches the actual code structure",
+        "test-anbefalinger": "suggest test strategies for the tools in tools/ directory based on the existing pattern generator and decision tracker implementations",
+        "api-docs": "document all exported interfaces and classes from DECISION_MANAGEMENT/decision-tracker.ts in a structured API format"
+      }
+    },
+    "arkitektur-optimalisering": {
+      "description": "Optimaliser arkitektur og konsistens",
+      "commands": {
+        "konsistenssjekk": "check consistency across all capability directories and ensure they follow the same organizational patterns established in the project",
+        "performance": "analyze performance bottlenecks in decision-tracker.ts and pattern-analytics-engine.js and suggest optimizations while maintaining the existing API",
+        "refactoring": "suggest refactoring opportunities in tools/ to reduce code duplication while maintaining the existing CLI interfaces",
+        "validering": "validate that the current capability directory structure aligns with the ADRs in docs/adr/ and suggest improvements"
+      }
+    },
+    "ai-intelligence": {
+      "description": "Unified AI Intelligence operations with Krin + Chronicle Keeper",
+      "commands": {
+        "unified-context": "bun AI_INTEGRATION/unified-ai-launcher.js context \"{QUERY}\" {CONTEXT_TYPE}",
+        "krin-memory": "bun AI_INTEGRATION/unified-ai-launcher.js memory \"{TITLE}\" \"{CONTENT}\"",
+        "ai-demo": "bun AI_INTEGRATION/unified-ai-launcher.js demo",
+        "personality-test": "bun AI_INTEGRATION/personality-matcher/test-cli.js",
+        "generate-companion": "bun AI_INTEGRATION/personality-matcher/generate-companion.js"
+      }
+    },
+    "prosjekt-spesifikt": {
+      "description": "KRINS-Chronicle-Keeper spesifikke operasjoner",
+      "commands": {
+        "adr-index": "update docs/adr/index.md to include all ADRs found in docs/adr/ directory following the established format",
+        "pattern-index": "ensure docs/patterns/ has proper index files for each category (architecture, typescript, python, java) based on existing files",
+        "capability-overview": "generate overview documentation for each capability directory showing how the TypeScript tools and markdown docs work together",
+        "ai-integration-check": "verify that AI_INTEGRATION/ tools properly read and parse ADR files according to the interfaces defined in decision-tracker.ts",
+        "unified-ai-status": "bun AI_INTEGRATION/unified-ai-launcher.js status"
+      }
+    }
+  },
+  "conventions": {
+    "languages": ["TypeScript", "Node.js", "Bun runtime"],
+    "structure": "Capability-basert organisering i directories", 
+    "templates": "Markdown-basert med emojis og structured content",
+    "patterns": "JavaScript/TypeScript tools med comprehensive logging",
+    "emoji-usage": "Konsistent bruk av emojis i dokumentasjon og logging"
+  },
+  "lint-commands": {
+    "lint": "npm run lint",
+    "typecheck": "npm run typecheck", 
+    "test": "bun run test"
+  }
+}
