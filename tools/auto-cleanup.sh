@@ -115,6 +115,7 @@ clean_build_artifacts() {
     
     # Define PROTECTED file patterns that should NEVER be touched
     PROTECTED_FILE_PATTERNS=(
+        # Planning and documentation files
         "*WORKFLOW*"
         "*PLAN*"
         "*STRATEGY*"
@@ -135,9 +136,70 @@ clean_build_artifacts() {
         "*.txt"
         "*.doc*"
         "*.pdf"
+        
+        # Configuration files
         "*.json"
         "*.yml"
         "*.yaml"
+        "*.toml"
+        "*.ini"
+        "*.cfg"
+        "*.conf"
+        ".gitignore"
+        ".gitattributes"
+        
+        # Database files
+        "*.sql"
+        "*.db"
+        "*.sqlite"
+        "*.sqlite3"
+        "*migration*"
+        "*seed*"
+        "*schema*"
+        
+        # Security and environment files
+        "*.env*"
+        "*.key"
+        "*.pem"
+        "*.cert"
+        "*.crt"
+        "*.p12"
+        "*.jks"
+        "*.pfx"
+        ".env*"
+        "*secret*"
+        "*credential*"
+        
+        # Infrastructure files
+        "Dockerfile*"
+        "docker-compose*"
+        "*install*"
+        "*setup*"
+        "*deploy*"
+        "*init*"
+        "nginx.conf"
+        "*.service"
+        
+        # Scripts and executables
+        "*.sh"
+        "*.bat"
+        "*.ps1"
+        "*.py"
+        "*.rb"
+        "*.pl"
+        "*.php"
+        
+        # Package and dependency files
+        "package*.json"
+        "yarn.lock"
+        "pnpm-lock.yaml"
+        "composer.lock"
+        "Pipfile*"
+        "requirements*.txt"
+        "Cargo.toml"
+        "Cargo.lock"
+        "go.mod"
+        "go.sum"
     )
     
     # ULTRA-SAFE: Only clean build directories that are NOT in protected paths
@@ -173,8 +235,40 @@ clean_build_artifacts() {
                         if [[ "$path" == "./$build_dir" ]] || [[ "$path" == *"/DASHBOARD/"* ]]; then
                             BUILD_SIZE=$(du -sk "$path" 2>/dev/null | cut -f1 || echo 0)
                             info "SAFE TO CLEAN: $path (${BUILD_SIZE}KB, no valuable files)"
-                            rm -rf "$path" 2>/dev/null || true
-                            clean_action "Removed safe build directory: $path" "$BUILD_SIZE"
+                            
+                            # ULTRA-SAFE: Move to quarantine first, then ask for confirmation
+                            QUARANTINE_DIR="./quarantine-for-deletion"
+                            mkdir -p "$QUARANTINE_DIR"
+                            TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+                            QUARANTINE_PATH="$QUARANTINE_DIR/$(basename "$path")_$TIMESTAMP"
+                            
+                            echo ""
+                            warning "🔒 ULTRA-SAFE QUARANTINE SYSTEM 🔒"
+                            info "Moving to quarantine instead of deleting: $path (${BUILD_SIZE}KB)"
+                            echo ""
+                            echo "Options:"
+                            echo "  [q] Move to quarantine (recommended - can be restored)"
+                            echo "  [d] Delete permanently (dangerous)"  
+                            echo "  [s] Skip (keep file)"
+                            echo ""
+                            echo -n "Choose [q/d/s]: "
+                            read -r choice
+                            
+                            case "$choice" in
+                                [Qq])
+                                    mv "$path" "$QUARANTINE_PATH" 2>/dev/null || true
+                                    clean_action "QUARANTINED (can be restored): $path → $QUARANTINE_PATH" "$BUILD_SIZE"
+                                    info "💾 To restore: mv \"$QUARANTINE_PATH\" \"$path\""
+                                    ;;
+                                [Dd])
+                                    warning "⚠️  PERMANENT DELETION CONFIRMED ⚠️"
+                                    rm -rf "$path" 2>/dev/null || true
+                                    clean_action "PERMANENTLY DELETED: $path" "$BUILD_SIZE"
+                                    ;;
+                                *)
+                                    info "PRESERVED: $path (user chose to skip)"
+                                    ;;
+                            esac
                         else
                             warning "SAFETY CHECK: Skipping $path (not in safe location)"
                         fi
@@ -234,9 +328,47 @@ clean_build_artifacts() {
             done <<< "$TEMP_FILES"
             
             if [ ! -z "$SAFE_TO_DELETE" ]; then
-                info "Removing verified safe temp files: $pattern"
-                echo -e "$SAFE_TO_DELETE" | grep -v '^$' | xargs rm -f 2>/dev/null || true
-                clean_action "Removed verified safe temporary files: $pattern"
+                info "Found verified safe temp files: $pattern"
+                echo "$SAFE_TO_DELETE" | sed 's/^/      - /'
+                
+                # ULTRA-SAFE: Use quarantine system for temp files too
+                QUARANTINE_DIR="./quarantine-for-deletion"
+                mkdir -p "$QUARANTINE_DIR"
+                TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+                
+                echo ""
+                warning "🔒 ULTRA-SAFE QUARANTINE SYSTEM 🔒"
+                echo "Found $(echo "$SAFE_TO_DELETE" | wc -l) temporary files with pattern: $pattern"
+                echo ""
+                echo "Options:"
+                echo "  [q] Move to quarantine (recommended - can be restored)"
+                echo "  [d] Delete permanently (dangerous)"
+                echo "  [s] Skip (keep files)"
+                echo ""
+                echo -n "Choose [q/d/s]: "
+                read -r choice
+                
+                case "$choice" in
+                    [Qq])
+                        QUARANTINE_SUBDIR="$QUARANTINE_DIR/temp_files_${pattern}_$TIMESTAMP"
+                        mkdir -p "$QUARANTINE_SUBDIR"
+                        while IFS= read -r file; do
+                            if [ ! -z "$file" ]; then
+                                mv "$file" "$QUARANTINE_SUBDIR/" 2>/dev/null || true
+                            fi
+                        done <<< "$SAFE_TO_DELETE"
+                        clean_action "QUARANTINED temp files: $pattern → $QUARANTINE_SUBDIR"
+                        info "💾 To restore: mv \"$QUARANTINE_SUBDIR\"/* ./"
+                        ;;
+                    [Dd])
+                        warning "⚠️  PERMANENT DELETION CONFIRMED ⚠️"
+                        echo -e "$SAFE_TO_DELETE" | grep -v '^$' | xargs rm -f 2>/dev/null || true
+                        clean_action "PERMANENTLY DELETED temp files: $pattern"
+                        ;;
+                    *)
+                        info "PRESERVED: Temporary files preserved (user chose to skip)"
+                        ;;
+                esac
             fi
         fi
     done

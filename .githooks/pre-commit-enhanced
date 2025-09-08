@@ -137,10 +137,46 @@ check_root_files() {
                 info "VALUABLE FILE: $file (.md files are always protected)"
             fi
             
-            # CRITICAL: Never block documentation/planning patterns
-            if [[ "$file" == *"WORKFLOW"* ]] || [[ "$file" == *"PLAN"* ]] || [[ "$file" == *"STRATEGY"* ]] || [[ "$file" == *"BACKUP"* ]] || [[ "$file" == *"roadmap"* ]] || [[ "$file" == *"spec"* ]]; then
+            # CRITICAL: Never block valuable file patterns - comprehensive protection
+            if [[ "$file" == *"WORKFLOW"* ]] || [[ "$file" == *"PLAN"* ]] || [[ "$file" == *"STRATEGY"* ]] || [[ "$file" == *"BACKUP"* ]] || [[ "$file" == *"roadmap"* ]] || [[ "$file" == *"spec"* ]] || [[ "$file" == *"analysis"* ]] || [[ "$file" == *"report"* ]] || [[ "$file" == "ADR-"* ]] || [[ "$file" == *"decision"* ]] || [[ "$file" == *"architecture"* ]] || [[ "$file" == *"design"* ]]; then
                 allowed=true
                 info "VALUABLE FILE: $file (planning/documentation always protected)"
+            fi
+            
+            # CRITICAL: Never block configuration files
+            if [[ "$file" == *.json ]] || [[ "$file" == *.yml ]] || [[ "$file" == *.yaml ]] || [[ "$file" == *.toml ]] || [[ "$file" == *.ini ]] || [[ "$file" == *.cfg ]] || [[ "$file" == *.conf ]] || [[ "$file" == ".gitignore" ]] || [[ "$file" == ".gitattributes" ]]; then
+                allowed=true
+                info "VALUABLE FILE: $file (configuration files always protected)"
+            fi
+            
+            # CRITICAL: Never block database files
+            if [[ "$file" == *.sql ]] || [[ "$file" == *.db ]] || [[ "$file" == *.sqlite* ]] || [[ "$file" == *"migration"* ]] || [[ "$file" == *"seed"* ]] || [[ "$file" == *"schema"* ]]; then
+                allowed=true
+                info "VALUABLE FILE: $file (database files always protected)"
+            fi
+            
+            # CRITICAL: Never block security/environment files
+            if [[ "$file" == *.env* ]] || [[ "$file" == *.key ]] || [[ "$file" == *.pem ]] || [[ "$file" == *.cert ]] || [[ "$file" == *.crt ]] || [[ "$file" == *.p12 ]] || [[ "$file" == *.jks ]] || [[ "$file" == *.pfx ]] || [[ "$file" == *"secret"* ]] || [[ "$file" == *"credential"* ]]; then
+                allowed=true
+                info "VALUABLE FILE: $file (security/environment files always protected)"
+            fi
+            
+            # CRITICAL: Never block infrastructure files
+            if [[ "$file" == "Dockerfile"* ]] || [[ "$file" == "docker-compose"* ]] || [[ "$file" == *"install"* ]] || [[ "$file" == *"setup"* ]] || [[ "$file" == *"deploy"* ]] || [[ "$file" == *"init"* ]] || [[ "$file" == "nginx.conf" ]] || [[ "$file" == *.service ]]; then
+                allowed=true
+                info "VALUABLE FILE: $file (infrastructure files always protected)"
+            fi
+            
+            # CRITICAL: Never block scripts and executables
+            if [[ "$file" == *.sh ]] || [[ "$file" == *.bat ]] || [[ "$file" == *.ps1 ]] || [[ "$file" == *.py ]] || [[ "$file" == *.rb ]] || [[ "$file" == *.pl ]] || [[ "$file" == *.php ]]; then
+                allowed=true
+                info "VALUABLE FILE: $file (scripts/executables always protected)"
+            fi
+            
+            # CRITICAL: Never block package/dependency files
+            if [[ "$file" == "package"*.json ]] || [[ "$file" == "yarn.lock" ]] || [[ "$file" == "pnpm-lock.yaml" ]] || [[ "$file" == "composer.lock" ]] || [[ "$file" == "Pipfile"* ]] || [[ "$file" == "requirements"*.txt ]] || [[ "$file" == "Cargo.toml" ]] || [[ "$file" == "Cargo.lock" ]] || [[ "$file" == "go.mod" ]] || [[ "$file" == "go.sum" ]]; then
+                allowed=true
+                info "VALUABLE FILE: $file (package/dependency files always protected)"
             fi
             
             if [ "$allowed" = false ]; then
