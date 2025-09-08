@@ -9,6 +9,9 @@ import {
   Activity
 } from 'lucide-react'
 import { analyticsService } from '@/services/api'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components_dev_memory/ui/Card'
+import { Badge } from '@/components_dev_memory/ui/Badge'
+import { Button } from '@/components_dev_memory/ui/Button'
 
 export function Dashboard() {
   const { data: overview, isLoading, error } = useQuery({
@@ -142,18 +145,27 @@ export function Dashboard() {
 
       {/* Status Distribution */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="card">
-          <div className="card-header">
-            <h3 className="card-title">Decision Status Distribution</h3>
-            <p className="card-description">Current status of all decisions</p>
-          </div>
-          <div className="card-content">
+        <Card>
+          <CardHeader>
+            <CardTitle>Decision Status Distribution</CardTitle>
+            <CardDescription>Current status of all decisions</CardDescription>
+          </CardHeader>
+          <CardContent>
             <div className="space-y-3">
               {Object.entries(metrics.status_distribution).map(([status, count]) => (
                 <div key={status} className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <div className={`status-dot ${status}`} />
-                    <span className="text-sm font-medium capitalize">{status}</span>
+                    <Badge 
+                      variant={
+                        status === 'accepted' ? 'default' :
+                        status === 'proposed' ? 'secondary' :
+                        status === 'superseded' ? 'outline' :
+                        'destructive'
+                      }
+                      className="capitalize"
+                    >
+                      {status}
+                    </Badge>
                   </div>
                   <div className="flex items-center space-x-2">
                     <span className="text-sm text-secondary-600">{count}</span>
@@ -172,16 +184,16 @@ export function Dashboard() {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Component Activity */}
-        <div className="card">
-          <div className="card-header">
-            <h3 className="card-title">Most Active Components</h3>
-            <p className="card-description">Components with recent decision activity</p>
-          </div>
-          <div className="card-content">
+        <Card>
+          <CardHeader>
+            <CardTitle>Most Active Components</CardTitle>
+            <CardDescription>Components with recent decision activity</CardDescription>
+          </CardHeader>
+          <CardContent>
             <div className="space-y-3">
               {metrics.component_activity.slice(0, 6).map((component, index) => (
                 <div key={component.component} className="flex items-center justify-between">
@@ -200,17 +212,17 @@ export function Dashboard() {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Health Components Breakdown */}
-      <div className="card">
-        <div className="card-header">
-          <h3 className="card-title">Health Score Breakdown</h3>
-          <p className="card-description">Detailed view of organizational intelligence health components</p>
-        </div>
-        <div className="card-content">
+      <Card>
+        <CardHeader>
+          <CardTitle>Health Score Breakdown</CardTitle>
+          <CardDescription>Detailed view of organizational intelligence health components</CardDescription>
+        </CardHeader>
+        <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <HealthComponent
               title="Activity Level"
@@ -233,16 +245,16 @@ export function Dashboard() {
               description="Spread across components"
             />
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Quick Actions */}
-      <div className="card">
-        <div className="card-header">
-          <h3 className="card-title">Quick Actions</h3>
-          <p className="card-description">Common tasks and next steps</p>
-        </div>
-        <div className="card-content">
+      <Card>
+        <CardHeader>
+          <CardTitle>Quick Actions</CardTitle>
+          <CardDescription>Common tasks and next steps</CardDescription>
+        </CardHeader>
+        <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <QuickAction
               title="Create New ADR"
@@ -263,8 +275,8 @@ export function Dashboard() {
               icon={Brain}
             />
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
@@ -286,20 +298,20 @@ function MetricCard({ title, value, change, icon: Icon, color }: MetricCardProps
   }
 
   return (
-    <div className="card">
-      <div className="card-content">
+    <Card>
+      <CardContent className="pt-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-secondary-600">{title}</p>
-            <p className="text-2xl font-bold text-secondary-900">{value}</p>
-            <p className="text-xs text-secondary-500 mt-1">{change}</p>
+            <p className="text-sm font-medium text-muted-foreground">{title}</p>
+            <p className="text-2xl font-bold">{value}</p>
+            <p className="text-xs text-muted-foreground mt-1">{change}</p>
           </div>
           <div className={`p-3 rounded-lg ${colorClasses[color]}`}>
             <Icon className="h-6 w-6" />
           </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   )
 }
 
@@ -367,21 +379,24 @@ interface QuickActionProps {
 
 function QuickAction({ title, description, href, icon: Icon }: QuickActionProps) {
   return (
-    <a
-      href={href}
-      className="block p-4 rounded-lg border border-secondary-200 hover:border-primary-300 hover:bg-primary-50 transition-colors group"
+    <Button
+      variant="outline"
+      className="h-auto p-4 justify-start hover:bg-accent hover:text-accent-foreground"
+      asChild
     >
-      <div className="flex items-start space-x-3">
-        <div className="p-2 bg-primary-100 rounded-lg group-hover:bg-primary-200 transition-colors">
-          <Icon className="h-5 w-5 text-primary-600" />
+      <a href={href}>
+        <div className="flex items-start space-x-3 w-full">
+          <div className="p-2 bg-primary/10 rounded-lg">
+            <Icon className="h-5 w-5 text-primary" />
+          </div>
+          <div className="text-left">
+            <h4 className="text-sm font-medium">
+              {title}
+            </h4>
+            <p className="text-xs text-muted-foreground mt-1">{description}</p>
+          </div>
         </div>
-        <div>
-          <h4 className="text-sm font-medium text-secondary-900 group-hover:text-primary-900">
-            {title}
-          </h4>
-          <p className="text-xs text-secondary-500 mt-1">{description}</p>
-        </div>
-      </div>
-    </a>
+      </a>
+    </Button>
   )
 }

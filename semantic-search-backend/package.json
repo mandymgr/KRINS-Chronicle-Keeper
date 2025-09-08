@@ -1,0 +1,45 @@
+{
+  "name": "krins-semantic-search-backend",
+  "version": "1.0.0",
+  "description": "🧠 KRINS Revolutionary Semantic Search Backend with AI Memory Integration",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "pg": "^8.11.3",
+    "pgvector": "^0.1.8",
+    "@tensorflow/tfjs-node": "^4.14.0",
+    "@tensorflow/tfjs": "^4.14.0",
+    "universal-sentence-encoder": "^1.3.3",
+    "dotenv": "^16.3.1",
+    "uuid": "^9.0.1",
+    "winston": "^3.11.0",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.1.5",
+    "joi": "^17.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "jest": "^29.7.0",
+    "eslint": "^8.56.0"
+  },
+  "keywords": [
+    "semantic-search",
+    "ai",
+    "pgvector",
+    "tensorflow",
+    "memory",
+    "krins"
+  ],
+  "author": "KRINS Studio",
+  "license": "MIT"
+}
