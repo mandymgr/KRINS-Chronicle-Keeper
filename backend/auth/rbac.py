@@ -16,7 +16,7 @@ from sqlalchemy import select
 from fastapi import HTTPException, status, Depends
 
 from .config import PermissionScope, DEFAULT_ROLES, DEFAULT_PERMISSIONS
-from ..database.auth_models import User, Role, Permission, user_roles, role_permissions
+from database.auth_models import User, Role, Permission, user_roles, role_permissions
 
 @dataclass
 class UserPermissions:

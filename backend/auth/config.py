@@ -5,9 +5,38 @@ JWT settings, password policies, and security configuration
 
 from datetime import timedelta
 from typing import List, Optional
-from pydantic import BaseSettings, validator
+from enum import Enum
+from pydantic_settings import BaseSettings
+from pydantic import validator
 import secrets
 import string
+
+class PermissionScope(Enum):
+    """Permission scopes for RBAC system"""
+    # User management
+    USER_READ = "user:read"
+    USER_WRITE = "user:write" 
+    USER_DELETE = "user:delete"
+    
+    # ADR management
+    ADR_READ = "adr:read"
+    ADR_WRITE = "adr:write"
+    ADR_DELETE = "adr:delete"
+    ADR_APPROVE = "adr:approve"
+    
+    # Decision management
+    DECISION_READ = "decision:read"
+    DECISION_WRITE = "decision:write"
+    DECISION_DELETE = "decision:delete"
+    
+    # Pattern management
+    PATTERN_READ = "pattern:read"
+    PATTERN_WRITE = "pattern:write"
+    PATTERN_DELETE = "pattern:delete"
+    
+    # System administration
+    SYSTEM_ADMIN = "system:admin"
+    ANALYTICS_READ = "analytics:read"
 
 class AuthSettings(BaseSettings):
     """Authentication and security settings"""

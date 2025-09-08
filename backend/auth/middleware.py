@@ -15,8 +15,8 @@ from datetime import datetime, timezone
 
 from .jwt_manager import jwt_manager, token_blacklist
 from .rbac import RBACService, UserPermissions, permission_cache
-from ..database.connection import get_db_session
-from ..database.auth_models import AuditLog
+from database.connection import get_db_session
+from database.auth_models import AuditLog
 
 logger = logging.getLogger(__name__)
 

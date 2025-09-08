@@ -14,11 +14,11 @@ from sqlalchemy import select, and_, or_
 from pydantic import BaseModel, EmailStr, Field, validator
 import ipaddress
 
-from ..database.auth_models import User, Role, UserStatus, AuditLog, UserSession
-from ..auth.jwt_manager import jwt_manager, token_blacklist
-from ..auth.rbac import RBACService, UserPermissions, require_permission, require_admin
-from ..auth.config import auth_settings, PasswordPolicy, PermissionScope
-from ..database.connection import get_db_session
+from database.auth_models import User, Role, UserStatus, AuditLog, UserSession
+from auth.jwt_manager import jwt_manager, token_blacklist
+from auth.rbac import RBACService, UserPermissions, require_permission, require_admin
+from auth.config import auth_settings, PasswordPolicy, PermissionScope
+from database.connection import get_db_session
 
 # Pydantic models for API requests/responses
 class UserRegistration(BaseModel):
@@ -368,7 +368,7 @@ class AuthService:
         # Note: Commit handled by caller
 
 # FastAPI router
-router = APIRouter(prefix="/api/v1/auth", tags=["Authentication"])
+auth_router = APIRouter(prefix="/api/v1/auth", tags=["Authentication"])
 security = HTTPBearer()
 
 def get_client_ip(request: Request) -> str:
@@ -378,7 +378,7 @@ def get_client_ip(request: Request) -> str:
         return forwarded.split(',')[0].strip()
     return request.client.host
 
-@router.post("/register", response_model=UserProfile, status_code=status.HTTP_201_CREATED)
+@auth_router.post("/register", response_model=UserProfile, status_code=status.HTTP_201_CREATED)
 async def register_user(
     registration: UserRegistration,
     request: Request,
@@ -400,7 +400,7 @@ async def register_user(
             detail=f"Registration failed: {str(e)}"
         )
 
-@router.post("/login", response_model=TokenResponse)
+@auth_router.post("/login", response_model=TokenResponse)
 async def login_user(
     credentials: UserLogin,
     request: Request,
@@ -441,7 +441,7 @@ async def login_user(
     
     return token_response
 
-@router.post("/logout")
+@auth_router.post("/logout")
 async def logout_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
     db: AsyncSession = Depends(get_db_session)
@@ -471,7 +471,7 @@ async def logout_user(
             detail=f"Logout failed: {str(e)}"
         )
 
-@router.get("/profile", response_model=UserProfile)
+@auth_router.get("/profile", response_model=UserProfile)
 async def get_current_user_profile(
     current_user: UserPermissions = Depends(require_permission(PermissionScope.USER_READ)),
     db: AsyncSession = Depends(get_db_session)
@@ -488,7 +488,7 @@ async def get_current_user_profile(
     
     return profile
 
-@router.put("/profile", response_model=UserProfile)
+@auth_router.put("/profile", response_model=UserProfile)
 async def update_user_profile(
     updates: UserUpdate,
     current_user: UserPermissions = Depends(require_permission(PermissionScope.USER_READ)),
@@ -517,11 +517,11 @@ async def update_user_profile(
     auth_service = AuthService(db)
     return await auth_service.get_user_profile(current_user.user_id)
 
-@router.post("/change-password")
+@auth_router.post("/change-password")
 async def change_password(
     password_change: PasswordChange,
-    current_user: UserPermissions = Depends(require_permission(PermissionScope.USER_READ)),
     request: Request,
+    current_user: UserPermissions = Depends(require_permission(PermissionScope.USER_READ)),
     db: AsyncSession = Depends(get_db_session)
 ):
     """Change user password"""
@@ -583,7 +583,7 @@ async def change_password(
     return {"message": "Password successfully changed"}
 
 # Admin endpoints
-@router.get("/users", response_model=List[UserProfile])
+@auth_router.get("/users", response_model=List[UserProfile])
 @require_admin()
 async def list_users(
     skip: int = 0,
@@ -606,7 +606,7 @@ async def list_users(
     
     return profiles
 
-@router.post("/users", response_model=UserProfile, status_code=status.HTTP_201_CREATED)
+@auth_router.post("/users", response_model=UserProfile, status_code=status.HTTP_201_CREATED)
 @require_admin()
 async def create_user_admin(
     user_data: UserCreateAdmin,

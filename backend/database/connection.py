@@ -19,6 +19,11 @@ DATABASE_URL = os.getenv(
     "postgresql+asyncpg://krins:krins_password@localhost:5433/krins_db"
 )
 
+# Ensure URL has asyncpg driver for SQLAlchemy
+if not DATABASE_URL.startswith("postgresql+asyncpg://"):
+    if DATABASE_URL.startswith("postgresql://"):
+        DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://")
+
 # Create async engine
 engine = create_async_engine(
     DATABASE_URL,
@@ -118,7 +123,7 @@ async def init_database():
         await db_manager.create_tables()
         
         # Initialize default roles and permissions
-        from ..auth.rbac import RBACService
+        from auth.rbac import RBACService
         async with get_db_session_context() as db:
             rbac_service = RBACService(db)
             await rbac_service.initialize_default_roles_and_permissions()

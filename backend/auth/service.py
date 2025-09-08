@@ -16,7 +16,7 @@ from fastapi import HTTPException, status
 from .models import UserRegistration, UserLogin, ProfileUpdate, PasswordUpdate
 from .jwt_manager import jwt_manager, token_blacklist
 from .rbac import RBACService, UserPermissions, permission_cache
-from ..database.auth_models import User, AuditLog, UserSession, ApiKey
+from database.auth_models import User, AuditLog, UserSession, ApiKey
 from .config import auth_settings
 
 logger = logging.getLogger(__name__)

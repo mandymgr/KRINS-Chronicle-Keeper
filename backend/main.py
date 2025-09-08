@@ -51,6 +51,11 @@ configure_middleware(app)
 
 # Database connection pool
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://krins:krins_password@localhost:5433/krins_db")
+
+# Fix DATABASE_URL for asyncpg (remove +asyncpg suffix)
+if DATABASE_URL.startswith("postgresql+asyncpg://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql+asyncpg://", "postgresql://")
+
 db_pool = None
 
 @app.on_event("startup")
