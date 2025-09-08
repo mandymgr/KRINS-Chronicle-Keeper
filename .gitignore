@@ -1,24 +1,80 @@
+# IDEs and Editors
 .vscode/
 !.vscode/extensions.json
-# Frontend
-frontend/node_modules/
-frontend/dist/
-frontend/.DS_Store
-frontend/bun.lock
+.idea/
+*.swp
+*.swo
+*~
 
-# Backend
-backend/.env
-backend/__pycache__/
-*.pyc
-
-# System
-.DS_Store
-
-# Node modules everywhere  
+# Dependencies and Lock Files
 **/node_modules/
+**/*.lock
+**/bun.lock
+**/yarn.lock
+**/package-lock.json
+**/pnpm-lock.yaml
 
-# Large binary files
-AI_INTEGRATION/krin-companion/KRIN-SYSTEM/dist/
-*.dmg
-*.zip
-*.app
+# Build Outputs and Dist
+**/dist/
+**/build/
+**/.next/
+**/out/
+**/coverage/
+
+# Environment and Config Files  
+**/.env
+**/.env.local
+**/.env.*.local
+**/config/local.json
+**/secrets.*
+
+# Cache and Temp Files
+**/.cache/
+**/tmp/
+**/temp/
+**/.tmp/
+**/.DS_Store
+**/Thumbs.db
+
+# Python
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.pytest_cache/
+**/venv/
+**/env/
+
+# Logs
+**/*.log
+**/logs/
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+
+# Large Binary Files
+**/*.dmg
+**/*.zip
+**/*.tar.gz
+**/*.rar
+**/*.app
+**/*.exe
+**/*.msi
+
+# System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Claude and AI Tools
+.claude/
+**/.claude/
+
+# Database Files
+**/*.sqlite
+**/*.sqlite3
+**/*.db
