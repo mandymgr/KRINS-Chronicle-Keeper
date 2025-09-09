@@ -1,0 +1,900 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "KRINS-Chronicle-Keeper API",
+    "description": "World's first AI-powered organizational intelligence platform - Complete API documentation for enterprise integration",
+    "version": "2.0.0",
+    "contact": {
+      "name": "KRINS Engineering Team",
+      "email": "engineering@krins.company",
+      "url": "https://docs.krins.company"
+    },
+    "license": {
+      "name": "Commercial License",
+      "url": "https://krins.company/license"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.krins.company",
+      "description": "Production server"
+    },
+    {
+      "url": "https://staging-api.krins.company", 
+      "description": "Staging server"
+    },
+    {
+      "url": "http://localhost:8000",
+      "description": "Development server"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "ADR Management",
+      "description": "Architecture Decision Records - Create, manage, and analyze architectural decisions"
+    },
+    {
+      "name": "Decision Intelligence",
+      "description": "AI-powered decision analytics and insights"
+    },
+    {
+      "name": "Semantic Search",
+      "description": "Vector-based semantic search and similarity matching"
+    },
+    {
+      "name": "AI Integration",
+      "description": "AI coordination and organizational intelligence"
+    },
+    {
+      "name": "Team Collaboration",
+      "description": "Real-time collaboration and WebSocket APIs"
+    },
+    {
+      "name": "Analytics",
+      "description": "Business intelligence and performance metrics"
+    },
+    {
+      "name": "System",
+      "description": "Health checks and system administration"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": ["System"],
+        "summary": "System health check",
+        "description": "Returns comprehensive system health status including all services",
+        "responses": {
+          "200": {
+            "description": "System is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adrs": {
+      "get": {
+        "tags": ["ADR Management"],
+        "summary": "List all ADRs",
+        "description": "Retrieve all Architecture Decision Records with filtering and pagination",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by ADR status",
+            "schema": {
+              "type": "string",
+              "enum": ["proposed", "accepted", "rejected", "superseded"]
+            }
+          },
+          {
+            "name": "component", 
+            "in": "query",
+            "description": "Filter by component/system",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query", 
+            "description": "Number of items per page",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of ADRs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ADRList"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["ADR Management"],
+        "summary": "Create new ADR",
+        "description": "Create a new Architecture Decision Record with AI-powered suggestions",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateADR"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "ADR created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ADR"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adrs/{adr_id}": {
+      "get": {
+        "tags": ["ADR Management"],
+        "summary": "Get specific ADR",
+        "description": "Retrieve a specific ADR with related decisions and analytics",
+        "parameters": [
+          {
+            "name": "adr_id",
+            "in": "path",
+            "required": true,
+            "description": "ADR identifier",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ADR details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ADRDetail"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "ADR not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["ADR Management"],
+        "summary": "Update ADR",
+        "description": "Update an existing ADR with change tracking",
+        "parameters": [
+          {
+            "name": "adr_id",
+            "in": "path",
+            "required": true,
+            "description": "ADR identifier",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateADR"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ADR updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ADR"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/decisions/analytics": {
+      "get": {
+        "tags": ["Decision Intelligence"],
+        "summary": "Decision analytics",
+        "description": "Get comprehensive decision analytics and intelligence insights",
+        "parameters": [
+          {
+            "name": "timeframe",
+            "in": "query",
+            "description": "Analytics timeframe",
+            "schema": {
+              "type": "string",
+              "enum": ["7d", "30d", "90d", "1y"],
+              "default": "30d"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Decision analytics data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecisionAnalytics"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/decisions/tracker": {
+      "post": {
+        "tags": ["Decision Intelligence"],
+        "summary": "Track decision outcome",
+        "description": "Track the implementation and outcome of a decision for learning",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecisionTracking"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Decision tracking initiated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrackingResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/search/semantic": {
+      "post": {
+        "tags": ["Semantic Search"],
+        "summary": "Semantic search",
+        "description": "Perform vector-based semantic search across all organizational knowledge",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SemanticSearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Search results with similarity scores",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResults"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ai/context": {
+      "post": {
+        "tags": ["AI Integration"],
+        "summary": "Generate organizational context",
+        "description": "Generate AI-powered organizational context for decision making",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContextRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Generated organizational context",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationalContext"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ai/onboarding": {
+      "post": {
+        "tags": ["AI Integration"],
+        "summary": "AI-powered onboarding",
+        "description": "Create personalized onboarding experience with AI adaptation",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OnboardingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Onboarding plan created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnboardingPlan"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/collaboration/sync": {
+      "get": {
+        "tags": ["Team Collaboration"],
+        "summary": "Get real-time sync status",
+        "description": "Get current real-time collaboration status across all teams",
+        "responses": {
+          "200": {
+            "description": "Sync status information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "HealthStatus": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["healthy", "degraded", "unhealthy"]
+          },
+          "version": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "services": {
+            "type": "object",
+            "properties": {
+              "database": {
+                "$ref": "#/components/schemas/ServiceHealth"
+              },
+              "redis": {
+                "$ref": "#/components/schemas/ServiceHealth"
+              },
+              "ai_services": {
+                "$ref": "#/components/schemas/ServiceHealth"
+              }
+            }
+          }
+        }
+      },
+      "ServiceHealth": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["up", "down", "degraded"]
+          },
+          "response_time_ms": {
+            "type": "number"
+          },
+          "last_checked": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ADR": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique ADR identifier"
+          },
+          "title": {
+            "type": "string",
+            "description": "ADR title"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["proposed", "accepted", "rejected", "superseded"]
+          },
+          "context": {
+            "type": "string",
+            "description": "Decision context"
+          },
+          "decision": {
+            "type": "string", 
+            "description": "The decision made"
+          },
+          "consequences": {
+            "type": "string",
+            "description": "Decision consequences"
+          },
+          "component": {
+            "type": "string",
+            "description": "Affected component/system"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ai_insights": {
+            "$ref": "#/components/schemas/AIInsights"
+          }
+        },
+        "required": ["id", "title", "status", "decision", "component"]
+      },
+      "ADRList": {
+        "type": "object",
+        "properties": {
+          "adrs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ADR"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          "filters": {
+            "type": "object"
+          }
+        }
+      },
+      "ADRDetail": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ADR"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "related_decisions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RelatedDecision"
+                }
+              },
+              "implementation_status": {
+                "$ref": "#/components/schemas/ImplementationStatus"
+              },
+              "analytics": {
+                "$ref": "#/components/schemas/DecisionMetrics"
+              },
+              "change_history": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ChangeRecord"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "CreateADR": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 200
+          },
+          "context": {
+            "type": "string"
+          },
+          "decision": {
+            "type": "string"
+          },
+          "consequences": {
+            "type": "string"
+          },
+          "component": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "template_id": {
+            "type": "string",
+            "description": "ADR template to use"
+          }
+        },
+        "required": ["title", "decision", "component"]
+      },
+      "UpdateADR": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["proposed", "accepted", "rejected", "superseded"]
+          },
+          "context": {
+            "type": "string"
+          },
+          "decision": {
+            "type": "string"
+          },
+          "consequences": {
+            "type": "string"
+          },
+          "change_reason": {
+            "type": "string",
+            "description": "Reason for this change"
+          }
+        }
+      },
+      "DecisionAnalytics": {
+        "type": "object",
+        "properties": {
+          "summary": {
+            "type": "object",
+            "properties": {
+              "total_decisions": {
+                "type": "integer"
+              },
+              "decisions_by_status": {
+                "type": "object"
+              },
+              "average_implementation_time": {
+                "type": "number",
+                "description": "Days"
+              },
+              "success_rate": {
+                "type": "number",
+                "description": "Percentage"
+              }
+            }
+          },
+          "trends": {
+            "type": "object",
+            "properties": {
+              "decision_velocity": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TimeSeriesData"
+                }
+              },
+              "component_activity": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ComponentActivity"
+                }
+              }
+            }
+          },
+          "insights": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AIInsight"
+            }
+          }
+        }
+      },
+      "SemanticSearchRequest": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Search query text"
+          },
+          "similarity_threshold": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "default": 0.7
+          },
+          "max_results": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 10
+          },
+          "filters": {
+            "type": "object",
+            "properties": {
+              "component": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "date_range": {
+                "$ref": "#/components/schemas/DateRange"
+              }
+            }
+          }
+        },
+        "required": ["query"]
+      },
+      "SearchResults": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchResult"
+            }
+          },
+          "total_count": {
+            "type": "integer"
+          },
+          "query_time_ms": {
+            "type": "number"
+          },
+          "suggestions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SearchResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["adr", "decision", "pattern", "document"]
+          },
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "similarity_score": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0
+          },
+          "highlights": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "metadata": {
+            "type": "object"
+          }
+        }
+      },
+      "ContextRequest": {
+        "type": "object",
+        "properties": {
+          "request_type": {
+            "type": "string",
+            "enum": ["code-generation", "architecture-review", "decision-support"]
+          },
+          "target_system": {
+            "type": "string",
+            "description": "Target AI system (claude-code, universe-builder, etc.)"
+          },
+          "task_description": {
+            "type": "string"
+          },
+          "context_scope": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["request_type", "target_system", "task_description"]
+      },
+      "OrganizationalContext": {
+        "type": "object",
+        "properties": {
+          "context_id": {
+            "type": "string"
+          },
+          "relevance_score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "architectural_decisions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContextualADR"
+            }
+          },
+          "patterns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Pattern"
+            }
+          },
+          "constraints": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "recommendations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "confidence_level": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0
+          }
+        }
+      },
+      "AIInsights": {
+        "type": "object",
+        "properties": {
+          "complexity_score": {
+            "type": "number",
+            "description": "Decision complexity rating 1-10"
+          },
+          "risk_level": {
+            "type": "string",
+            "enum": ["low", "medium", "high", "critical"]
+          },
+          "similar_decisions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SimilarDecision"
+            }
+          },
+          "predicted_outcomes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PredictedOutcome"
+            }
+          },
+          "recommendations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer"
+          },
+          "per_page": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          },
+          "pages": {
+            "type": "integer"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "object"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}
