@@ -1,69 +1,16 @@
 {
   "version": 2,
-  "name": "krins-chronicle-keeper",
-  "buildCommand": "cd frontend && npm run build",
+  "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/dist",
-  "installCommand": "cd frontend && npm install",
-  "framework": null,
-  "public": false,
-  "regions": ["arn1", "sfo1", "fra1"],
   "functions": {
-    "backend/api/*.py": {
-      "runtime": "python3.9"
-    },
-    "backend/node_backend/*.js": {
+    "api/*.js": {
       "runtime": "nodejs18.x"
     }
   },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/v1/(.*)",
-      "dest": "/backend/$1"
-    },
-    {
-      "src": "/api/search/(.*)",
-      "dest": "/backend/node_backend/$1"
-    },
-    {
-      "src": "/api/websocket",
-      "dest": "/backend/websocket-server.js"
-    },
-    {
-      "src": "/health",
-      "dest": "/backend/health.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/frontend/dist/$1"
+      "source": "/((?!api).*)",
+      "destination": "/index.html"
     }
-  ],
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, PUT, DELETE, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "X-Requested-With, Content-Type, Authorization"
-        }
-      ]
-    }
-  ],
-  "env": {
-    "NODE_ENV": "production",
-    "REACT_APP_API_URL": "https://krins-chronicle-keeper.vercel.app/api",
-    "REACT_APP_WS_URL": "wss://krins-chronicle-keeper.vercel.app/api/websocket"
-  },
-  "build": {
-    "env": {
-      "NODE_ENV": "production"
-    }
-  }
+  ]
 }
