@@ -47,7 +47,7 @@
     "lint": "bun run lint:typescript && bun run lint:backend",
     "lint:typescript": "cd tools && bun run lint",
     "lint:backend": "cd backend && python -m flake8 .",
-    "typecheck": "tsc --noEmit DECISION_MANAGEMENT/*.ts AI_INTEGRATION/*.ts --skipLibCheck --target ES2020 --module ESNext --moduleResolution node --allowSyntheticDefaultImports || true",
+    "typecheck": "tsc --noEmit",
     "typecheck:decision-management": "tsc --noEmit DECISION_MANAGEMENT/*.ts --skipLibCheck --target ES2020 --module ESNext --moduleResolution node --allowSyntheticDefaultImports || true",
     "typecheck:ai-integration": "tsc --noEmit AI_INTEGRATION/*.ts --skipLibCheck --target ES2020 --module ESNext --moduleResolution node --allowSyntheticDefaultImports || true",
     "setup:semantic-search": "./scripts/setup-semantic-search.sh",

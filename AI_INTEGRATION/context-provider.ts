@@ -11,6 +11,7 @@
 
 import { DecisionTracker, ADR } from '../DECISION_MANAGEMENT/decision-tracker';
 import { DecisionLinker } from '../DECISION_MANAGEMENT/decision-linker';
+import { ContextQualityMetrics } from './context-quality-metrics';
 import { readFileSync, existsSync, readdirSync } from 'fs';
 import { join, basename } from 'path';
 
@@ -105,12 +106,16 @@ export class ContextProvider {
   private chronicleKeeperPath: string;
   private patternsCache = new Map<string, ContextualPattern>();
   private contextCache = new Map<string, AIContext>();
+  private qualityMetrics: ContextQualityMetrics;
 
   constructor(chronicleKeeperPath: string = process.cwd()) {
     this.chronicleKeeperPath = chronicleKeeperPath;
     this.decisionTracker = new DecisionTracker(chronicleKeeperPath);
     this.decisionLinker = new DecisionLinker(chronicleKeeperPath);
+    this.qualityMetrics = new ContextQualityMetrics();
     this.loadPatterns();
+    
+    console.log('🧠 Context Provider initialized with quality metrics');
   }
 
   /**
@@ -118,12 +123,32 @@ export class ContextProvider {
    */
   async generateContext(request: ContextRequest): Promise<AIContext> {
     const startTime = Date.now();
+    let errorOccurred = false;
+    let errorType: string | undefined;
+    let metricId: string | undefined;
 
     // Generate cache key
     const cacheKey = this.generateCacheKey(request);
-    if (this.contextCache.has(cacheKey)) {
+    const cacheHit = this.contextCache.has(cacheKey);
+    
+    if (cacheHit) {
       const cached = this.contextCache.get(cacheKey)!;
       console.log('🚀 Returning cached context');
+      
+      // Record cache hit metric
+      metricId = this.qualityMetrics.recordContextGeneration({
+        query: this.getQueryFromRequest(request),
+        contextType: this.determineContextType(request),
+        aiSystem: request.source,
+        task: request.requestType,
+        confidence: cached.confidence / 100,
+        relevanceScores: [cached.relevanceScore / 100],
+        sourcesUsed: this.getSourcesFromContext(cached),
+        responseTime: Date.now() - startTime,
+        cacheHit: true,
+        errorOccurred: false
+      });
+      
       return cached;
     }
 
@@ -176,7 +201,22 @@ export class ContextProvider {
     // Cache the result
     this.contextCache.set(cacheKey, context);
     
-    console.log(`🧠 Generated AI context: ${context.decisions.length} decisions, ${context.patterns.length} patterns`);
+    // Record comprehensive metrics
+    metricId = this.qualityMetrics.recordContextGeneration({
+      query: this.getQueryFromRequest(request),
+      contextType: context.contextType,
+      aiSystem: request.source,
+      task: request.requestType,
+      confidence: context.confidence / 100,
+      relevanceScores: context.decisions.map(d => d.relevanceScore / 100),
+      sourcesUsed: this.getSourcesFromContext(context),
+      responseTime: context.metadata.processingTimeMs,
+      cacheHit: false,
+      errorOccurred,
+      errorType
+    });
+    
+    console.log(`🧠 Generated AI context: ${context.decisions.length} decisions, ${context.patterns.length} patterns (metric: ${metricId})`);
     return context;
   }
 
@@ -862,6 +902,79 @@ ${context.recommendations.map(r => `- ${r}`).join('\n')}
 **Confidence:** ${context.confidence}%
 **Relevance:** ${context.relevanceScore}%
 `;
+  }
+
+  /**
+   * Extract query string from context request for metrics
+   */
+  private getQueryFromRequest(request: ContextRequest): string {
+    return request.scope.problemDescription || 
+           `${request.requestType} for ${request.scope.components?.join(', ') || 'general context'}`;
+  }
+
+  /**
+   * Extract sources used from generated context
+   */
+  private getSourcesFromContext(context: AIContext): string[] {
+    const sources: string[] = [];
+    
+    if (context.decisions.length > 0) sources.push('adr');
+    if (context.patterns.length > 0) sources.push('patterns');
+    if (context.constraints.length > 0) sources.push('constraints');
+    if (context.recommendations.length > 0) sources.push('recommendations');
+    
+    return sources;
+  }
+
+  /**
+   * Record user feedback for quality metrics
+   */
+  recordFeedback(contextId: string, feedback: {
+    helpfulness: number;
+    accuracy: number;
+    completeness: number;
+    comments?: string;
+  }): boolean {
+    // Find the metric ID associated with this context
+    // In a real implementation, you'd store the mapping between context ID and metric ID
+    const metricId = this.findMetricIdByContextId(contextId);
+    
+    if (metricId) {
+      return this.qualityMetrics.recordUserFeedback(metricId, feedback);
+    }
+    
+    console.warn(`⚠️ Could not find metric for context: ${contextId}`);
+    return false;
+  }
+
+  /**
+   * Get quality metrics and analytics
+   */
+  getQualityMetrics(timeframe?: { start: Date; end: Date }) {
+    return this.qualityMetrics.generateQualityAnalytics(timeframe);
+  }
+
+  /**
+   * Get real-time dashboard data
+   */
+  getDashboardData() {
+    return this.qualityMetrics.getDashboardData();
+  }
+
+  /**
+   * Export metrics for analysis
+   */
+  exportMetrics(format: 'json' | 'csv' = 'json', timeframe?: { start: Date; end: Date }): string {
+    return this.qualityMetrics.exportMetrics(format, timeframe);
+  }
+
+  /**
+   * Find metric ID by context ID (placeholder implementation)
+   */
+  private findMetricIdByContextId(contextId: string): string | undefined {
+    // In a real implementation, you'd maintain a mapping between context IDs and metric IDs
+    // For now, return undefined to indicate metric not found
+    return undefined;
   }
 }
 

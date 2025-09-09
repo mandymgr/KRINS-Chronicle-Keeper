@@ -1,0 +1,67 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "lib": ["ES2022", "DOM"],
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    
+    // Strict Type Checking Options - ENABLED
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitOverride": true,
+    
+    // Additional Checks
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitUseStrict": false,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    
+    // Module Resolution
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    
+    // Output
+    "declaration": true,
+    "sourceMap": true,
+    "removeComments": false,
+    
+    // Advanced
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "include": [
+    "DECISION_MANAGEMENT/**/*",
+    "AI_INTEGRATION/**/*",
+    "GOVERNANCE_PROCESS/**/*", 
+    "KNOWLEDGE_ORGANIZATION/**/*",
+    "TEAM_COLLABORATION/**/*",
+    "ORGANIZATIONAL_INTELLIGENCE/**/*",
+    "tools/**/*",
+    "scripts/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/node_modules",
+    "dist",
+    "**/dist",
+    "build", 
+    "**/build",
+    "frontend/node_modules",
+    "backend/venv",
+    "quarantine-for-review"
+  ]
+}
