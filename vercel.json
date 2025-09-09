@@ -3,8 +3,11 @@
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/dist",
   "functions": {
-    "api/*.js": {
-      "runtime": "nodejs18.x"
+    "api/health.js": {
+      "runtime": "@vercel/node@3.0.0"
+    },
+    "api/demo-adr.js": {
+      "runtime": "@vercel/node@3.0.0"
     }
   },
   "rewrites": [
