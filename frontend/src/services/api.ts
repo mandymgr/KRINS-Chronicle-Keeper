@@ -14,6 +14,9 @@ import type {
   EffectivenessMatrixItem
 } from '@/types'
 
+// Check if we're in production without an API backend
+const isProductionWithoutAPI = import.meta.env.PROD && !import.meta.env.VITE_API_BASE_URL
+
 // API client configuration
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1',
@@ -22,6 +25,60 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 })
+
+// Mock data for production demo
+const mockDashboardOverview: DashboardOverview = {
+  total_decisions: 42,
+  active_decisions: 8,
+  completed_decisions: 34,
+  decision_velocity: 2.3,
+  avg_decision_time: 5.2,
+  components_tracked: 12,
+  evidence_collected: 156,
+  ai_insights_generated: 23,
+  period_days: 30,
+  trends: {
+    decisions: { current: 42, previous: 38, change_percent: 10.5 },
+    velocity: { current: 2.3, previous: 2.1, change_percent: 9.5 },
+    completion_time: { current: 5.2, previous: 6.1, change_percent: -14.8 }
+  },
+  health_status: {
+    level: 'good',
+    score: 0.82,
+    components: {
+      activity: 0.85,
+      confidence: 0.78,
+      evidence: 0.88,
+      diversity: 0.76
+    }
+  },
+  metrics: {
+    consistency_score: 0.84,
+    evidence_quality: 0.79,
+    decision_impact: 0.91,
+    team_alignment: 0.73,
+    total_adrs: 42,
+    recent_adrs: 8,
+    decision_velocity: 2.3,
+    status_distribution: {
+      accepted: 5,
+      proposed: 2,
+      superseded: 1,
+      deprecated: 0
+    },
+    average_scores: {
+      confidence: 8.2
+    },
+    component_activity: [
+      { component: 'Authentication', count: 3, activity: 0.8, avg_confidence: 8.5 },
+      { component: 'API Gateway', count: 2, activity: 0.6, avg_confidence: 7.2 },
+      { component: 'Database', count: 4, activity: 0.9, avg_confidence: 9.1 },
+      { component: 'Frontend', count: 2, activity: 0.7, avg_confidence: 8.0 },
+      { component: 'Infrastructure', count: 1, activity: 0.5, avg_confidence: 6.8 },
+      { component: 'Security', count: 2, activity: 0.8, avg_confidence: 8.7 }
+    ]
+  }
+}
 
 // Request interceptor for auth (if needed in future)
 api.interceptors.request.use(
@@ -214,6 +271,12 @@ export const intelligenceService = {
 export const analyticsService = {
   // Dashboard overview
   getDashboardOverview: async (days: number = 30): Promise<DashboardOverview> => {
+    if (isProductionWithoutAPI) {
+      console.log('📊 Using mock data for dashboard overview (no API backend)')
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500))
+      return { ...mockDashboardOverview, period_days: days }
+    }
     const response = await api.get('/analytics/dashboard/overview', { params: { days } })
     return response.data
   },

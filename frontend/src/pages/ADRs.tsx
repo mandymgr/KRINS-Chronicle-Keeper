@@ -1,14 +1,97 @@
 import React, { useState } from 'react'
 import { FileText, Plus, Search, Settings, Filter } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components_dev_memory/ui/Card'
-import { Button } from '@/components_dev_memory/ui/Button'
-import { Input } from '@/components_dev_memory/ui/Input'
-import { Badge } from '@/components_dev_memory/ui/Badge'
+import { motion } from 'framer-motion'
+import { 
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardHeader, 
+  CardTitle,
+  Button,
+  DecisionCard,
+  ADRStatusBadge,
+  IntelligenceInsights,
+  EditorialLayout,
+  type DecisionData,
+  type Insight
+} from '@/design-system'
 import ADRForm from '@/components_dev_memory/forms/ADRForm'
+
+// Mock data for demonstration
+const mockDecisions: DecisionData[] = [
+  {
+    id: '001',
+    title: 'Use React Query for API State Management',
+    status: 'accepted',
+    component: 'frontend/state',
+    createdDate: '2024-12-01',
+    confidence: 0.9,
+    impact: 'high',
+    stakeholders: ['Frontend Team', 'Architecture Review Board'],
+    summary: 'Adopt React Query for managing server state, replacing custom hooks and Redux for API calls.'
+  },
+  {
+    id: '002', 
+    title: 'Implement PostgreSQL with pgvector for Semantic Search',
+    status: 'proposed',
+    component: 'backend/database',
+    createdDate: '2024-12-05',
+    confidence: 0.75,
+    impact: 'high',
+    stakeholders: ['Backend Team', 'Data Team', 'Product'],
+    summary: 'Add pgvector extension to enable semantic search capabilities across organizational knowledge.'
+  },
+  {
+    id: '003',
+    title: 'Migrate from REST to GraphQL API',
+    status: 'rejected',
+    component: 'backend/api', 
+    createdDate: '2024-11-15',
+    confidence: 0.4,
+    impact: 'medium',
+    stakeholders: ['Backend Team', 'Frontend Team'],
+    summary: 'Evaluation concluded that REST APIs meet current needs and GraphQL migration costs outweigh benefits.'
+  },
+  {
+    id: '004',
+    title: 'Adopt WebSocket for Real-time Decision Updates',
+    status: 'accepted',
+    component: 'platform/realtime',
+    createdDate: '2024-11-28',
+    confidence: 0.85,
+    impact: 'medium',
+    stakeholders: ['Full Stack Team', 'DevOps'],
+    summary: 'Enable real-time collaboration with WebSocket integration for live decision tracking.'
+  }
+];
+
+const mockInsights: Insight[] = [
+  {
+    id: 'insight-1',
+    type: 'recommendation',
+    title: 'Consider API Rate Limiting Implementation',
+    description: 'Based on recent decisions about API architecture, implementing rate limiting would improve system stability.',
+    confidence: 0.82,
+    priority: 'medium',
+    actionable: true,
+    relatedDecisions: ['001', '004']
+  },
+  {
+    id: 'insight-2',
+    type: 'trend',
+    title: 'Increasing Focus on Real-time Features',
+    description: 'Analysis shows growing emphasis on real-time capabilities across recent architectural decisions.',
+    confidence: 0.91,
+    priority: 'low',
+    actionable: false,
+    relatedDecisions: ['004']
+  }
+];
 
 export function ADRs() {
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedFilter, setSelectedFilter] = useState('all')
   if (showCreateForm) {
     return (
       <div className="space-y-6">
@@ -31,182 +114,161 @@ export function ADRs() {
     )
   }
 
-  return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div className="border-b border-border pb-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">Architecture Decision Records</h1>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Manage and track all architectural decisions across your organization.
-            </p>
-          </div>
-          <Button onClick={() => setShowCreateForm(true)}>
-            <Plus className="h-4 w-4 mr-2" />
-            New ADR
-          </Button>
-        </div>
-      </div>
-
-      {/* Search and Filter Bar */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="flex items-center space-x-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search ADRs by title, content, or tags..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-            <Button variant="outline" size="sm">
-              <Filter className="h-4 w-4 mr-2" />
-              Filters
-            </Button>
-            <Button variant="outline" size="sm">
-              <Settings className="h-4 w-4 mr-2" />
-              Settings
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* ADR List/Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Example ADR Cards */}
-        <ADRCard
-          id="ADR-001"
-          title="Use PostgreSQL for primary database"
-          status="accepted"
-          date="2024-03-15"
-          author="John Doe"
-          tags={["database", "architecture", "postgres"]}
-          description="Decision to use PostgreSQL as our primary database system for improved performance and ACID compliance."
-        />
-        
-        <ADRCard
-          id="ADR-002"
-          title="Implement microservices architecture"
-          status="proposed"
-          date="2024-03-18"
-          author="Jane Smith"
-          tags={["architecture", "microservices", "scalability"]}
-          description="Proposal to migrate from monolithic architecture to microservices for better scalability and maintainability."
-        />
-        
-        <ADRCard
-          id="ADR-003"
-          title="Use Docker for containerization"
-          status="accepted"
-          date="2024-03-10"
-          author="Mike Johnson"
-          tags={["deployment", "docker", "containerization"]}
-          description="Decision to standardize on Docker for application containerization across all environments."
-        />
-        
-        {/* Coming Soon Card */}
-        <Card className="border-dashed">
-          <CardContent className="flex items-center justify-center py-12">
-            <div className="text-center">
-              <FileText className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
-              <h3 className="font-medium mb-2">Dynamic ADR Loading</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Real ADR data integration coming soon
-              </p>
-              <Badge variant="secondary">In Development</Badge>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Statistics Footer */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
-            <div>
-              <div className="text-2xl font-bold text-primary">12</div>
-              <div className="text-sm text-muted-foreground">Total ADRs</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-success-600">8</div>
-              <div className="text-sm text-muted-foreground">Accepted</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-warning-600">3</div>
-              <div className="text-sm text-muted-foreground">Proposed</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-muted-foreground">1</div>
-              <div className="text-sm text-muted-foreground">Superseded</div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  )
-}
-
-interface ADRCardProps {
-  id: string
-  title: string
-  status: 'proposed' | 'accepted' | 'superseded' | 'deprecated'
-  date: string
-  author: string
-  tags: string[]
-  description: string
-}
-
-function ADRCard({ id, title, status, date, author, tags, description }: ADRCardProps) {
-  const statusVariant = {
-    accepted: 'default' as const,
-    proposed: 'secondary' as const,
-    superseded: 'outline' as const,
-    deprecated: 'destructive' as const,
-  }
+  const filteredDecisions = mockDecisions.filter(decision => {
+    const matchesSearch = decision.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         decision.component.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesFilter = selectedFilter === 'all' || decision.status === selectedFilter;
+    return matchesSearch && matchesFilter;
+  });
 
   return (
-    <Card className="hover:shadow-md transition-shadow cursor-pointer">
-      <CardHeader>
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <div className="flex items-center space-x-2 mb-2">
-              <Badge variant="outline" className="text-xs">
-                {id}
-              </Badge>
-              <Badge variant={statusVariant[status]} className="text-xs capitalize">
-                {status}
-              </Badge>
-            </div>
-            <CardTitle className="text-lg leading-tight mb-1">
-              {title}
-            </CardTitle>
-          </div>
-        </div>
-        <CardDescription className="line-clamp-2">
-          {description}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          {/* Tags */}
-          <div className="flex flex-wrap gap-1">
-            {tags.map((tag) => (
-              <Badge key={tag} variant="secondary" className="text-xs">
-                {tag}
-              </Badge>
-            ))}
-          </div>
+    <div 
+      className="min-h-screen"
+      style={{ background: 'var(--color-intelligence-bg)', color: 'var(--gray-800)' }}
+    >
+      <EditorialLayout>
+        {/* Page Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-16"
+        >
+          <h1 
+            className="text-5xl font-bold mb-6"
+            style={{ fontFamily: 'var(--font-display)', color: 'var(--color-brand-primary)' }}
+          >
+            📋 Architecture Decision Records
+          </h1>
+          <p 
+            className="text-xl max-w-3xl mx-auto mb-8"
+            style={{ color: 'var(--gray-600)' }}
+          >
+            Manage and track all architectural decisions across your organization with intelligent insights and real-time collaboration.
+          </p>
           
-          {/* Meta information */}
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>By {author}</span>
-            <span>{new Date(date).toLocaleDateString()}</span>
+          <div className="flex items-center justify-center space-x-4">
+            <Button onClick={() => setShowCreateForm(true)} size="lg">
+              <Plus className="h-5 w-5 mr-2" />
+              Create New ADR
+            </Button>
           </div>
-        </div>
-      </CardContent>
-    </Card>
-  )
+        </motion.div>
+
+        {/* AI Insights Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="mb-16"
+        >
+          <IntelligenceInsights insights={mockInsights} />
+        </motion.div>
+
+        {/* Search and Filter Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mb-8"
+        >
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1 relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{ color: 'var(--gray-400)' }} />
+                  <input
+                    type="text"
+                    placeholder="Search ADRs by title or component..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 rounded-lg border"
+                    style={{ 
+                      borderColor: 'var(--gray-300)',
+                      borderRadius: 'var(--radius-lg)',
+                      backgroundColor: 'var(--gray-0)',
+                      color: 'var(--gray-800)'
+                    }}
+                  />
+                </div>
+                
+                <div className="flex space-x-2">
+                  {['all', 'proposed', 'accepted', 'rejected', 'superseded'].map(filter => (
+                    <button
+                      key={filter}
+                      onClick={() => setSelectedFilter(filter)}
+                      className={`px-4 py-2 text-sm rounded-lg transition-colors ${
+                        selectedFilter === filter ? '' : ''
+                      }`}
+                      style={{
+                        backgroundColor: selectedFilter === filter 
+                          ? 'var(--color-brand-primary)' 
+                          : 'var(--gray-100)',
+                        color: selectedFilter === filter 
+                          ? 'white' 
+                          : 'var(--gray-700)',
+                        borderRadius: 'var(--radius-lg)'
+                      }}
+                    >
+                      {filter.charAt(0).toUpperCase() + filter.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Decision Cards Grid */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
+          {filteredDecisions.map((decision, index) => (
+            <motion.div
+              key={decision.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 + index * 0.1 }}
+            >
+              <DecisionCard
+                decision={decision}
+                onClick={() => {
+                  // Navigate to decision detail page
+                  console.log('Navigate to decision:', decision.id);
+                }}
+              />
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {filteredDecisions.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-16"
+          >
+            <FileText className="w-16 h-16 mx-auto mb-4 opacity-50" style={{ color: 'var(--gray-400)' }} />
+            <h3 
+              className="text-xl font-semibold mb-2"
+              style={{ fontFamily: 'var(--font-display)', color: 'var(--gray-700)' }}
+            >
+              No decisions found
+            </h3>
+            <p className="mb-6" style={{ color: 'var(--gray-600)' }}>
+              {searchQuery || selectedFilter !== 'all' 
+                ? 'Try adjusting your search or filter criteria.'
+                : 'Create your first architectural decision record to get started.'
+              }
+            </p>
+            <Button onClick={() => setShowCreateForm(true)}>
+              <Plus className="h-4 w-4 mr-2" />
+              Create First ADR
+            </Button>
+          </motion.div>
+        )}
+      </EditorialLayout>
+    </div>
+  );
 }

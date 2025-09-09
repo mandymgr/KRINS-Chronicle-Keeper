@@ -103,6 +103,26 @@ export class KRINSWebSocketClient extends EventEmitter {
   constructor(private serverUrl: string = 'ws://localhost:3001') {
     super()
     this.setupEventHandlers()
+    
+    // In production environments without WebSocket server, disable functionality
+    if (this.isProductionWithoutWebSocket()) {
+      console.log('🔇 WebSocket disabled in production environment (no server configured)')
+      this.isDisabled = true
+    }
+  }
+
+  private isDisabled = false
+  private hasLoggedDisabledStatus = false
+
+  private isProductionWithoutWebSocket(): boolean {
+    // Check if we're in production and no WebSocket URL is configured
+    return import.meta.env.PROD && 
+           !import.meta.env.VITE_WEBSOCKET_URL && 
+           this.serverUrl.includes('localhost')
+  }
+
+  private canExecute(): boolean {
+    return !this.isDisabled && this.socket && this.isAuthenticated
   }
 
   /**
@@ -116,6 +136,16 @@ export class KRINSWebSocketClient extends EventEmitter {
     currentPage: string
   }): Promise<void> {
     return new Promise((resolve, reject) => {
+      // If WebSocket is disabled, resolve immediately without connecting
+      if (this.isDisabled) {
+        if (!this.hasLoggedDisabledStatus) {
+          console.log('🔇 WebSocket connection skipped (disabled in production)')
+          this.hasLoggedDisabledStatus = true
+        }
+        resolve()
+        return
+      }
+
       if (this.socket && this.socket.connected) {
         resolve()
         return
@@ -350,14 +380,14 @@ export class KRINSWebSocketClient extends EventEmitter {
   }
 
   public updatePresence(status: 'active' | 'idle' | 'away') {
-    if (this.socket && this.isAuthenticated) {
-      this.socket.emit('krins:presence:update', { status })
+    if (this.canExecute()) {
+      this.socket!.emit('krins:presence:update', { status })
     }
   }
 
   public changePage(from: string, to: string) {
-    if (this.socket && this.isAuthenticated) {
-      this.socket.emit('krins:page:change', { from, to })
+    if (this.canExecute()) {
+      this.socket!.emit('krins:page:change', { from, to })
     }
   }
 
@@ -470,11 +500,15 @@ export class KRINSWebSocketClient extends EventEmitter {
   }
 
   public isConnected(): boolean {
-    return this.socket?.connected || false
+    return this.isDisabled ? false : this.socket?.connected || false
   }
 
   public isAuth(): boolean {
-    return this.isAuthenticated
+    return this.isDisabled ? false : this.isAuthenticated
+  }
+
+  public isWebSocketDisabled(): boolean {
+    return this.isDisabled
   }
 
   public getCurrentUser(): ConnectedUser | null {

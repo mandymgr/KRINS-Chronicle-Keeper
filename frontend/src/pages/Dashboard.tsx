@@ -21,9 +21,9 @@ import {
   Rocket
 } from 'lucide-react'
 import { analyticsService } from '@/services/api'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components_dev_memory/ui/Card'
-import { Badge } from '@/components_dev_memory/ui/Badge'
-import { Button } from '@/components_dev_memory/ui/Button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/design-system/components/Card'
+import { Badge } from '@/design-system/components/Badge'
+import { Button } from '@/design-system/components/Button'
 
 export function Dashboard() {
   const [realtimeMetrics, setRealtimeMetrics] = useState({
@@ -121,11 +121,18 @@ export function Dashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 flex items-center justify-center">
+      <div 
+        className="min-h-screen flex items-center justify-center"
+        style={{ background: 'var(--color-intelligence-bg)' }}
+      >
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full"
+          className="w-16 h-16 border-4 border-t-transparent rounded-full"
+          style={{ 
+            borderColor: 'var(--color-brand-primary)',
+            borderTopColor: 'transparent'
+          }}
         />
       </div>
     )
@@ -133,11 +140,25 @@ export function Dashboard() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 flex items-center justify-center">
+      <div 
+        className="min-h-screen flex items-center justify-center"
+        style={{ background: 'var(--color-intelligence-bg)' }}
+      >
         <div className="text-center py-12">
-          <AlertCircle className="h-12 w-12 text-error-500 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-secondary-900 mb-2">Failed to Load Dashboard</h3>
-          <p className="text-secondary-600">Please try refreshing the page</p>
+          <AlertCircle 
+            className="h-12 w-12 mx-auto mb-4" 
+            style={{ color: 'var(--color-brand-danger)' }}
+          />
+          <h3 
+            className="text-lg font-medium mb-2" 
+            style={{ 
+              fontFamily: 'var(--font-display)', 
+              color: 'var(--gray-800)' 
+            }}
+          >
+            Failed to Load Dashboard
+          </h3>
+          <p style={{ color: 'var(--gray-600)' }}>Please try refreshing the page</p>
         </div>
       </div>
     )
@@ -146,7 +167,13 @@ export function Dashboard() {
   const { metrics, health_status } = overview!
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 relative overflow-hidden">
+    <div 
+      className="min-h-screen relative overflow-hidden" 
+      style={{ 
+        background: 'var(--color-intelligence-bg)',
+        color: 'var(--gray-800)'
+      }}
+    >
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div 
@@ -201,10 +228,19 @@ export function Dashboard() {
         >
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary-600 via-success-600 to-primary-600 bg-clip-text text-transparent mb-2">
+              <h1 
+                className="text-4xl font-bold mb-2" 
+                style={{ 
+                  fontFamily: 'var(--font-display)', 
+                  color: 'var(--color-brand-primary)'
+                }}
+              >
                 🧠 KRINS Organizational Intelligence
               </h1>
-              <p className="text-lg text-secondary-600">
+              <p 
+                className="text-lg" 
+                style={{ color: 'var(--gray-600)' }}
+              >
                 Advanced decision analytics, real-time insights, and organizational intelligence monitoring
               </p>
               <div className="flex items-center space-x-4 mt-3">

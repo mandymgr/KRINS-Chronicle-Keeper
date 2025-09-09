@@ -136,6 +136,12 @@ export function useActivityFeed(limit = 50) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    // Exit early if WebSocket is disabled
+    if (websocketClient.isWebSocketDisabled()) {
+      setIsLoading(false)
+      return
+    }
+
     const handleActivity = (activity: ActivityEvent) => {
       setActivities(prev => {
         const updated = [activity, ...prev]
@@ -178,6 +184,11 @@ export function useUserPresence() {
   const [userPresenceUpdates, setUserPresenceUpdates] = useState<any[]>([])
 
   useEffect(() => {
+    // Exit early if WebSocket is disabled
+    if (websocketClient.isWebSocketDisabled()) {
+      return
+    }
+
     const handleUserPresence = (data: {
       userId: string
       user: ConnectedUser
@@ -345,6 +356,11 @@ export function useDecisionUpdates() {
   }, [])
 
   useEffect(() => {
+    // Exit early if WebSocket is disabled
+    if (websocketClient.isWebSocketDisabled()) {
+      return
+    }
+
     const handleDecisionUpdated = (update: DecisionUpdate) => {
       setDecisionUpdates(prev => [update, ...prev.slice(0, 49)]) // Keep last 50 updates
     }
