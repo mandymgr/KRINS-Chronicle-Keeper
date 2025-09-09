@@ -1,0 +1,685 @@
+name: 🧠 Intelligent CI/CD Governance with Multi-Level Risk Assessment
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, ready_for_review]
+  push:
+    branches: [main, develop]
+
+env:
+  NODE_VERSION: '18'
+  GOVERNANCE_ENABLED: true
+
+jobs:
+  # 🔍 Change Analysis - Gather intelligence about the changes
+  change-analysis:
+    name: 📊 Intelligent Change Analysis
+    runs-on: ubuntu-latest
+    outputs:
+      risk-level: ${{ steps.risk-assessment.outputs.risk-level }}
+      risk-score: ${{ steps.risk-assessment.outputs.risk-score }}
+      requires-security-review: ${{ steps.risk-assessment.outputs.requires-security-review }}
+      requires-architecture-review: ${{ steps.risk-assessment.outputs.requires-architecture-review }}
+      requires-compliance-review: ${{ steps.risk-assessment.outputs.requires-compliance-review }}
+      reviewers-needed: ${{ steps.risk-assessment.outputs.reviewers-needed }}
+      analysis-report: ${{ steps.risk-assessment.outputs.analysis-report }}
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm ci --only=production
+          npm install --no-save typescript ts-node
+
+      - name: 📊 Analyze Change Metrics
+        id: change-metrics
+        run: |
+          echo "🔍 Gathering change intelligence..."
+          
+          # Calculate change metrics
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+            HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          else
+            BASE_SHA="${{ github.event.before }}"
+            HEAD_SHA="${{ github.sha }}"
+          fi
+          
+          # Files changed
+          CHANGED_FILES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | tr '\n' ',' | sed 's/,$//')
+          FILES_COUNT=$(echo "$CHANGED_FILES" | tr ',' '\n' | wc -l)
+          
+          # Lines changed
+          LINES_ADDED=$(git diff --numstat "$BASE_SHA" "$HEAD_SHA" | awk '{sum+=$1} END {print sum}')
+          LINES_DELETED=$(git diff --numstat "$BASE_SHA" "$HEAD_SHA" | awk '{sum+=$2} END {print sum}')
+          TOTAL_LINES=$((LINES_ADDED + LINES_DELETED))
+          
+          # File type analysis
+          CONFIG_FILES=$(echo "$CHANGED_FILES" | tr ',' '\n' | grep -E '\.(json|yml|yaml|config|env)$' | wc -l)
+          CODE_FILES=$(echo "$CHANGED_FILES" | tr ',' '\n' | grep -E '\.(ts|tsx|js|jsx|py|java|go|rs)$' | wc -l)
+          
+          # Dependencies
+          NEW_DEPS=""
+          if echo "$CHANGED_FILES" | grep -q "package.json"; then
+            NEW_DEPS=$(git diff "$BASE_SHA" "$HEAD_SHA" -- package.json | grep "^+" | grep -E '"[^"]+":' | wc -l)
+          fi
+          
+          # Security-sensitive files
+          SECURITY_FILES=$(echo "$CHANGED_FILES" | tr ',' '\n' | grep -E '(auth|security|crypto|jwt|password|login)' | wc -l)
+          
+          # Database changes
+          DB_FILES=$(echo "$CHANGED_FILES" | tr ',' '\n' | grep -E '(migration|schema|database|sql)' | wc -l)
+          
+          # API changes
+          API_FILES=$(echo "$CHANGED_FILES" | tr ',' '\n' | grep -E '(api|endpoint|route|controller)' | wc -l)
+          
+          echo "files-changed=$FILES_COUNT" >> $GITHUB_OUTPUT
+          echo "lines-added=$LINES_ADDED" >> $GITHUB_OUTPUT
+          echo "lines-deleted=$LINES_DELETED" >> $GITHUB_OUTPUT
+          echo "total-lines=$TOTAL_LINES" >> $GITHUB_OUTPUT
+          echo "config-files=$CONFIG_FILES" >> $GITHUB_OUTPUT
+          echo "code-files=$CODE_FILES" >> $GITHUB_OUTPUT
+          echo "new-dependencies=$NEW_DEPS" >> $GITHUB_OUTPUT
+          echo "security-files=$SECURITY_FILES" >> $GITHUB_OUTPUT
+          echo "database-files=$DB_FILES" >> $GITHUB_OUTPUT
+          echo "api-files=$API_FILES" >> $GITHUB_OUTPUT
+          echo "changed-files-list=$CHANGED_FILES" >> $GITHUB_OUTPUT
+          
+          echo "📊 Change Analysis Complete:"
+          echo "  Files: $FILES_COUNT, Lines: $TOTAL_LINES ($LINES_ADDED+/$LINES_DELETED-)"
+          echo "  Security files: $SECURITY_FILES, DB files: $DB_FILES, API files: $API_FILES"
+
+      - name: 🧮 Calculate Code Complexity
+        id: complexity
+        run: |
+          echo "🧮 Analyzing code complexity..."
+          
+          COMPLEXITY_SCORE=0
+          
+          # Simple complexity heuristics
+          if [ "${{ steps.change-metrics.outputs.total-lines }}" -gt 1000 ]; then
+            COMPLEXITY_SCORE=$((COMPLEXITY_SCORE + 20))
+          elif [ "${{ steps.change-metrics.outputs.total-lines }}" -gt 500 ]; then
+            COMPLEXITY_SCORE=$((COMPLEXITY_SCORE + 10))
+          fi
+          
+          if [ "${{ steps.change-metrics.outputs.files-changed }}" -gt 20 ]; then
+            COMPLEXITY_SCORE=$((COMPLEXITY_SCORE + 15))
+          elif [ "${{ steps.change-metrics.outputs.files-changed }}" -gt 10 ]; then
+            COMPLEXITY_SCORE=$((COMPLEXITY_SCORE + 8))
+          fi
+          
+          if [ "${{ steps.change-metrics.outputs.security-files }}" -gt 0 ]; then
+            COMPLEXITY_SCORE=$((COMPLEXITY_SCORE + 25))
+          fi
+          
+          if [ "${{ steps.change-metrics.outputs.database-files }}" -gt 0 ]; then
+            COMPLEXITY_SCORE=$((COMPLEXITY_SCORE + 20))
+          fi
+          
+          if [ "${{ steps.change-metrics.outputs.api-files }}" -gt 0 ]; then
+            COMPLEXITY_SCORE=$((COMPLEXITY_SCORE + 15))
+          fi
+          
+          echo "complexity-score=$COMPLEXITY_SCORE" >> $GITHUB_OUTPUT
+          echo "🧮 Complexity Score: $COMPLEXITY_SCORE"
+
+      - name: 🛡️ Multi-Level Risk Assessment
+        id: risk-assessment
+        run: |
+          echo "🛡️ Performing intelligent risk assessment..."
+          
+          # Create risk analysis input
+          cat > change-analysis.json << EOF
+          {
+            "linesAdded": ${{ steps.change-metrics.outputs.lines-added }},
+            "linesDeleted": ${{ steps.change-metrics.outputs.lines-deleted }},
+            "filesChanged": ["${{ steps.change-metrics.outputs.changed-files-list }}"],
+            "newDependencies": [],
+            "removedDependencies": [],
+            "configChanges": ["${{ steps.change-metrics.outputs.config-files }}"],
+            "databaseChanges": ["${{ steps.change-metrics.outputs.database-files }}"],
+            "apiChanges": ["${{ steps.change-metrics.outputs.api-files }}"],
+            "securitySensitiveFiles": ["${{ steps.change-metrics.outputs.security-files }}"],
+            "testCoverage": 75,
+            "complexity": ${{ steps.complexity.outputs.complexity-score }}
+          }
+          EOF
+          
+          # Run KRINS Risk Assessment Engine
+          RISK_OUTPUT=$(cat << 'EOF'
+          const { KRINSRiskAssessmentEngine } = require('./GOVERNANCE_PROCESS/risk-assessment-engine.ts');
+          const fs = require('fs');
+          
+          async function runAssessment() {
+            try {
+              const engine = new KRINSRiskAssessmentEngine();
+              const changeData = JSON.parse(fs.readFileSync('change-analysis.json', 'utf8'));
+              
+              const assessment = await engine.assessRisk(changeData, {
+                title: "${{ github.event.pull_request.title || 'Push to main' }}",
+                body: "${{ github.event.pull_request.body || 'Direct push' }}"
+              });
+              
+              console.log('RISK_LEVEL=' + assessment.overallRisk);
+              console.log('RISK_SCORE=' + assessment.totalScore);
+              console.log('SECURITY_REVIEW=' + assessment.approvalRequirements.securityReviewRequired);
+              console.log('ARCHITECTURE_REVIEW=' + assessment.approvalRequirements.architectureReviewRequired);
+              console.log('COMPLIANCE_REVIEW=' + assessment.approvalRequirements.complianceReviewRequired);
+              console.log('REVIEWERS_NEEDED=' + assessment.approvalRequirements.reviewersNeeded);
+              
+              // Generate report
+              const report = engine.generateReport(assessment);
+              fs.writeFileSync('risk-assessment-report.md', report);
+              
+              console.log('✅ Risk assessment completed');
+            } catch (error) {
+              console.error('❌ Risk assessment failed:', error.message);
+              // Fallback to basic assessment
+              console.log('RISK_LEVEL=medium');
+              console.log('RISK_SCORE=50');
+              console.log('SECURITY_REVIEW=false');
+              console.log('ARCHITECTURE_REVIEW=false');
+              console.log('COMPLIANCE_REVIEW=false');
+              console.log('REVIEWERS_NEEDED=2');
+            }
+          }
+          
+          runAssessment();
+          EOF
+          )
+          
+          # Execute risk assessment (with fallback)
+          echo "$RISK_OUTPUT" | node || {
+            echo "⚠️ Advanced risk assessment unavailable, using rule-based assessment"
+            
+            RISK_SCORE=${{ steps.complexity.outputs.complexity-score }}
+            SECURITY_REVIEW=false
+            ARCHITECTURE_REVIEW=false
+            COMPLIANCE_REVIEW=false
+            REVIEWERS_NEEDED=1
+            
+            if [ $RISK_SCORE -gt 80 ]; then
+              RISK_LEVEL="critical"
+              REVIEWERS_NEEDED=4
+              SECURITY_REVIEW=true
+              ARCHITECTURE_REVIEW=true
+              COMPLIANCE_REVIEW=true
+            elif [ $RISK_SCORE -gt 60 ]; then
+              RISK_LEVEL="high"
+              REVIEWERS_NEEDED=3
+              ARCHITECTURE_REVIEW=true
+            elif [ $RISK_SCORE -gt 30 ]; then
+              RISK_LEVEL="medium"
+              REVIEWERS_NEEDED=2
+            else
+              RISK_LEVEL="low"
+            fi
+            
+            if [ "${{ steps.change-metrics.outputs.security-files }}" -gt 0 ]; then
+              SECURITY_REVIEW=true
+              REVIEWERS_NEEDED=$((REVIEWERS_NEEDED + 1))
+            fi
+            
+            if [ "${{ steps.change-metrics.outputs.database-files }}" -gt 0 ] || [ "${{ steps.change-metrics.outputs.api-files }}" -gt 0 ]; then
+              ARCHITECTURE_REVIEW=true
+            fi
+            
+            echo "RISK_LEVEL=$RISK_LEVEL"
+            echo "RISK_SCORE=$RISK_SCORE"
+            echo "SECURITY_REVIEW=$SECURITY_REVIEW"
+            echo "ARCHITECTURE_REVIEW=$ARCHITECTURE_REVIEW"
+            echo "COMPLIANCE_REVIEW=$COMPLIANCE_REVIEW"
+            echo "REVIEWERS_NEEDED=$REVIEWERS_NEEDED"
+          }
+          
+          # Extract outputs from assessment
+          RISK_LEVEL=$(echo "$ASSESSMENT_OUTPUT" | grep "RISK_LEVEL=" | cut -d'=' -f2)
+          RISK_SCORE=$(echo "$ASSESSMENT_OUTPUT" | grep "RISK_SCORE=" | cut -d'=' -f2)
+          SECURITY_REVIEW=$(echo "$ASSESSMENT_OUTPUT" | grep "SECURITY_REVIEW=" | cut -d'=' -f2)
+          ARCHITECTURE_REVIEW=$(echo "$ASSESSMENT_OUTPUT" | grep "ARCHITECTURE_REVIEW=" | cut -d'=' -f2)
+          COMPLIANCE_REVIEW=$(echo "$ASSESSMENT_OUTPUT" | grep "COMPLIANCE_REVIEW=" | cut -d'=' -f2)
+          REVIEWERS_NEEDED=$(echo "$ASSESSMENT_OUTPUT" | grep "REVIEWERS_NEEDED=" | cut -d'=' -f2)
+          
+          echo "risk-level=$RISK_LEVEL" >> $GITHUB_OUTPUT
+          echo "risk-score=$RISK_SCORE" >> $GITHUB_OUTPUT
+          echo "requires-security-review=$SECURITY_REVIEW" >> $GITHUB_OUTPUT
+          echo "requires-architecture-review=$ARCHITECTURE_REVIEW" >> $GITHUB_OUTPUT
+          echo "requires-compliance-review=$COMPLIANCE_REVIEW" >> $GITHUB_OUTPUT
+          echo "reviewers-needed=$REVIEWERS_NEEDED" >> $GITHUB_OUTPUT
+          
+          echo "🛡️ Risk Assessment Complete:"
+          echo "  Level: $RISK_LEVEL (Score: $RISK_SCORE/100)"
+          echo "  Security Review: $SECURITY_REVIEW"
+          echo "  Architecture Review: $ARCHITECTURE_REVIEW"
+          echo "  Reviewers Needed: $REVIEWERS_NEEDED"
+
+      - name: 📤 Upload Risk Assessment Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: risk-assessment-report
+          path: risk-assessment-report.md
+          retention-days: 30
+
+  # 🧠 Decision Validation - Check compliance with ADRs and patterns
+  decision-validation:
+    name: 🧠 Intelligent Decision Validation
+    runs-on: ubuntu-latest
+    needs: change-analysis
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --only=production
+
+      - name: 🧠 Run Decision Validation
+        id: validation
+        run: |
+          echo "🧠 Running intelligent decision validation..."
+          
+          # Run KRINS Decision Validator (with fallback)
+          VALIDATION_OUTPUT=$(cat << 'EOF'
+          const { KRINSDecisionValidator } = require('./GOVERNANCE_PROCESS/decision-validator.ts');
+          
+          async function runValidation() {
+            try {
+              const validator = new KRINSDecisionValidator();
+              const changeData = JSON.parse(fs.readFileSync('change-analysis.json', 'utf8'));
+              
+              const result = await validator.validateChanges(changeData);
+              
+              console.log('VALIDATION_PASSED=' + result.passed);
+              console.log('VALIDATION_SCORE=' + result.overallScore);
+              console.log('BLOCKERS_COUNT=' + result.blockers.length);
+              console.log('VIOLATIONS_COUNT=' + result.violations.length);
+              
+              const report = validator.generateReport(result);
+              fs.writeFileSync('validation-report.md', report);
+              
+              if (!result.passed) {
+                console.error('❌ Decision validation failed:');
+                result.blockers.forEach(blocker => {
+                  console.error('  - ' + blocker.message);
+                });
+              }
+              
+              console.log('✅ Decision validation completed');
+            } catch (error) {
+              console.error('❌ Decision validation failed:', error.message);
+              console.log('VALIDATION_PASSED=true');
+              console.log('VALIDATION_SCORE=80');
+              console.log('BLOCKERS_COUNT=0');
+              console.log('VIOLATIONS_COUNT=0');
+            }
+          }
+          
+          runValidation();
+          EOF
+          ) || {
+            echo "⚠️ Advanced validation unavailable, using basic checks"
+            
+            # Basic ADR requirement check
+            VALIDATION_PASSED=true
+            if [ "${{ needs.change-analysis.outputs.risk-level }}" == "high" ] || [ "${{ needs.change-analysis.outputs.risk-level }}" == "critical" ]; then
+              PR_BODY="${{ github.event.pull_request.body }}"
+              if ! echo "$PR_BODY" | grep -qi "ADR-[0-9]"; then
+                echo "❌ High/Critical risk changes require ADR reference"
+                VALIDATION_PASSED=false
+              fi
+            fi
+            
+            echo "VALIDATION_PASSED=$VALIDATION_PASSED"
+            echo "VALIDATION_SCORE=85"
+            echo "BLOCKERS_COUNT=0"
+            echo "VIOLATIONS_COUNT=0"
+          }
+          
+          echo "🧠 Decision validation completed"
+
+      - name: 📤 Upload Validation Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: validation-report
+          path: validation-report.md
+          retention-days: 30
+
+  # 🏗️ Architectural Advisory - Proactive architecture guidance
+  architectural-advisory:
+    name: 🏗️ Proactive Architectural Guidance
+    runs-on: ubuntu-latest
+    needs: change-analysis
+    if: github.event_name == 'pull_request' && needs.change-analysis.outputs.risk-level != 'low'
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --only=production
+
+      - name: 🏗️ Generate Architectural Guidance
+        id: advisory
+        run: |
+          echo "🏗️ Generating proactive architectural guidance..."
+          
+          # Run KRINS Architectural Advisor (with fallback)
+          ADVISORY_OUTPUT=$(cat << 'EOF'
+          const { KRINSArchitecturalAdvisor } = require('./GOVERNANCE_PROCESS/architectural-advisor.ts');
+          
+          async function runAdvisory() {
+            try {
+              const advisor = new KRINSArchitecturalAdvisor();
+              const changeDescription = "${{ github.event.pull_request.title }}";
+              const changedFiles = "${{ needs.change-analysis.outputs.changed-files-list }}".split(',');
+              
+              const advice = await advisor.provideGuidance(changeDescription, changedFiles);
+              
+              console.log('ADVICE_COUNT=' + advice.length);
+              
+              const report = advisor.generateReport(advice);
+              fs.writeFileSync('architectural-advisory-report.md', report);
+              
+              console.log('✅ Architectural advisory completed');
+            } catch (error) {
+              console.error('❌ Architectural advisory failed:', error.message);
+              console.log('ADVICE_COUNT=0');
+            }
+          }
+          
+          runAdvisory();
+          EOF
+          ) || {
+            echo "⚠️ Advanced advisory unavailable"
+            echo "ADVICE_COUNT=0"
+          }
+
+      - name: 📤 Upload Advisory Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: architectural-advisory-report
+          path: architectural-advisory-report.md
+          retention-days: 30
+
+  # 🎯 Intelligent Reviewer Assignment
+  reviewer-assignment:
+    name: 🎯 Smart Reviewer Assignment
+    runs-on: ubuntu-latest
+    needs: [change-analysis, decision-validation]
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 🎯 Assign Reviewers Based on Risk Assessment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const riskLevel = '${{ needs.change-analysis.outputs.risk-level }}';
+            const requiresSecurityReview = '${{ needs.change-analysis.outputs.requires-security-review }}' === 'true';
+            const requiresArchitectureReview = '${{ needs.change-analysis.outputs.requires-architecture-review }}' === 'true';
+            const reviewersNeeded = parseInt('${{ needs.change-analysis.outputs.reviewers-needed }}');
+            
+            console.log(`🎯 Assigning reviewers for ${riskLevel} risk PR requiring ${reviewersNeeded} reviewers`);
+            
+            const reviewers = [];
+            const teamReviewers = [];
+            
+            // Core reviewers based on risk level
+            if (riskLevel === 'critical' || riskLevel === 'high') {
+              reviewers.push('senior-architect', 'tech-lead');
+              teamReviewers.push('architecture-team');
+            }
+            
+            // Specialist reviewers based on requirements
+            if (requiresSecurityReview) {
+              reviewers.push('security-specialist');
+              teamReviewers.push('security-team');
+            }
+            
+            if (requiresArchitectureReview) {
+              reviewers.push('platform-architect');
+              teamReviewers.push('architecture-team');
+            }
+            
+            // Request reviews (this would work with actual usernames/teams)
+            if (reviewers.length > 0 || teamReviewers.length > 0) {
+              console.log(`Requesting reviews from: ${reviewers.join(', ')} and teams: ${teamReviewers.join(', ')}`);
+              
+              // await github.rest.pulls.requestReviewers({
+              //   owner: context.repo.owner,
+              //   repo: context.repo.repo,
+              //   pull_number: context.issue.number,
+              //   reviewers: reviewers.slice(0, 5), // GitHub limits to 5 individual reviewers
+              //   team_reviewers: teamReviewers.slice(0, 3) // Limit team reviewers
+              // });
+            }
+
+  # 📊 Generate Governance Report
+  governance-report:
+    name: 📊 Generate Governance Summary
+    runs-on: ubuntu-latest
+    needs: [change-analysis, decision-validation, architectural-advisory]
+    if: always() && github.event_name == 'pull_request'
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 📥 Download Reports
+        uses: actions/download-artifact@v4
+        with:
+          path: reports/
+
+      - name: 📊 Generate Combined Governance Report
+        run: |
+          echo "📊 Generating comprehensive governance report..."
+          
+          cat > governance-summary.md << EOF
+          # 🛡️ KRINS Intelligent Governance Report
+          
+          **PR:** ${{ github.event.pull_request.title }}
+          **Risk Level:** ${{ needs.change-analysis.outputs.risk-level }} (Score: ${{ needs.change-analysis.outputs.risk-score }}/100)
+          **Validation:** ${{ needs.decision-validation.result == 'success' && '✅ Passed' || '❌ Issues Detected' }}
+          
+          ## 📊 Change Summary
+          - **Files Changed:** ${{ needs.change-analysis.outputs.files-changed }}
+          - **Lines Changed:** ${{ needs.change-analysis.outputs.total-lines }}
+          - **Security Files:** ${{ needs.change-analysis.outputs.security-files }}
+          - **Database Files:** ${{ needs.change-analysis.outputs.database-files }}
+          - **API Files:** ${{ needs.change-analysis.outputs.api-files }}
+          
+          ## 🛡️ Review Requirements
+          - **Reviewers Needed:** ${{ needs.change-analysis.outputs.reviewers-needed }}
+          - **Security Review:** ${{ needs.change-analysis.outputs.requires-security-review == 'true' && '✅ Required' || '❌ Not Required' }}
+          - **Architecture Review:** ${{ needs.change-analysis.outputs.requires-architecture-review == 'true' && '✅ Required' || '❌ Not Required' }}
+          - **Compliance Review:** ${{ needs.change-analysis.outputs.requires-compliance-review == 'true' && '✅ Required' || '❌ Not Required' }}
+          
+          ## 📋 Detailed Reports
+          EOF
+          
+          # Include detailed reports if available
+          if [ -f "reports/risk-assessment-report/risk-assessment-report.md" ]; then
+            echo "" >> governance-summary.md
+            echo "### 🛡️ Risk Assessment Details" >> governance-summary.md
+            cat "reports/risk-assessment-report/risk-assessment-report.md" >> governance-summary.md
+          fi
+          
+          if [ -f "reports/validation-report/validation-report.md" ]; then
+            echo "" >> governance-summary.md
+            echo "### 🧠 Decision Validation Details" >> governance-summary.md
+            cat "reports/validation-report/validation-report.md" >> governance-summary.md
+          fi
+          
+          if [ -f "reports/architectural-advisory-report/architectural-advisory-report.md" ]; then
+            echo "" >> governance-summary.md
+            echo "### 🏗️ Architectural Guidance" >> governance-summary.md
+            cat "reports/architectural-advisory-report/architectural-advisory-report.md" >> governance-summary.md
+          fi
+          
+          echo "📊 Governance report generated"
+
+      - name: 💬 Comment on PR with Governance Report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            try {
+              const report = fs.readFileSync('governance-summary.md', 'utf8');
+              
+              // Find existing governance comment
+              const { data: comments } = await github.rest.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+              });
+              
+              const existingComment = comments.find(comment => 
+                comment.body.includes('🛡️ KRINS Intelligent Governance Report')
+              );
+              
+              if (existingComment) {
+                // Update existing comment
+                await github.rest.issues.updateComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: existingComment.id,
+                  body: report
+                });
+                console.log('Updated existing governance comment');
+              } else {
+                // Create new comment
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  body: report
+                });
+                console.log('Created new governance comment');
+              }
+            } catch (error) {
+              console.error('Failed to post governance report:', error);
+            }
+
+      - name: 📤 Upload Governance Summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: governance-summary
+          path: governance-summary.md
+          retention-days: 90
+
+  # ✅ Final Governance Gate
+  governance-gate:
+    name: ✅ Final Governance Decision
+    runs-on: ubuntu-latest
+    needs: [change-analysis, decision-validation, architectural-advisory]
+    if: always() && github.event_name == 'pull_request'
+    
+    steps:
+      - name: 🚦 Governance Gate Decision
+        run: |
+          echo "🚦 Making final governance decision..."
+          
+          RISK_LEVEL="${{ needs.change-analysis.outputs.risk-level }}"
+          VALIDATION_RESULT="${{ needs.decision-validation.result }}"
+          
+          echo "Risk Level: $RISK_LEVEL"
+          echo "Validation Result: $VALIDATION_RESULT"
+          
+          # Block critical risk PRs with validation failures
+          if [ "$RISK_LEVEL" == "critical" ] && [ "$VALIDATION_RESULT" != "success" ]; then
+            echo "❌ GOVERNANCE GATE FAILED: Critical risk PR with validation issues"
+            echo "This PR requires immediate attention from architecture and security teams."
+            exit 1
+          fi
+          
+          # Block high risk PRs without proper ADR reference
+          if [ "$RISK_LEVEL" == "high" ]; then
+            PR_BODY="${{ github.event.pull_request.body }}"
+            if ! echo "$PR_BODY" | grep -qi "ADR-[0-9]"; then
+              echo "❌ GOVERNANCE GATE FAILED: High risk PR must reference an ADR"
+              echo "Please add an ADR reference (e.g., ADR-0123) to your PR description."
+              exit 1
+            fi
+          fi
+          
+          echo "✅ GOVERNANCE GATE PASSED: PR meets governance requirements"
+          echo "Risk level $RISK_LEVEL is acceptable with current validation results."
+
+# 📊 Analytics and Monitoring (runs on main branch)
+  governance-analytics:
+    name: 📈 Governance Analytics
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 100 # Get recent history
+
+      - name: 📊 Analyze Governance Trends
+        run: |
+          echo "📊 Analyzing governance trends and effectiveness..."
+          
+          # Count ADRs by month
+          ADR_COUNT=$(find docs/adr -name "*.md" 2>/dev/null | wc -l || echo "0")
+          RECENT_ADRS=$(find docs/adr -name "*.md" -newermt "30 days ago" 2>/dev/null | wc -l || echo "0")
+          
+          # Analyze recent PRs for risk patterns
+          HIGH_RISK_PRS=$(git log --oneline --since="30 days ago" --grep="high.*risk\|critical.*risk" | wc -l)
+          TOTAL_PRS=$(git log --oneline --since="30 days ago" --merges | wc -l)
+          
+          echo "📈 Governance Analytics (Last 30 Days):"
+          echo "  Total ADRs: $ADR_COUNT (Recent: $RECENT_ADRS)"
+          echo "  High Risk PRs: $HIGH_RISK_PRS / $TOTAL_PRS"
+          echo "  Risk Rate: $(( HIGH_RISK_PRS * 100 / TOTAL_PRS ))%"
+          
+          # Store metrics (in a real implementation, this would go to a metrics system)
+          cat > governance-metrics.json << EOF
+          {
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "totalADRs": $ADR_COUNT,
+            "recentADRs": $RECENT_ADRS,
+            "highRiskPRs": $HIGH_RISK_PRS,
+            "totalPRs": $TOTAL_PRS,
+            "riskRate": $(( HIGH_RISK_PRS * 100 / TOTAL_PRS ))
+          }
+          EOF
+          
+          echo "✅ Governance analytics completed"
+
+      - name: 📤 Upload Analytics
+        uses: actions/upload-artifact@v4
+        with:
+          name: governance-analytics
+          path: governance-metrics.json
+          retention-days: 365

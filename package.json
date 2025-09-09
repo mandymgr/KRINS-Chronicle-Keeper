@@ -88,7 +88,7 @@
     "dev:webhook": "node scripts/dev-orchestrator.js restart github-webhook",
     "install:ai-systems": "npm run install:mcp && npm run install:search && npm run install:bridge && npm run install:webhook",
     "install:mcp": "cd mcp-ai-team && npm install",
-    "install:search": "cd semantic-search-backend && npm install", 
+    "install:search": "cd semantic-search-backend && npm install",
     "install:bridge": "cd ai-pattern-bridge && npm install",
     "install:webhook": "cd github-webhook-handler && npm install",
     "build:ai-systems": "npm run build:mcp && npm run build:search && npm run build:bridge && npm run build:webhook",
@@ -150,7 +150,9 @@
     "axios": "^1.7.7",
     "express": "^4.19.2",
     "moment": "^2.30.1",
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "socket.io": "^4.7.5",
+    "cors": "^2.8.5"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
@@ -166,9 +168,5 @@
   "engines": {
     "node": ">=18.0.0",
     "bun": ">=1.0.0"
-  },
-  "peerDependencies": {
-    "docker": ">=20.0.0",
-    "docker-compose": ">=2.0.0"
   }
 }
