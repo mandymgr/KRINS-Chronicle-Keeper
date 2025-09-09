@@ -1,0 +1,12 @@
+{
+  "name": "krins-chronicle-keeper-api",
+  "version": "2.0.0",
+  "description": "KRINS Chronicle Keeper API Functions for Vercel",
+  "type": "module",
+  "dependencies": {
+    "@vercel/node": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
