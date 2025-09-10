@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
-// Simplified Vite config for Vercel deployment
+// Optimized Vite config for KRINS Chronicle Keeper
 export default defineConfig({
   plugins: [react()],
   esbuild: {
@@ -25,11 +25,22 @@ export default defineConfig({
     sourcemap: false,
     rollupOptions: {
       output: {
-        manualChunks: undefined,
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          auth: ['react-router-dom'],
+          ui: ['framer-motion', 'lucide-react'],
+          forms: ['react-hook-form', '@hookform/resolvers', 'zod'],
+          radix: ['@radix-ui/react-alert-dialog', '@radix-ui/react-checkbox', '@radix-ui/react-dialog'],
+        },
       },
     },
+    chunkSizeWarningLimit: 1000,
   },
   define: {
     global: 'globalThis',
+  },
+  server: {
+    host: true,
+    port: 5173,
   },
 })

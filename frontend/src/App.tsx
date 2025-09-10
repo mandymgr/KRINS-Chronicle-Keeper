@@ -1,4 +1,7 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider } from '@/contexts/AuthContext'
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
+import { LoginPage } from '@/components/auth/LoginPage'
 import { Layout } from '@/components/Layout'
 import { Dashboard } from '@/pages/Dashboard'
 import { ADRs } from '@/pages/ADRs'
@@ -10,19 +13,57 @@ import { Toaster } from '@/components_dev_memory/ui/Toaster'
 
 function App() {
   return (
-    <>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/adrs" element={<ADRs />} />
-          <Route path="/analytics" element={<Analytics />} />
-          <Route path="/intelligence" element={<Intelligence />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/ui-test" element={<UITest />} />
-        </Routes>
-      </Layout>
+    <AuthProvider>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/login" element={<LoginPage />} />
+        
+        {/* Protected Routes */}
+        <Route path="/*" element={
+          <ProtectedRoute>
+            <Layout>
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                
+                <Route path="/adrs" element={
+                  <ProtectedRoute requiredPermission="adrs:view">
+                    <ADRs />
+                  </ProtectedRoute>
+                } />
+                
+                <Route path="/analytics" element={
+                  <ProtectedRoute requiredPermission="analytics:view">
+                    <Analytics />
+                  </ProtectedRoute>
+                } />
+                
+                <Route path="/intelligence" element={
+                  <ProtectedRoute requiredPermission="intelligence:view">
+                    <Intelligence />
+                  </ProtectedRoute>
+                } />
+                
+                <Route path="/settings" element={
+                  <ProtectedRoute requiredRole={['admin', 'architect']}>
+                    <Settings />
+                  </ProtectedRoute>
+                } />
+                
+                <Route path="/ui-test" element={
+                  <ProtectedRoute requiredRole="admin">
+                    <UITest />
+                  </ProtectedRoute>
+                } />
+                
+                {/* Catch all - redirect to dashboard */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Layout>
+          </ProtectedRoute>
+        } />
+      </Routes>
       <Toaster />
-    </>
+    </AuthProvider>
   )
 }
 

@@ -3,7 +3,8 @@ import { StandardLayout, PageHero, ContentSection, DataList, ActionGrid } from '
 import { FileText, BarChart3, Brain } from 'lucide-react'
 import '@/styles/design-system.css'
 
-export function Dashboard() {
+// Eksempel på hvordan man bruker designsystemet
+export function ExamplePage() {
   const stats = [
     { value: '24', label: 'Active ADRs' },
     { value: '12', label: 'Team Members' },
@@ -17,13 +18,13 @@ export function Dashboard() {
       time: '2 minutes ago'
     },
     {
-      title: 'Team Review Session', 
+      title: 'Team Review Session',
       description: 'Five members actively reviewing database optimization decisions',
       time: '15 minutes ago'
     },
     {
       title: 'AI Pattern Analysis',
-      description: 'Performance patterns identified in authentication service', 
+      description: 'Performance patterns identified in authentication service',
       time: '1 hour ago'
     }
   ]
@@ -53,8 +54,8 @@ export function Dashboard() {
     <StandardLayout title="KRINS Chronicle Keeper">
       <PageHero 
         subtitle="Organizational Intelligence"
-        title="Intelligence Dashboard"
-        description="Real-time organizational intelligence system for architecture decision tracking and institutional memory."
+        title="Example Dashboard"
+        description="Demonstrasjon av standardisert designsystem for konsistent brukeropplevelse på tvers av hele frontend-plattformen."
         stats={stats}
       />
       

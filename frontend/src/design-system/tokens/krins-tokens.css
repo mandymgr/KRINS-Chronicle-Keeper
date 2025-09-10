@@ -1,36 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
 /* KRINS Chronicle Keeper Design Tokens */
 /* World-class organizational intelligence platform styling */
 
 :root[data-theme="light"],
 :root[data-theme="chronicle-light"] {
-  /* Typography */
-  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  /* Typography - Magazine Style */
+  --font-display: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, "SF Pro", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: 'SF Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-  /* Brand Colors - KRINS Intelligence Theme */
-  --color-brand-primary: #1e40af;    /* Deep blue for trust and intelligence */
+  /* Brand Colors - Magazine-Inspired Green Theme */
+  --color-brand-primary: #22c55e;    /* Modern green for sophistication */
   --color-brand-primary-foreground: #ffffff;
-  --color-brand-secondary: #7c3aed;  /* Purple for AI/innovation */
-  --color-brand-accent: #06b6d4;     /* Cyan for technology */
-  --color-brand-success: #10b981;    /* Green for decisions */
+  --color-brand-secondary: #16a34a;  /* Deeper green for depth */
+  --color-brand-accent: #84cc16;     /* Lime accent for energy */
+  --color-brand-success: #10b981;    /* Keep for consistency */
   --color-brand-warning: #f59e0b;    /* Amber for attention */
   --color-brand-danger: #ef4444;     /* Red for alerts */
 
-  /* Organizational Intelligence Color Palette */
-  --color-decision-proposed: #8b5cf6;
-  --color-decision-accepted: #10b981;
+  /* Organizational Intelligence Color Palette - Magazine Green */
+  --color-decision-proposed: #84cc16;
+  --color-decision-accepted: #22c55e;
   --color-decision-rejected: #f87171;
   --color-decision-superseded: #6b7280;
 
-  /* AI & Intelligence Colors */
-  --color-ai-primary: #7c3aed;
-  --color-ai-secondary: #a855f7;
-  --color-intelligence-bg: #f8fafc;
-  --color-context-highlight: #dbeafe;
+  /* AI & Intelligence Colors - Green Theme */
+  --color-ai-primary: #16a34a;
+  --color-ai-secondary: #22c55e;
+  --color-intelligence-bg: #f7fdf7;
+  --color-context-highlight: #dcfce7;
 
   /* Neutral Grays */
   --gray-0: #ffffff;
@@ -100,31 +100,31 @@
 
 :root[data-theme="dark"],
 :root[data-theme="chronicle-dark"] {
-  /* Typography - same fonts */
-  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  /* Typography - Magazine Style (Dark) */
+  --font-display: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, "SF Pro", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: 'SF Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-  /* Brand Colors - Dark Theme */
-  --color-brand-primary: #3b82f6;
+  /* Brand Colors - Dark Theme (Magazine Green) */
+  --color-brand-primary: #34d399;
   --color-brand-primary-foreground: #ffffff;
-  --color-brand-secondary: #8b5cf6;
-  --color-brand-accent: #06b6d4;
+  --color-brand-secondary: #22c55e;
+  --color-brand-accent: #84cc16;
   --color-brand-success: #22d3ee;
   --color-brand-warning: #fbbf24;
   --color-brand-danger: #f87171;
 
-  /* Dark Decision Colors */
-  --color-decision-proposed: #a78bfa;
+  /* Dark Decision Colors - Green Theme */
+  --color-decision-proposed: #a7f3d0;
   --color-decision-accepted: #34d399;
   --color-decision-rejected: #fb7185;
   --color-decision-superseded: #9ca3af;
 
-  /* AI & Intelligence Colors - Dark */
-  --color-ai-primary: #8b5cf6;
-  --color-ai-secondary: #a855f7;
-  --color-intelligence-bg: #0f172a;
-  --color-context-highlight: #1e3a8a;
+  /* AI & Intelligence Colors - Dark Green */
+  --color-ai-primary: #22c55e;
+  --color-ai-secondary: #34d399;
+  --color-intelligence-bg: #0f1a0f;
+  --color-context-highlight: #1e3a1e;
 
   /* Dark Neutral Grays */
   --gray-0: #0f172a;

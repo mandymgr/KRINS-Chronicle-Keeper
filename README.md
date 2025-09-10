@@ -27,7 +27,7 @@
 
 | Component | Description | Technology Stack |
 |-----------|-------------|------------------|
-| **🌐 Frontend** | Netflix-style dashboards + ADR management | React + TypeScript + Vite |
+| **🌐 Frontend** | Kinfolk-inspired minimalist design system + ADR management | React + TypeScript + Vite |
 | **⚡ Backend** | Decision analytics + AI coordination | FastAPI + Python + PostgreSQL |
 | **🧠 AI Systems** | Personal companion + team coordination | Krin + MCP + TypeScript |
 | **🗄️ Database** | Semantic search + analytics storage | PostgreSQL + pgvector + Redis |
