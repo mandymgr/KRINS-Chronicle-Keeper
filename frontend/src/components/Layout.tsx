@@ -12,7 +12,8 @@ import {
   User,
   LogOut,
   Shield,
-  ChevronDown
+  ChevronDown,
+  Terminal
 } from 'lucide-react'
 import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
@@ -23,6 +24,7 @@ const navigation = [
   { name: 'ADRs', href: '/adrs', icon: FileText },
   { name: 'Analytics', href: '/analytics', icon: BarChart3 },
   { name: 'Intelligence', href: '/intelligence', icon: Brain },
+  { name: 'Developer Hub', href: '/hub', icon: Terminal },
   { name: 'Settings', href: '/settings', icon: Settings },
 ]
 

@@ -7,7 +7,7 @@
  * @author KRINS Intelligence System
  */
 
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Shield, AlertTriangle, Lock } from 'lucide-react'
@@ -57,7 +57,15 @@ export function ProtectedRoute({
     const permissions = Array.isArray(requiredPermission) ? requiredPermission : [requiredPermission]
     const hasRequiredPermission = permissions.some(permission => hasPermission(permission))
     
+    console.log('🔐 Hub Permission Check:', {
+      requiredPermission,
+      userPermissions: state.user?.permissions,
+      hasRequiredPermission,
+      location: location.pathname
+    })
+    
     if (!hasRequiredPermission) {
+      console.log('❌ Hub Access Denied - Missing Permission')
       return <AccessDenied reason="insufficient-permission" requiredPermission={requiredPermission} />
     }
   }
@@ -73,7 +81,7 @@ interface AccessDeniedProps {
   userRole?: string
 }
 
-function AccessDenied({ reason, requiredRole, requiredPermission, userRole }: AccessDeniedProps) {
+function AccessDenied({ reason, requiredRole, requiredPermission }: AccessDeniedProps) {
   const { state, logout } = useAuth()
   
   const getRoleDisplayName = (role: string) => {
@@ -96,7 +104,8 @@ function AccessDenied({ reason, requiredRole, requiredPermission, userRole }: Ac
       'adrs:view': 'View ADRs',
       'analytics:view': 'View Analytics',
       'intelligence:view': 'View Intelligence Dashboard',
-      'settings:manage': 'Manage Settings'
+      'settings:manage': 'Manage Settings',
+      'hub:access': 'Developer Hub Access'
     }
     return permissionNames[permission as keyof typeof permissionNames] || permission
   }

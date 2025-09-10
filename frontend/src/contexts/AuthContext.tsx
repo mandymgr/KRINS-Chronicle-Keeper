@@ -73,7 +73,8 @@ const ROLE_PERMISSIONS = {
     'adrs:view',
     'analytics:view',
     'intelligence:view',
-    'settings:manage'
+    'settings:manage',
+    'hub:access'
   ],
   architect: [
     'adrs:create',
@@ -81,17 +82,20 @@ const ROLE_PERMISSIONS = {
     'adrs:view',
     'analytics:view',
     'intelligence:view',
-    'evidence:add'
+    'evidence:add',
+    'hub:access'
   ],
   developer: [
     'adrs:view',
     'analytics:view:limited',
     'evidence:add',
-    'intelligence:view:limited'
+    'intelligence:view:limited',
+    'hub:access'
   ],
   viewer: [
     'adrs:view:limited',
-    'analytics:view:dashboard'
+    'analytics:view:dashboard',
+    'hub:access'
   ]
 }
 

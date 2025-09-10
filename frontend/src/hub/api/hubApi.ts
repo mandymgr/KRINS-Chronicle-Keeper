@@ -18,7 +18,7 @@ import type {
 const API_BASE = '/api/hub'
 
 // Real HTTP client with error handling
-const hubApi = axios.create({
+const apiClient = axios.create({
   baseURL: API_BASE,
   timeout: 30000, // 30s timeout for commands
   headers: {
@@ -27,7 +27,7 @@ const hubApi = axios.create({
 })
 
 // Response interceptor for consistent error handling
-hubApi.interceptors.response.use(
+apiClient.interceptors.response.use(
   response => response,
   error => {
     console.error('Hub API Error:', error)
@@ -40,19 +40,19 @@ export class HubApiClient {
   // === SYSTEM HEALTH & STATUS ===
   
   async getSystemHealth(): Promise<SystemHealth> {
-    const response = await hubApi.get<HubApiResponse<SystemHealth>>('/health')
+    const response = await apiClient.get<HubApiResponse<SystemHealth>>('/health')
     if (!response.data.success) throw new Error(response.data.error)
     return response.data.data!
   }
   
   async getDockerStatus(): Promise<DockerService[]> {
-    const response = await hubApi.get<HubApiResponse<DockerService[]>>('/docker/status')
+    const response = await apiClient.get<HubApiResponse<DockerService[]>>('/docker/status')
     if (!response.data.success) throw new Error(response.data.error)
     return response.data.data!
   }
   
   async startDockerService(serviceName: string): Promise<CommandResult> {
-    const response = await hubApi.post<HubApiResponse<CommandResult>>('/docker/start', {
+    const response = await apiClient.post<HubApiResponse<CommandResult>>('/docker/start', {
       service: serviceName
     })
     if (!response.data.success) throw new Error(response.data.error)
@@ -60,7 +60,7 @@ export class HubApiClient {
   }
   
   async stopDockerService(serviceName: string): Promise<CommandResult> {
-    const response = await hubApi.post<HubApiResponse<CommandResult>>('/docker/stop', {
+    const response = await apiClient.post<HubApiResponse<CommandResult>>('/docker/stop', {
       service: serviceName
     })
     if (!response.data.success) throw new Error(response.data.error)
@@ -68,45 +68,45 @@ export class HubApiClient {
   }
   
   async getDockerLogs(serviceName: string, lines: number = 100): Promise<string> {
-    const response = await hubApi.get(`/docker/logs/${serviceName}?lines=${lines}`)
+    const response = await apiClient.get(`/docker/logs/${serviceName}?lines=${lines}`)
     return response.data
   }
   
   // === GIT OPERATIONS ===
   
   async getGitStatus(): Promise<GitStatus> {
-    const response = await hubApi.get<HubApiResponse<GitStatus>>('/git/status')
+    const response = await apiClient.get<HubApiResponse<GitStatus>>('/git/status')
     if (!response.data.success) throw new Error(response.data.error)
     return response.data.data!
   }
   
   async getRecentCommits(limit: number = 50): Promise<any[]> {
-    const response = await hubApi.get(`/git/commits?limit=${limit}`)
+    const response = await apiClient.get(`/git/commits?limit=${limit}`)
     return response.data.data
   }
   
   // === BUILD & CODE HEALTH ===
   
   async runTypeCheck(): Promise<CommandResult> {
-    const response = await hubApi.post<HubApiResponse<CommandResult>>('/code/typecheck')
+    const response = await apiClient.post<HubApiResponse<CommandResult>>('/code/typecheck')
     if (!response.data.success) throw new Error(response.data.error)
     return response.data.data!
   }
   
   async runLint(): Promise<CommandResult> {
-    const response = await hubApi.post<HubApiResponse<CommandResult>>('/code/lint')
+    const response = await apiClient.post<HubApiResponse<CommandResult>>('/code/lint')
     if (!response.data.success) throw new Error(response.data.error)
     return response.data.data!
   }
   
   async runTests(): Promise<CommandResult> {
-    const response = await hubApi.post<HubApiResponse<CommandResult>>('/code/test')
+    const response = await apiClient.post<HubApiResponse<CommandResult>>('/code/test')
     if (!response.data.success) throw new Error(response.data.error)
     return response.data.data!
   }
   
   async getBuildHealth(): Promise<BuildHealth> {
-    const response = await hubApi.get<HubApiResponse<BuildHealth>>('/build/health')
+    const response = await apiClient.get<HubApiResponse<BuildHealth>>('/build/health')
     if (!response.data.success) throw new Error(response.data.error)
     return response.data.data!
   }
@@ -114,7 +114,7 @@ export class HubApiClient {
   // === AI & MCP INTEGRATION ===
   
   async generateAIContext(query: string, scope: string = 'mixed'): Promise<any> {
-    const response = await hubApi.post<HubApiResponse<any>>('/ai/context', {
+    const response = await apiClient.post<HubApiResponse<any>>('/ai/context', {
       query,
       scope
     })
@@ -123,13 +123,13 @@ export class HubApiClient {
   }
   
   async getMCPServerStatus(): Promise<MCPServerStatus[]> {
-    const response = await hubApi.get<HubApiResponse<MCPServerStatus[]>>('/mcp/status')
+    const response = await apiClient.get<HubApiResponse<MCPServerStatus[]>>('/mcp/status')
     if (!response.data.success) throw new Error(response.data.error)
     return response.data.data!
   }
   
   async executeMCPCommand(command: string): Promise<CommandResult> {
-    const response = await hubApi.post<HubApiResponse<CommandResult>>('/mcp/command', {
+    const response = await apiClient.post<HubApiResponse<CommandResult>>('/mcp/command', {
       command
     })
     if (!response.data.success) throw new Error(response.data.error)
@@ -137,7 +137,7 @@ export class HubApiClient {
   }
   
   async getAIContextMetrics(): Promise<AIContextMetrics> {
-    const response = await hubApi.get<HubApiResponse<AIContextMetrics>>('/ai/metrics')
+    const response = await apiClient.get<HubApiResponse<AIContextMetrics>>('/ai/metrics')
     if (!response.data.success) throw new Error(response.data.error)
     return response.data.data!
   }
@@ -146,13 +146,13 @@ export class HubApiClient {
   
   async getADRList(status?: string): Promise<ADRSummary[]> {
     const params = status ? `?status=${status}` : ''
-    const response = await hubApi.get<HubApiResponse<ADRSummary[]>>(`/adr/list${params}`)
+    const response = await apiClient.get<HubApiResponse<ADRSummary[]>>(`/adr/list${params}`)
     if (!response.data.success) throw new Error(response.data.error)
     return response.data.data!
   }
   
   async createADR(title: string, component: string, context?: string): Promise<{ id: string, path: string }> {
-    const response = await hubApi.post<HubApiResponse<{ id: string, path: string }>>('/adr/create', {
+    const response = await apiClient.post<HubApiResponse<{ id: string, path: string }>>('/adr/create', {
       title,
       component,
       context
@@ -164,7 +164,7 @@ export class HubApiClient {
   // === WORKFLOW INTEGRATION ===
   
   async appendToWorkflow(type: string, title: string, body?: string): Promise<void> {
-    const response = await hubApi.post<HubApiResponse<void>>('/workflow/append', {
+    const response = await apiClient.post<HubApiResponse<void>>('/workflow/append', {
       kind: type,
       title,
       body
@@ -173,7 +173,7 @@ export class HubApiClient {
   }
   
   async getWorkflowEntries(limit: number = 20): Promise<WorkflowEntry[]> {
-    const response = await hubApi.get<HubApiResponse<WorkflowEntry[]>>(`/workflow/recent?limit=${limit}`)
+    const response = await apiClient.get<HubApiResponse<WorkflowEntry[]>>(`/workflow/recent?limit=${limit}`)
     if (!response.data.success) throw new Error(response.data.error)
     return response.data.data!
   }
@@ -181,13 +181,13 @@ export class HubApiClient {
   // === DATABASE OPERATIONS ===
   
   async getDatabaseHealth(): Promise<any> {
-    const response = await hubApi.get<HubApiResponse<any>>('/db/health')
+    const response = await apiClient.get<HubApiResponse<any>>('/db/health')
     if (!response.data.success) throw new Error(response.data.error)
     return response.data.data!
   }
   
   async getRedisInfo(): Promise<any> {
-    const response = await hubApi.get<HubApiResponse<any>>('/redis/info')
+    const response = await apiClient.get<HubApiResponse<any>>('/redis/info')
     if (!response.data.success) throw new Error(response.data.error)
     return response.data.data!
   }
@@ -195,7 +195,7 @@ export class HubApiClient {
   // === SYSTEM COMMANDS ===
   
   async executeCommand(command: string, args?: string[]): Promise<CommandResult> {
-    const response = await hubApi.post<HubApiResponse<CommandResult>>('/system/command', {
+    const response = await apiClient.post<HubApiResponse<CommandResult>>('/system/command', {
       command,
       args
     })
@@ -221,13 +221,13 @@ export const hubApi = new HubApiClient()
 export const hubOperations = {
   
   async restartAllServices(): Promise<CommandResult[]> {
-    const services = await hubApi.getDockerStatus()
+    const services = await apiClient.getDockerStatus()
     const results = []
     
     for (const service of services) {
       if (service.state === 'running') {
-        await hubApi.stopDockerService(service.name)
-        const result = await hubApi.startDockerService(service.name)
+        await apiClient.stopDockerService(service.name)
+        const result = await apiClient.startDockerService(service.name)
         results.push(result)
       }
     }
@@ -243,11 +243,11 @@ export const hubOperations = {
     mcp: MCPServerStatus[]
   }> {
     const [system, git, build, ai, mcp] = await Promise.all([
-      hubApi.getSystemHealth(),
-      hubApi.getGitStatus(),
-      hubApi.getBuildHealth(),
-      hubApi.getAIContextMetrics(),
-      hubApi.getMCPServerStatus()
+      apiClient.getSystemHealth(),
+      apiClient.getGitStatus(),
+      apiClient.getBuildHealth(),
+      apiClient.getAIContextMetrics(),
+      apiClient.getMCPServerStatus()
     ])
     
     return { system, git, build, ai, mcp }
@@ -255,9 +255,9 @@ export const hubOperations = {
   
   async quickStart(): Promise<void> {
     // Sequence for starting development environment
-    await hubApi.executeCommand('docker', ['compose', 'up', '-d'])
+    await apiClient.executeCommand('docker', ['compose', 'up', '-d'])
     await new Promise(resolve => setTimeout(resolve, 5000)) // Wait for services
-    await hubApi.runTypeCheck()
-    await hubApi.appendToWorkflow('build', 'Development environment started')
+    await apiClient.runTypeCheck()
+    await apiClient.appendToWorkflow('build', 'Development environment started')
   }
 }

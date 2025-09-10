@@ -274,3 +274,64 @@ export interface UserSettings {
   refreshInterval: number
   notificationsEnabled: boolean
 }
+
+// Blog and Auth types
+export interface BlogPost {
+  id: number
+  title: string
+  content: string
+  excerpt?: string
+  status: 'draft' | 'published' | 'archived'
+  author_id: number
+  created_at: string
+  updated_at: string
+  published_at?: string
+  tags: string[]
+  metadata?: Record<string, any>
+}
+
+export interface CreatePostData {
+  title: string
+  content: string
+  excerpt?: string
+  status?: 'draft' | 'published'
+  tags?: string[]
+  metadata?: Record<string, any>
+}
+
+export interface LoginCredentials {
+  email: string
+  password: string
+}
+
+export interface RegisterCredentials {
+  email: string
+  password: string
+  name: string
+  confirmPassword?: string
+}
+
+export interface FormErrors {
+  [key: string]: string | undefined
+  email?: string
+  password?: string
+  name?: string
+  confirmPassword?: string
+  general?: string
+}
+
+export interface AuthUser {
+  id: number
+  email: string
+  name: string
+  role: 'admin' | 'user' | 'architect'
+  created_at: string
+  last_login?: string
+}
+
+export interface AuthState {
+  user: AuthUser | null
+  isAuthenticated: boolean
+  isLoading: boolean
+  error?: string
+}
