@@ -10,6 +10,7 @@ import { Intelligence } from '@/pages/Intelligence'
 import { Settings } from '@/pages/Settings'
 import { UITest } from '@/pages/UITest'
 import { Toaster } from '@/components_dev_memory/ui/Toaster'
+import HubRouter from '@/hub/HubRouter'
 
 function App() {
   return (
@@ -52,6 +53,13 @@ function App() {
                 <Route path="/ui-test" element={
                   <ProtectedRoute requiredRole="admin">
                     <UITest />
+                  </ProtectedRoute>
+                } />
+                
+                {/* Developer Hub - Protected route */}
+                <Route path="/hub/*" element={
+                  <ProtectedRoute requiredPermission="hub:access">
+                    <HubRouter />
                   </ProtectedRoute>
                 } />
                 

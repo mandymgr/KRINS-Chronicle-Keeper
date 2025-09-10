@@ -30,6 +30,7 @@ import { Button } from '@/design-system/components/Button'
 type AuthMode = 'login' | 'register'
 
 export function LoginPage() {
+  // ✅ ALL HOOKS FIRST - Best Practice for React
   const [mode, setMode] = useState<AuthMode>('login')
   const [formData, setFormData] = useState({
     email: '',
@@ -42,16 +43,16 @@ export function LoginPage() {
 
   const { state, login, register, clearError } = useAuth()
 
-  // Redirect if authenticated
-  if (state.isAuthenticated) {
-    return <Navigate to="/" replace />
-  }
-
-  // Clear errors when switching modes
+  // Clear errors when switching modes - Fixed with proper dependencies
   useEffect(() => {
     clearError()
     setValidationError('')
-  }, [mode, clearError])
+  }, [mode]) // Safe: only depends on mode state
+
+  // ✅ CONDITIONAL RETURN AFTER ALL HOOKS - Best Practice
+  if (state.isAuthenticated) {
+    return <Navigate to="/" replace />
+  }
 
   const validateForm = () => {
     if (!formData.email || !formData.password) {
