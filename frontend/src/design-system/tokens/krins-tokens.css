@@ -11,39 +11,71 @@
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, "SF Pro", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: 'SF Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-  /* Brand Colors - Magazine-Inspired Green Theme */
-  --color-brand-primary: #22c55e;    /* Modern green for sophistication */
-  --color-brand-primary-foreground: #ffffff;
-  --color-brand-secondary: #16a34a;  /* Deeper green for depth */
-  --color-brand-accent: #84cc16;     /* Lime accent for energy */
-  --color-brand-success: #10b981;    /* Keep for consistency */
-  --color-brand-warning: #f59e0b;    /* Amber for attention */
-  --color-brand-danger: #ef4444;     /* Red for alerts */
+  /* AUTHENTIC KINFOLK COLORS - EXACT SPECIFICATION */
+  
+  /* Primary Colors */
+  --kinfolk-white: #FFFFFF;
+  --kinfolk-off-white: #FEFEFE;
+  --kinfolk-black: #000000;
+  --kinfolk-soft-black: #1A1A1A;
+  --kinfolk-secondary-black: #2B2B2B;
+  
+  /* Natural Base Tones */
+  --kinfolk-warm-beige: #F5F3F0;
+  --kinfolk-warm-beige-alt: #F0EDE8;
+  --kinfolk-stone-gray: #E8E6E1;
+  --kinfolk-stone-gray-medium: #D5D2CC;
+  --kinfolk-soft-cream: #FAF9F6;
+  
+  /* Accent Colors */
+  --kinfolk-forest-green: #2F4F2F;
+  --kinfolk-sage-green: #A8B5A0;
+  --kinfolk-terracotta: #C4A484;
+  
+  /* Image-Related Tones */
+  --kinfolk-warm-brown: #8B7355;
+  --kinfolk-warm-brown-light: #A0896C;
+  --kinfolk-dusty-pink: #E6D5D0;
+  --kinfolk-blue-gray: #B8C5D1;
+  
+  /* Functional Colors */
+  --kinfolk-border: #E8E6E1;
+  --kinfolk-hover: #F0EDE8;
+  --kinfolk-shadow: rgba(0,0,0,0.05);
+  
+  /* Brand Mapping for Consistency */
+  --color-brand-primary: var(--kinfolk-forest-green);
+  --color-brand-primary-foreground: var(--kinfolk-white);
+  --color-brand-secondary: var(--kinfolk-warm-brown);
+  --color-brand-accent: var(--kinfolk-sage-green);
+  --color-brand-success: var(--kinfolk-forest-green);
+  --color-brand-warning: var(--kinfolk-terracotta);
+  --color-brand-danger: var(--kinfolk-warm-brown-light);
 
-  /* Organizational Intelligence Color Palette - Magazine Green */
-  --color-decision-proposed: #84cc16;
-  --color-decision-accepted: #22c55e;
-  --color-decision-rejected: #f87171;
-  --color-decision-superseded: #6b7280;
+  /* Organizational Intelligence Color Palette - Kinfolk Earth Tones */
+  --color-decision-proposed: #A8B5A0;    /* Sage green for proposed */
+  --color-decision-accepted: #2F4F2F;    /* Forest green for accepted */
+  --color-decision-rejected: #C4A484;    /* Muted terracotta for rejected */
+  --color-decision-superseded: #8B7355;  /* Warm brown for superseded */
 
-  /* AI & Intelligence Colors - Green Theme */
-  --color-ai-primary: #16a34a;
-  --color-ai-secondary: #22c55e;
-  --color-intelligence-bg: #f7fdf7;
-  --color-context-highlight: #dcfce7;
+  /* AI & Intelligence Colors - Kinfolk Natural Theme */
+  --color-ai-primary: #2F4F2F;          /* Forest green */
+  --color-ai-secondary: #A8B5A0;        /* Sage green */
+  --color-intelligence-bg: #FAF9F6;     /* Soft cream background */
+  --color-context-highlight: #F5F3F0;   /* Warm beige highlight */
 
-  /* Neutral Grays */
-  --gray-0: #ffffff;
-  --gray-50: #f8fafc;
-  --gray-100: #f1f5f9;
-  --gray-200: #e2e8f0;
-  --gray-300: #cbd5e1;
-  --gray-400: #94a3b8;
-  --gray-500: #64748b;
-  --gray-600: #475569;
-  --gray-700: #334155;
-  --gray-800: #1e293b;
-  --gray-900: #0f172a;
+  /* KINFOLK NATURAL GRAYS & EARTH TONES */
+  --gray-0: var(--kinfolk-white);
+  --gray-50: var(--kinfolk-soft-cream);
+  --gray-100: var(--kinfolk-warm-beige);
+  --gray-200: var(--kinfolk-stone-gray);
+  --gray-300: var(--kinfolk-stone-gray-medium);
+  --gray-400: var(--kinfolk-warm-brown-light);
+  --gray-500: var(--kinfolk-warm-brown);
+  --gray-600: var(--kinfolk-secondary-black);
+  --gray-700: var(--kinfolk-soft-black);
+  --gray-800: var(--kinfolk-soft-black);
+  --gray-900: var(--kinfolk-black);
 
   /* Border Radius */
   --radius-xs: 0.125rem;
