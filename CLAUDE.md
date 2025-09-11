@@ -47,6 +47,24 @@ Beskrivelse av hva som ble gjort/foreslått og hvorfor.
 - Neste steg eller relaterte todos
 ```
 
+### KRINS Capabilities Tracking - OBLIGATORISK
+**ALLTID oppdater `KRINS-CAPABILITIES.md` når du:**
+- Implementerer nye funksjoner eller capabilities
+- Forbedrer eksisterende systemer 
+- Lanserer nye AI-agenter eller komponenter
+- Deployer nye integrasjoner eller workflows
+- Fullfører milestone features
+
+**Bruk capability tracking script:**
+```bash
+./tools/update-capabilities.sh "Funksjonsnavn" "Beskrivelse" "kategori"
+```
+
+**Manual oppdatering format:**
+```markdown
+| **Ny Funksjon** | ✅ YYYY-MM-DD | Beskrivelse av capability | `fil/lokasjon` |
+```
+
 ## Project Structure
 - `docs/adr/` - Architecture Decision Records with templates
 - `docs/patterns/` - Multi-language code patterns (TypeScript/Python/Java)
@@ -90,11 +108,18 @@ Restart Claude Code session to reload MCP configuration changes.
 3. **Decision Tracker** - Manages ADR lifecycle and analytics
 4. **Pattern Library** - Code patterns for consistent generation
 
+## Key Documentation References
+- **KRINS-CAPABILITIES.md** - Complete feature overview with timeline tracking
+- **README-DOCS.md** - Comprehensive navigation guide for all documentation  
+- **README.md** - Main project overview and quick start guide
+- **KRINS-WORKFLOW.md** - Development workflow and progress tracking
+
 ## Communication Style
 - Be concise and direct
 - Provide file paths with line numbers for code references
 - Use TodoWrite tool for complex multi-step tasks
 - Focus on the specific task at hand
+- Reference KRINS-CAPABILITIES.md when discussing system features
 
 ### ALLTID BEST LØSNING PRINSIPPET
 **Vi jobber alltid mot den beste, mest komplette løsningen - aldri halvveis!**

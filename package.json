@@ -105,7 +105,10 @@
     "ai:benchmark": "node scripts/benchmark-ai-systems.js",
     "ai:validate-patterns": "node scripts/validate-ai-patterns.js",
     "github:test-webhook": "node scripts/test-github-webhooks.js",
-    "setup:complete": "npm install && npm run install:ai-systems && npm run build && npm run build:ai-systems && echo '🎉 KRINS Chronicle Keeper v2.0 setup complete!'"
+    "setup:complete": "npm install && npm run install:ai-systems && npm run build && npm run build:ai-systems && echo '🎉 KRINS Chronicle Keeper v2.0 setup complete!'",
+    "capability:add": "node tools/add-capability.js",
+    "capability:list": "node tools/add-capability.js --list",
+    "capability:help": "node tools/add-capability.js --help"
   },
   "repository": {
     "type": "git",
