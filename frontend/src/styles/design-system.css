@@ -1263,3 +1263,76 @@ body {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+
+/* PREMIUM KINFOLK FOCUS STATES */
+.kinfolk-button:focus,
+.kinfolk-nav-link:focus,
+.krins-action-card:focus {
+  outline: 2px solid var(--kinfolk-forest-green);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* KINFOLK SELECTION STYLING */
+::selection {
+  background: var(--kinfolk-sage-green);
+  color: var(--kinfolk-white);
+}
+
+::-moz-selection {
+  background: var(--kinfolk-sage-green);
+  color: var(--kinfolk-white);
+}
+
+/* PREMIUM TEXT RENDERING OPTIMIZATIONS */
+.kinfolk-text-optimal {
+  font-synthesis: none;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "onum" 1;
+  font-variant-ligatures: common-ligatures contextual;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* KINFOLK PRINT STYLES */
+@media print {
+  body {
+    font-family: var(--kinfolk-accent);
+    color: var(--kinfolk-black);
+    background: var(--kinfolk-white);
+  }
+  
+  .kinfolk-header,
+  .kinfolk-floating-cta,
+  .kinfolk-nav {
+    display: none;
+  }
+  
+  .kinfolk-card {
+    border: 1px solid var(--kinfolk-stone-gray);
+    box-shadow: none;
+  }
+}
+
+/* REDUCED MOTION ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* HIGH CONTRAST MODE SUPPORT */
+@media (prefers-contrast: high) {
+  :root {
+    --kinfolk-soft-black: #000000;
+    --kinfolk-secondary-black: #000000;
+    --kinfolk-warm-brown: #5D4E37;
+    --kinfolk-stone-gray: #666666;
+  }
+}
