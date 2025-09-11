@@ -108,7 +108,14 @@
     "setup:complete": "npm install && npm run install:ai-systems && npm run build && npm run build:ai-systems && echo '🎉 KRINS Chronicle Keeper v2.0 setup complete!'",
     "capability:add": "node tools/add-capability.js",
     "capability:list": "node tools/add-capability.js --list",
-    "capability:help": "node tools/add-capability.js --help"
+    "capability:help": "node tools/add-capability.js --help",
+    "krins:add": "node tools/track-krins.js",
+    "krins:status": "node tools/track-krins.js status",
+    "krins:timeline": "node tools/track-krins.js timeline", 
+    "krins:insights": "node tools/track-krins.js insights",
+    "krins:sync": "node tools/track-krins.js sync",
+    "krins:help": "node tools/track-krins.js --help",
+    "dashboard:update": "node tools/update-dashboard.js"
   },
   "repository": {
     "type": "git",

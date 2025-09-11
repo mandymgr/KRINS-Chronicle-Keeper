@@ -47,22 +47,44 @@ Beskrivelse av hva som ble gjort/foreslått og hvorfor.
 - Neste steg eller relaterte todos
 ```
 
-### KRINS Capabilities Tracking - OBLIGATORISK
-**ALLTID oppdater `KRINS-CAPABILITIES.md` når du:**
+### KRINS Unified Tracking System - OBLIGATORISK
+**ALLTID oppdater systemet når du:**
 - Implementerer nye funksjoner eller capabilities
 - Forbedrer eksisterende systemer 
 - Lanserer nye AI-agenter eller komponenter
 - Deployer nye integrasjoner eller workflows
 - Fullfører milestone features
+- Tar arkitekturale beslutninger (ADRs)
+- Deployer nye releases
 
-**Bruk capability tracking script:**
+**UNIFIED TRACKING KOMMANDOER:**
 ```bash
-./tools/update-capabilities.sh "Funksjonsnavn" "Beskrivelse" "kategori"
+# Capabilities
+pnpm -w run krins:add capability "Feature Name" "Description" "category"
+
+# ADR Decisions  
+pnpm -w run krins:add adr "ADR-0006" "Decision Title" "approved" "2025-Q4"
+
+# AI Agents
+pnpm -w run krins:add agent "Agent Name" "Capabilities" "type" "status"
+
+# Releases
+pnpm -w run krins:add release "v2.1.0" "Features" "minor" "production"
+
+# System Metrics
+pnpm -w run krins:add metric "Metric Name" "Value" "trend" "status"
 ```
 
-**Manual oppdatering format:**
-```markdown
-| **Ny Funksjon** | ✅ YYYY-MM-DD | Beskrivelse av capability | `fil/lokasjon` |
+**DASHBOARD OPPDATERING:**
+```bash
+# Auto-update live dashboard
+pnpm -w run dashboard:update
+
+# System overview
+pnpm -w run krins:status
+
+# AI insights
+pnpm -w run krins:insights
 ```
 
 ## Project Structure
