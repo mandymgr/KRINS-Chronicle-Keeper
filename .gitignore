@@ -12,7 +12,7 @@
 **/bun.lock
 **/yarn.lock
 **/package-lock.json
-**/pnpm-lock.yaml
+# Keep pnpm-lock.yaml - it's our chosen standard
 
 # Build Outputs and Dist
 **/dist/
