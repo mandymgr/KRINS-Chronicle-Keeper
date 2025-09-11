@@ -79,3 +79,13 @@ Thumbs.db
 **/*.sqlite3
 **/*.db
 .vercel
+
+# Build artifacts and binaries (moved to ../_local-build-artifacts/)
+**/build-artifacts/
+**/dist/
+**/build/
+**/*.dmg
+**/*.app
+**/*.exe
+**/*.msi
+**/Electron*.app/
