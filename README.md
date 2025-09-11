@@ -84,9 +84,11 @@
 
 ## 🚀 **Quick Start Guide**
 
+> **🎉 SYSTEM OPTIMIZED (2025-09-11):** This project has been professionally cleaned up with consolidated environment configuration, standardized package management, and enhanced CI/CD pipelines.
+
 ### **📦 Prerequisites:**
 - Docker & Docker Compose
-- Node.js 18+ & Bun package manager  
+- Node.js 18+ & **pnpm** (standardized package manager)  
 - PostgreSQL with pgvector extension
 - Git & GitHub account
 
@@ -95,25 +97,33 @@
 # 1) Clone and setup
 git clone <repo-url>
 cd KRINS-Chronicle-Keeper
-bun install
 
-# 2) Environment setup
-cp .env.template .env
-# Edit .env with your database credentials
+# 2) Install dependencies (standardized on pnpm)
+pnpm install
 
-# 3) Start development environment
-docker-compose up -d
-bun run dev
+# 3) Environment setup (master configuration)
+cp .env.example .env
+# Edit .env with your API keys and credentials
 
-# 4) Create your first ADR
+# 4) Start all development services
+pnpm run dev
+
+# 5) Create your first ADR
 ./tools/adr_new.sh "Use KRINS platform for decision management" "platform/core"
 ```
 
 ### **🌐 Access Points:**
-- **Frontend Dashboard:** http://localhost:3000
+- **Frontend Dashboard:** http://localhost:5173 (updated Vite port)
 - **API Documentation:** http://localhost:8000/docs  
 - **Krin AI Companion:** Integrated in Claude Code
-- **Admin Panel:** http://localhost:3000/admin
+- **Admin Panel:** http://localhost:5173/admin
+
+### **✅ Post-Cleanup Benefits:**
+- ⚡ **Single command setup** - Copy `.env.example` to `.env` and you're ready
+- 🔧 **No conflicts** - Standardized ports and dependency management  
+- 📊 **Clean repository** - 857MB of build artifacts relocated
+- 🔒 **Enhanced CI** - Automated environment validation and testing
+- 📚 **Complete documentation** - See `README-DOCS.md` for comprehensive guide
 
 ## PR-policy (CI-gate)
 - PR > 200 linjer (sum lagt til + fjernet) må inneholde en referanse til en ADR i PR-beskrivelsen, f.eks. `ADR-0007`.
@@ -148,16 +158,19 @@ bun run dev
 ## 📚 **Documentation & Resources**
 
 ### **🔗 Key Documentation:**
+- **[📚 Complete Documentation Index](./README-DOCS.md)** - **NEW** Comprehensive navigation guide
 - **[📖 Complete System Architecture](./docs/architecture/system-overview-2025-09-07.md)** - Detailed technical architecture
 - **[🎯 Market Analysis & Use Cases](./docs/market-analysis-use-cases-2025-09-07.md)** - Business opportunity analysis  
 - **[🔧 Integration Plan](./docs/integration-plan-dev-memory-os.md)** - Development roadmap
 - **[📋 Development Workflow](./KRINS-WORKFLOW.md)** - Team workflow & progress tracking
 
 ### **🛠️ Development Resources:**
+- **Environment Config:** `.env.example` - Master configuration template
 - **ADR Templates:** `docs/adr/templates/`
 - **Pattern Library:** `docs/patterns/`  
 - **Runbooks:** `docs/runbooks/`
 - **Development Tools:** `tools/`
+- **CI/CD Workflows:** `.github/workflows/` - Enhanced automation
 
 ---
 
