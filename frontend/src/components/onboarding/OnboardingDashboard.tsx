@@ -26,9 +26,9 @@ import {
   BarChart3,
   Calendar
 } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components_dev_memory/ui/Card'
-import { Badge } from '@/components_dev_memory/ui/Badge'
-import { Button } from '@/components_dev_memory/ui/Button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/design-system/components/Card'
+import { Badge } from '@/design-system/components/Badge'
+import { Button } from '@/design-system/components/Button'
 
 interface User {
   id: string

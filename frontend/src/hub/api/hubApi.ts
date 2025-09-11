@@ -214,7 +214,25 @@ export class HubApiClient {
   }
 }
 
-// Singleton instance for app-wide use
+// Development mode detection
+const isDevelopment = import.meta.env.DEV || process.env.NODE_ENV === 'development'
+
+// Create hub API instance based on environment
+const createHubApi = async () => {
+  if (isDevelopment) {
+    console.log('🔧 Hub API: Using mock API for development')
+    const { mockHubApi } = await import('./mockApi')
+    return mockHubApi
+  } else {
+    console.log('🚀 Hub API: Using real API client')
+    return new HubApiClient()
+  }
+}
+
+// Export promise that resolves to the hub API instance
+export const hubApiPromise = createHubApi()
+
+// Temporary fallback - will be replaced by proper async handling
 export const hubApi = new HubApiClient()
 
 // Utility functions for common operations

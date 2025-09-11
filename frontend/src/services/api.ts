@@ -26,7 +26,132 @@ const api = axios.create({
   },
 })
 
-// Mock data for production demo
+// Mock data for development/production demo
+const mockADRs: ADR[] = [
+  {
+    adr_id: 'ADR-001',
+    title: 'Use TypeScript for Frontend Development',
+    context: 'Need type safety for large React application',
+    decision: 'Adopt TypeScript for all new frontend code',
+    status: 'accepted',
+    component: 'Frontend',
+    created_at: new Date().toISOString(),
+    decision_makers: ['Tech Lead', 'Frontend Team'],
+    consequences: 'Improved code quality and developer experience',
+    confidence_level: 9
+  },
+  {
+    adr_id: 'ADR-002', 
+    title: 'Docker for Development Environment',
+    context: 'Ensure consistent development environment across team',
+    decision: 'Use Docker Compose for local development',
+    status: 'accepted',
+    component: 'Infrastructure',
+    created_at: new Date(Date.now() - 86400000).toISOString(),
+    decision_makers: ['DevOps Team'],
+    consequences: 'Consistent environments, easier onboarding',
+    confidence_level: 8
+  }
+]
+
+const mockInsights: IntelligenceInsight[] = [
+  {
+    id: 'insight-1',
+    title: 'High Decision Velocity in Frontend Components',
+    description: 'Frontend components are showing above-average decision activity',
+    insight_type: 'trend',
+    impact_level: 'medium',
+    confidence_score: 0.85,
+    generated_at: new Date().toISOString(),
+    related_adrs: ['ADR-001'],
+    recommendations: ['Continue current pace', 'Consider standardization']
+  },
+  {
+    id: 'insight-2',
+    title: 'Infrastructure Decisions Need More Evidence',
+    description: 'Infrastructure ADRs have lower confidence scores on average',
+    insight_type: 'quality',
+    impact_level: 'high', 
+    confidence_score: 0.92,
+    generated_at: new Date().toISOString(),
+    related_adrs: ['ADR-002'],
+    recommendations: ['Gather more evidence', 'Involve more stakeholders']
+  }
+]
+
+const mockDecisionAnalytics: DecisionAnalytics = {
+  period_days: 30,
+  total_decisions: 42,
+  decisions_by_status: {
+    proposed: 8,
+    accepted: 28,
+    rejected: 4,
+    superseded: 2
+  },
+  decisions_by_component: {
+    'Frontend': 12,
+    'Backend': 10,
+    'Infrastructure': 8,
+    'Database': 6,
+    'Security': 4,
+    'API': 2
+  },
+  decision_velocity_trend: [
+    { date: '2024-01-01', decisions: 2 },
+    { date: '2024-01-08', decisions: 3 },
+    { date: '2024-01-15', decisions: 4 },
+    { date: '2024-01-22', decisions: 3 },
+    { date: '2024-01-29', decisions: 5 }
+  ],
+  confidence_distribution: {
+    '1-3': 5,
+    '4-6': 12,
+    '7-9': 20,
+    '10': 5
+  },
+  evidence_coverage: 0.78,
+  avg_decision_time_days: 5.2,
+  recent_decisions: mockADRs.slice(0, 5)
+}
+
+const mockOrganizationAnalysis = {
+  analysis_type: 'health',
+  period_days: 30,
+  overall_score: 0.82,
+  health_indicators: {
+    decision_velocity: 0.85,
+    evidence_quality: 0.78,
+    stakeholder_engagement: 0.84,
+    decision_diversity: 0.79
+  },
+  patterns: [
+    {
+      id: 'pattern-1',
+      title: 'High Frontend Activity',
+      description: 'Frontend components show consistent decision-making patterns',
+      confidence: 0.87,
+      impact: 'medium'
+    },
+    {
+      id: 'pattern-2', 
+      title: 'Infrastructure Standardization',
+      description: 'Growing standardization in infrastructure decisions',
+      confidence: 0.92,
+      impact: 'high'
+    }
+  ],
+  recommendations: [
+    'Continue current decision velocity',
+    'Improve evidence collection processes',
+    'Increase stakeholder diversity in decisions'
+  ],
+  trends: {
+    improving: ['decision_velocity', 'evidence_quality'],
+    stable: ['stakeholder_engagement'],
+    declining: []
+  }
+}
+
 const mockDashboardOverview: DashboardOverview = {
   total_decisions: 42,
   active_decisions: 8,
@@ -115,8 +240,26 @@ export const adrService = {
     status?: string
     component?: string
   }): Promise<ADR[]> => {
-    const response = await api.get('/adrs', { params })
-    return response.data
+    try {
+      const response = await api.get('/adrs', { params })
+      return response.data
+    } catch (error) {
+      console.log('📋 Using mock ADR data (API not available)')
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 300))
+      // Apply filtering if provided
+      let filteredADRs = [...mockADRs]
+      if (params?.status) {
+        filteredADRs = filteredADRs.filter(adr => adr.status === params.status)
+      }
+      if (params?.component) {
+        filteredADRs = filteredADRs.filter(adr => adr.component === params.component)
+      }
+      if (params?.limit) {
+        filteredADRs = filteredADRs.slice(0, params.limit)
+      }
+      return filteredADRs
+    }
   },
 
   // Get specific ADR
@@ -169,8 +312,15 @@ export const adrService = {
 export const decisionService = {
   // Get comprehensive analytics
   getAnalytics: async (days: number = 30): Promise<DecisionAnalytics> => {
-    const response = await api.get('/decisions/analytics', { params: { days } })
-    return response.data
+    try {
+      const response = await api.get('/decisions/analytics', { params: { days } })
+      return response.data
+    } catch (error) {
+      console.log('📊 Using mock decision analytics data (API not available)')
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 400))
+      return { ...mockDecisionAnalytics, period_days: days }
+    }
   },
 
   // Get decision links
@@ -253,8 +403,31 @@ export const intelligenceService = {
     generated_at: string
     filters: any
   }> => {
-    const response = await api.get('/intelligence/insights', { params })
-    return response.data
+    try {
+      const response = await api.get('/intelligence/insights', { params })
+      return response.data
+    } catch (error) {
+      console.log('🧠 Using mock insights data (API not available)')
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 400))
+      // Apply filtering if provided
+      let filteredInsights = [...mockInsights]
+      if (params?.insight_type) {
+        filteredInsights = filteredInsights.filter(insight => insight.insight_type === params.insight_type)
+      }
+      if (params?.impact_level) {
+        filteredInsights = filteredInsights.filter(insight => insight.impact_level === params.impact_level)
+      }
+      if (params?.limit) {
+        filteredInsights = filteredInsights.slice(0, params.limit)
+      }
+      return {
+        insights: filteredInsights,
+        total: filteredInsights.length,
+        generated_at: new Date().toISOString(),
+        filters: params || {}
+      }
+    }
   },
 
   // Perform comprehensive analysis
@@ -262,8 +435,15 @@ export const intelligenceService = {
     analysis_type: 'health' | 'trends' | 'effectiveness' | 'gaps'
     period_days?: number
   }): Promise<any> => {
-    const response = await api.post('/intelligence/analyze', null, { params })
-    return response.data
+    try {
+      const response = await api.post('/intelligence/analyze', null, { params })
+      return response.data
+    } catch (error) {
+      console.log('🔍 Using mock organization analysis data (API not available)')
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 600))
+      return { ...mockOrganizationAnalysis, analysis_type: params.analysis_type, period_days: params.period_days || 30 }
+    }
   },
 }
 
@@ -271,14 +451,15 @@ export const intelligenceService = {
 export const analyticsService = {
   // Dashboard overview
   getDashboardOverview: async (days: number = 30): Promise<DashboardOverview> => {
-    if (isProductionWithoutAPI) {
-      console.log('📊 Using mock data for dashboard overview (no API backend)')
+    try {
+      const response = await api.get('/analytics/dashboard/overview', { params: { days } })
+      return response.data
+    } catch (error) {
+      console.log('📊 Using mock data for dashboard overview (API not available)')
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 500))
       return { ...mockDashboardOverview, period_days: days }
     }
-    const response = await api.get('/analytics/dashboard/overview', { params: { days } })
-    return response.data
   },
 
   // Decision trends

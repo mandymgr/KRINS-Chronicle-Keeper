@@ -37,14 +37,14 @@ export function Layout({ children }: LayoutProps) {
   const location = useLocation()
 
   return (
-    <div className="h-screen flex overflow-hidden" style={{ background: 'var(--gray-50)' }}>
+    <div className="h-screen flex overflow-hidden" style={{ background: '#f9fafb' }}>
       {/* Mobile sidebar */}
       <div className={`fixed inset-0 flex z-40 md:hidden ${sidebarOpen ? '' : 'pointer-events-none'}`}>
         <div className={`fixed inset-0 bg-opacity-75 transition-opacity ease-linear duration-300 ${
           sidebarOpen ? 'opacity-100' : 'opacity-0'
         }`} onClick={() => setSidebarOpen(false)} style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }} />
 
-        <div className={`relative flex-1 flex flex-col max-w-xs w-full glass-card transform transition ease-in-out duration-300 ${
+        <div className={`relative flex-1 flex flex-col max-w-xs w-full bg-white border-r border-gray-200 shadow-lg transform transition ease-in-out duration-300 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}>
           <div className="absolute top-0 right-0 -mr-12 pt-2">
@@ -61,19 +61,19 @@ export function Layout({ children }: LayoutProps) {
         </div>
       </div>
 
-      {/* Desktop sidebar */}
-      <div className="hidden md:flex md:flex-shrink-0">
-        <div className="flex flex-col w-64">
+      {/* Desktop sidebar - ALWAYS VISIBLE */}
+      <div className="flex flex-shrink-0" style={{ backgroundColor: '#f3f4f6', minWidth: '256px' }}>
+        <div className="flex flex-col w-64" style={{ backgroundColor: 'white', borderRight: '2px solid #22c55e' }}>
           <SidebarContent currentPath={location.pathname} />
         </div>
       </div>
 
       <div className="flex flex-col w-0 flex-1 overflow-hidden">
         {/* Top header */}
-        <div className="relative z-10 flex-shrink-0 flex h-16 glass-card" style={{ boxShadow: 'var(--shadow-sm)' }}>
+        <div className="relative z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200 shadow-sm">
           <button
             type="button"
-            className="px-4 border-r border-secondary-200 text-secondary-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 md:hidden"
+            className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 md:hidden"
             onClick={() => setSidebarOpen(true)}
           >
             <span className="sr-only">Open sidebar</span>
@@ -82,7 +82,7 @@ export function Layout({ children }: LayoutProps) {
           
           <div className="flex-1 px-4 flex justify-between items-center">
             <div className="flex-1 flex">
-              <h1 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--gray-800)' }}>
+              <h1 className="text-xl font-semibold text-gray-800" style={{ fontFamily: 'Space Grotesk, Inter, sans-serif' }}>
                 {navigation.find(item => item.href === location.pathname)?.name || 'KRINS Chronicle Keeper'}
               </h1>
             </div>
@@ -116,9 +116,9 @@ export function Layout({ children }: LayoutProps) {
 function SidebarContent({ currentPath }: { currentPath: string }) {
   return (
     <div 
-      className="flex-1 flex flex-col min-h-0 glass-card" 
+      className="flex-1 flex flex-col min-h-0 bg-white" 
       style={{ 
-        borderRight: '1px solid var(--glass-border)',
+        borderRight: '1px solid #e5e7eb',
         borderRadius: '0'
       }}
     >
@@ -128,26 +128,22 @@ function SidebarContent({ currentPath }: { currentPath: string }) {
             <div 
               className="w-8 h-8 rounded-lg flex items-center justify-center"
               style={{ 
-                background: 'linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-accent))',
-                borderRadius: 'var(--radius-lg)'
+                background: 'linear-gradient(135deg, #22c55e, #84cc16)',
+                borderRadius: '8px'
               }}
             >
               <Brain className="h-5 w-5 text-white" />
             </div>
             <div>
               <h2 
-                className="text-lg font-bold"
+                className="text-lg font-bold text-gray-800"
                 style={{ 
-                  fontFamily: 'var(--font-display)', 
-                  color: 'var(--gray-800)' 
+                  fontFamily: 'Space Grotesk, Inter, sans-serif'
                 }}
               >
                 KRINS
               </h2>
-              <p 
-                className="text-xs"
-                style={{ color: 'var(--gray-500)' }}
-              >
+              <p className="text-xs text-gray-500">
                 Chronicle Keeper
               </p>
             </div>
@@ -179,12 +175,12 @@ function SidebarContent({ currentPath }: { currentPath: string }) {
         </nav>
       </div>
       
-      <div className="flex-shrink-0 border-t p-4" style={{ borderTopColor: 'var(--gray-200)' }}>
+      <div className="flex-shrink-0 border-t border-gray-200 p-4">
         {/* Theme Selector */}
         <div className="mb-4">
           <div className="flex items-center space-x-2 mb-2">
-            <Palette className="w-4 h-4" style={{ color: 'var(--gray-500)' }} />
-            <span className="text-xs font-medium" style={{ color: 'var(--gray-600)' }}>
+            <Palette className="w-4 h-4 text-gray-500" />
+            <span className="text-xs font-medium text-gray-600">
               Theme
             </span>
           </div>
@@ -193,28 +189,16 @@ function SidebarContent({ currentPath }: { currentPath: string }) {
         
         {/* AI Assistant Status */}
         <div className="flex items-center space-x-3">
-          <div 
-            className="w-8 h-8 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: 'var(--gray-200)' }}
-          >
-            <span 
-              className="text-xs font-medium"
-              style={{ color: 'var(--gray-600)' }}
-            >
+          <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200">
+            <span className="text-xs font-medium text-gray-600">
               AI
             </span>
           </div>
           <div>
-            <p 
-              className="text-sm font-medium"
-              style={{ color: 'var(--gray-800)' }}
-            >
+            <p className="text-sm font-medium text-gray-800">
               AI Assistant
             </p>
-            <p 
-              className="text-xs"
-              style={{ color: 'var(--gray-500)' }}
-            >
+            <p className="text-xs text-gray-500">
               Online & Ready
             </p>
           </div>

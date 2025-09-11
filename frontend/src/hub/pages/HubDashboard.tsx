@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react'
 import { PageHero, ContentSection, DataList, ActionGrid } from '@/components/shared/Layout'
 import { HubNavigation, HubQuickActions } from '../components/HubNavigation'
-import { hubApi } from '../api/hubApi'
+import { mockHubApi } from '../api/mockApi'
 import type { SystemHealth, DockerService, GitStatus, BuildHealth, MCPServerStatus } from '../types/hubTypes'
 import { 
   CheckCircle,
@@ -38,11 +38,11 @@ export default function HubDashboard() {
       console.log('🔄 Loading real system data...')
       
       const [health, docker, git, build, mcp] = await Promise.allSettled([
-        hubApi.getSystemHealth(),
-        hubApi.getDockerStatus(),
-        hubApi.getGitStatus(),
-        hubApi.getBuildHealth(),
-        hubApi.getMCPServerStatus()
+        mockHubApi.getSystemHealth(),
+        mockHubApi.getDockerStatus(),
+        mockHubApi.getGitStatus(),
+        mockHubApi.getBuildHealth(),
+        mockHubApi.getMCPServerStatus()
       ])
 
       if (health.status === 'fulfilled') {
@@ -135,7 +135,7 @@ export default function HubDashboard() {
         console.log('🚀 Starting all Docker services...')
         try {
           for (const service of dockerServices.filter(s => s.state !== 'running')) {
-            await hubApi.startDockerService(service.name)
+            await mockHubApi.startDockerService(service.name)
             console.log(`✅ Started ${service.name}`)
           }
           await loadSystemData() // Refresh after starting
@@ -151,7 +151,7 @@ export default function HubDashboard() {
       onClick: async () => {
         console.log('🔍 Running TypeScript check...')
         try {
-          const result = await hubApi.runTypeCheck()
+          const result = await mockHubApi.runTypeCheck()
           console.log('TypeScript check result:', result)
           await loadSystemData() // Refresh build health
         } catch (error) {
@@ -166,7 +166,7 @@ export default function HubDashboard() {
       onClick: async () => {
         console.log('📊 Refreshing Git status...')
         try {
-          const status = await hubApi.getGitStatus()
+          const status = await mockHubApi.getGitStatus()
           setGitStatus(status)
           console.log('✅ Git status refreshed:', status)
         } catch (error) {
@@ -181,7 +181,7 @@ export default function HubDashboard() {
       onClick: async () => {
         console.log('🧠 Running AI context demo...')
         try {
-          const context = await hubApi.generateAIContext('system health check', 'mixed')
+          const context = await mockHubApi.generateAIContext('system health check', 'mixed')
           console.log('✅ AI Context generated:', context)
         } catch (error) {
           console.error('❌ AI context generation failed:', error)

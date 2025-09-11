@@ -2,6 +2,7 @@ import React from 'react'
 import { StandardLayout, PageHero, ContentSection, ActionGrid } from '@/components/shared/Layout'
 import { Settings as SettingsIcon, User, Bell, Palette, Shield, Database, Zap } from 'lucide-react'
 import '@/styles/design-system.css'
+// Test Settings JSX
 
 export function Settings() {
   const stats = [

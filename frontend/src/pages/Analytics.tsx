@@ -1,81 +1,133 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { StandardLayout, PageHero, ContentSection, DataList, ActionGrid } from '@/components/shared/Layout'
-import { BarChart3, TrendingUp, Target, FileText, Download } from 'lucide-react'
+import { BarChart3, TrendingUp, Target, FileText, Download, Loader2, AlertCircle } from 'lucide-react'
+import { analyticsService, decisionService } from '@/services/api'
+import { DashboardOverview, DecisionAnalytics } from '@/types'
 import '@/styles/design-system.css'
+// Fixed JSX conditional rendering structure
+// Test change to trigger HMR
 
 export function Analytics() {
-  const stats = [
-    { value: '247', label: 'Total Decisions' },
-    { value: '87%', label: 'Success Rate' },
-    { value: '142', label: 'Active Patterns' }
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [dashboardData, setDashboardData] = useState<DashboardOverview | null>(null)
+  const [decisionAnalytics, setDecisionAnalytics] = useState<DecisionAnalytics | null>(null)
+
+  // Load analytics data on component mount
+  useEffect(() => {
+    loadAnalyticsData()
+  }, [])
+
+  const loadAnalyticsData = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      
+      // Load dashboard overview and decision analytics in parallel
+      const [dashboard, analytics] = await Promise.all([
+        analyticsService.getDashboardOverview(30),
+        decisionService.getAnalytics(30)
+      ])
+      
+      setDashboardData(dashboard)
+      setDecisionAnalytics(analytics)
+    } catch (err) {
+      console.error('Failed to load analytics:', err)
+      setError(err instanceof Error ? err.message : 'Failed to load analytics data')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Compute stats for hero section
+  const heroStats = dashboardData ? [
+    { value: dashboardData.metrics?.total_adrs?.toString() || '0', label: 'Total Decisions' },
+    { value: Math.round((dashboardData.metrics?.evidence_coverage || 0) * 100) + '%', label: 'Evidence Coverage' },
+    { value: Math.round((dashboardData.health_status?.score || 0) * 100) + '%', label: 'Health Score' }
+  ] : [
+    { value: '0', label: 'Total Decisions' },
+    { value: '0%', label: 'Evidence Coverage' },
+    { value: '0%', label: 'Health Score' }
   ]
 
-  const metricsData = [
+  // Compute metrics data from real analytics
+  const metricsData = dashboardData && decisionAnalytics ? [
     {
-      title: 'Decision Implementation Rate',
-      value: '87%',
-      change: '+5% this month',
-      description: 'Percentage of accepted decisions that have been successfully implemented'
+      title: 'Decision Velocity',
+      value: dashboardData.metrics?.decision_velocity?.toFixed(1) || '0',
+      change: dashboardData.trends?.velocity ? 
+        `${dashboardData.trends.velocity.change_percent > 0 ? '+' : ''}${dashboardData.trends.velocity.change_percent.toFixed(1)}% this period` : 
+        'No trend data',
+      description: 'Average number of decisions made per week'
     },
     {
-      title: 'Team Participation',
-      value: '94%',
-      change: '+12% this quarter',
-      description: 'Active participation rate across all team members in decision processes'
+      title: 'Average Confidence',
+      value: `${(decisionAnalytics.average_confidence || 0).toFixed(1)}/10`,
+      change: 'Updated in real-time',
+      description: 'Average confidence score across all architectural decisions'
     },
     {
-      title: 'Decision Confidence',
-      value: '8.4/10',
-      change: '+0.8 improvement',
-      description: 'Average confidence score for architectural decisions'
+      title: 'Implementation Health',
+      value: Math.round((dashboardData.health_status?.score || 0) * 100) + '%',
+      change: `Level: ${dashboardData.health_status?.level || 'unknown'}`,
+      description: 'Overall health of decision implementation and tracking'
     },
     {
-      title: 'Pattern Recognition',
-      value: '142',
-      change: '+18 new patterns',
-      description: 'AI-identified patterns in decision making processes'
+      title: 'Active Components',
+      value: dashboardData.metrics?.component_activity?.length?.toString() || '0',
+      change: `${decisionAnalytics.recent_activity || 0} recent`,
+      description: 'Number of components with active decision-making'
     }
-  ]
+  ] : []
 
-  const trendsData = [
-    {
-      title: 'API Architecture Focus',
-      description: 'Increasing emphasis on API design patterns and microservices architecture',
-      time: 'Last 30 days',
-      impact: 'High'
-    },
-    {
-      title: 'Real-time Feature Adoption',
-      description: 'Growing trend towards real-time capabilities and WebSocket implementations',
-      time: 'Last 60 days', 
-      impact: 'Medium'
-    },
-    {
-      title: 'Database Optimization',
-      description: 'Focus on performance improvements and semantic search capabilities',
-      time: 'Last 90 days',
-      impact: 'High'
-    }
-  ]
+  // Convert component activity to trends data
+  const trendsData = dashboardData?.metrics?.component_activity?.slice(0, 5).map((comp, index) => ({
+    title: `${comp.component} Component Activity`,
+    description: `${comp.count} decisions with ${(comp.avg_confidence || 0).toFixed(1)} average confidence`,
+    time: `${comp.activity ? Math.round(comp.activity * 100) + '% activity' : 'Activity unknown'}`,
+    impact: comp.count >= 3 ? 'High' : comp.count >= 1 ? 'Medium' : 'Low'
+  })) || []
 
   const actions = [
     {
       icon: BarChart3,
       title: 'Generate Report',
       description: 'Export comprehensive analytics report',
-      onClick: () => console.log('Generate report clicked')
+      onClick: async () => {
+        try {
+          const report = await analyticsService.getComprehensiveReport({ 
+            days: 30, 
+            include_recommendations: true 
+          })
+          console.log('Generated report:', report)
+          // TODO: Download or display report
+        } catch (err) {
+          console.error('Failed to generate report:', err)
+        }
+      }
     },
     {
       icon: TrendingUp,
       title: 'Trend Analysis',
-      description: 'Deep dive into decision patterns',
-      onClick: () => console.log('Trend analysis clicked')
+      description: 'View detailed decision trends',
+      onClick: async () => {
+        try {
+          const trends = await analyticsService.getDecisionTrends({ 
+            days: 90, 
+            granularity: 'week' 
+          })
+          console.log('Trend analysis:', trends)
+          // TODO: Navigate to detailed trends view
+        } catch (err) {
+          console.error('Failed to load trends:', err)
+        }
+      }
     },
     {
       icon: Target,
-      title: 'Performance Review',
-      description: 'Review implementation success rates',
-      onClick: () => console.log('Performance review clicked')
+      title: 'Refresh Analytics',
+      description: 'Reload analytics data from backend',
+      onClick: loadAnalyticsData
     }
   ]
 
@@ -88,19 +140,85 @@ export function Analytics() {
     }
   }
 
+  // Error state
+  if (error) {
+    return (
+      <StandardLayout title="KRINS Chronicle Keeper">
+        <PageHero 
+          subtitle="Decision Intelligence"
+          title="Analytics Dashboard"
+          description="Advanced analytics and insights into organizational decision patterns, implementation success rates, and emerging trends."
+          stats={heroStats}
+        />
+        <ContentSection>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 'var(--space-6xl) 0',
+            textAlign: 'center'
+          }}>
+            <AlertCircle style={{
+              width: '48px',
+              height: '48px',
+              color: 'var(--color-error)',
+              marginBottom: 'var(--space-lg)'
+            }} />
+            <h3 className="text-xl text-primary" style={{ marginBottom: 'var(--space-md)' }}>
+              Failed to Load Analytics
+            </h3>
+            <p className="text-base text-secondary" style={{ marginBottom: 'var(--space-lg)' }}>
+              {error}
+            </p>
+            <button 
+              onClick={loadAnalyticsData}
+              className="btn"
+              style={{
+                padding: 'var(--space-sm) var(--space-lg)',
+                backgroundColor: 'var(--color-primary)',
+                color: 'var(--color-background)',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              Retry
+            </button>
+          </div>
+        </ContentSection>
+      </StandardLayout>
+    )
+  }
+
   return (
     <StandardLayout title="KRINS Chronicle Keeper">
       <PageHero 
         subtitle="Decision Intelligence"
         title="Analytics Dashboard"
         description="Advanced analytics and insights into organizational decision patterns, implementation success rates, and emerging trends."
-        stats={stats}
+        stats={heroStats}
       />
 
       <ContentSection title="Key Performance Metrics">
-        <DataList 
-          items={metricsData}
-          renderItem={(metric, index) => (
+        {loading ? (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 'var(--space-6xl) 0'
+          }}>
+            <Loader2 style={{
+              width: '32px',
+              height: '32px',
+              color: 'var(--color-primary)',
+              marginRight: 'var(--space-md)'
+            }} className="animate-spin" />
+            <span className="text-base text-secondary">Loading analytics...</span>
+          </div>
+        ) : metricsData.length > 0 ? (
+          <DataList 
+            items={metricsData}
+            renderItem={(metric, index) => (
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -139,12 +257,50 @@ export function Analytics() {
             </div>
           )}
         />
+        ) : (
+          <div style={{
+            textAlign: 'center',
+            padding: 'var(--space-4xl) 0',
+            color: 'var(--color-secondary)'
+          }}>
+            <BarChart3 style={{
+              width: '48px',
+              height: '48px',
+              margin: '0 auto var(--space-lg)',
+              color: 'var(--color-tertiary)'
+            }} />
+            <h3 className="display text-xl text-secondary" style={{
+              marginBottom: 'var(--space-md)'
+            }}>
+              No Metrics Available
+            </h3>
+            <p className="text-base text-secondary">
+              Performance metrics will appear here once analytics data is available.
+            </p>
+          </div>
+        )}
       </ContentSection>
 
-      <ContentSection title="Decision Trends">
-        <DataList 
-          items={trendsData}
-          renderItem={(trend, index) => (
+      <ContentSection title="Component Activity Trends">
+        {loading ? (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 'var(--space-4xl) 0'
+          }}>
+            <Loader2 style={{
+              width: '24px',
+              height: '24px',
+              color: 'var(--color-primary)',
+              marginRight: 'var(--space-sm)'
+            }} className="animate-spin" />
+            <span className="text-sm text-secondary">Loading trends...</span>
+          </div>
+        ) : trendsData.length > 0 ? (
+          <DataList 
+            items={trendsData}
+            renderItem={(trend, index) => (
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -188,6 +344,28 @@ export function Analytics() {
             </div>
           )}
         />
+        ) : (
+          <div style={{
+            textAlign: 'center',
+            padding: 'var(--space-4xl) 0',
+            color: 'var(--color-secondary)'
+          }}>
+            <BarChart3 style={{
+              width: '48px',
+              height: '48px',
+              margin: '0 auto var(--space-lg)',
+              color: 'var(--color-tertiary)'
+            }} />
+            <h3 className="display text-xl text-secondary" style={{
+              marginBottom: 'var(--space-md)'
+            }}>
+              No Activity Data
+            </h3>
+            <p className="text-base text-secondary">
+              Component activity data will appear here once decisions are tracked across different components.
+            </p>
+          </div>
+        )}
       </ContentSection>
 
       <ContentSection title="Analytics Actions">

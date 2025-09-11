@@ -4,10 +4,10 @@ JWT settings, password policies, and security configuration
 """
 
 from datetime import timedelta
-from typing import List, Optional
+from typing import List, Optional, Union
 from enum import Enum
 from pydantic_settings import BaseSettings
-from pydantic import validator
+from pydantic import field_validator, ConfigDict
 import secrets
 import string
 
@@ -83,7 +83,7 @@ class AuthSettings(BaseSettings):
     totp_issuer_name: str = "KRINS Chronicle Keeper"
     
     # CORS Settings for Authentication
-    cors_origins: List[str] = ["http://localhost:3000", "http://localhost:3001"]
+    cors_origins: Union[str, List[str]] = ["http://localhost:3000", "http://localhost:3001"]
     cors_credentials: bool = True
     
     # Cookie Settings
@@ -91,18 +91,21 @@ class AuthSettings(BaseSettings):
     cookie_samesite: str = "lax"
     cookie_httponly: bool = True
     
-    class Config:
-        env_file = ".env"
-        env_prefix = "AUTH_"
-        case_sensitive = False
+    model_config = ConfigDict(
+        env_file=".env",
+        case_sensitive=False,
+        extra='ignore'  # Ignore extra fields from .env that don't match this model
+    )
     
-    @validator('jwt_secret_key')
+    @field_validator('jwt_secret_key')
+    @classmethod
     def validate_jwt_secret(cls, v):
         if len(v) < 32:
             raise ValueError('JWT secret key must be at least 32 characters long')
         return v
     
-    @validator('cors_origins')
+    @field_validator('cors_origins', mode='before')
+    @classmethod
     def validate_cors_origins(cls, v):
         if isinstance(v, str):
             return [origin.strip() for origin in v.split(',')]

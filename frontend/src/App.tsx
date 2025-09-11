@@ -9,8 +9,8 @@ import { Analytics } from '@/pages/Analytics'
 import { Intelligence } from '@/pages/Intelligence'
 import { Settings } from '@/pages/Settings'
 import { UITest } from '@/pages/UITest'
-import { Toaster } from '@/components_dev_memory/ui/Toaster'
-import HubRouter from '@/hub/HubRouter'
+import { Toaster } from '@/components/ui/Toaster'
+import HubDashboard from '@/hub/pages/HubDashboard'
 
 function App() {
   return (
@@ -19,56 +19,56 @@ function App() {
         {/* Public Routes */}
         <Route path="/login" element={<LoginPage />} />
         
-        {/* Protected Routes */}
-        <Route path="/*" element={
+        {/* Hub Route - MUST be before catch-all */}
+        <Route path="/hub" element={
           <ProtectedRoute>
             <Layout>
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                
-                <Route path="/adrs" element={
-                  <ProtectedRoute requiredPermission="adrs:view">
-                    <ADRs />
-                  </ProtectedRoute>
-                } />
-                
-                <Route path="/analytics" element={
-                  <ProtectedRoute requiredPermission="analytics:view">
-                    <Analytics />
-                  </ProtectedRoute>
-                } />
-                
-                <Route path="/intelligence" element={
-                  <ProtectedRoute requiredPermission="intelligence:view">
-                    <Intelligence />
-                  </ProtectedRoute>
-                } />
-                
-                <Route path="/settings" element={
-                  <ProtectedRoute requiredRole={['admin', 'architect']}>
-                    <Settings />
-                  </ProtectedRoute>
-                } />
-                
-                <Route path="/ui-test" element={
-                  <ProtectedRoute requiredRole="admin">
-                    <UITest />
-                  </ProtectedRoute>
-                } />
-                
-                {/* Developer Hub - Protected route */}
-                <Route path="/hub/*" element={
-                  <ProtectedRoute requiredPermission="hub:access">
-                    <HubRouter />
-                  </ProtectedRoute>
-                } />
-                
-                {/* Catch all - redirect to dashboard */}
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
+              <HubDashboard />
             </Layout>
           </ProtectedRoute>
         } />
+        
+        {/* Protected Routes */}
+        <Route path="/" element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/adrs" element={
+          <ProtectedRoute requiredPermission="adrs:view">
+            <ADRs />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/analytics" element={
+          <ProtectedRoute requiredPermission="analytics:view">
+            <Analytics />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/intelligence" element={
+          <ProtectedRoute requiredPermission="intelligence:view">
+            <Intelligence />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/settings" element={
+          <ProtectedRoute requiredRole={['admin', 'architect']}>
+            <Settings />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/ui-test" element={
+          <ProtectedRoute requiredRole="admin">
+            <Layout>
+              <UITest />
+            </Layout>
+          </ProtectedRoute>
+        } />
+        
+        {/* Catch all - redirect to dashboard */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Toaster />
     </AuthProvider>

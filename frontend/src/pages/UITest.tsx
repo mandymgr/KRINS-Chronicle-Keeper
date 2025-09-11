@@ -1,5 +1,5 @@
 import React from 'react'
-import UIShowcase from '@/components_dev_memory/examples/UIShowcase'
+import UIShowcase from '@/components/examples/UIShowcase'
 
 export function UITest() {
   return <UIShowcase />
